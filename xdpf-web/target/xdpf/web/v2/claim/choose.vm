@@ -1,0 +1,91 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurPlan=$!{myConcur.concurPlanDO})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/choose.css">
+
+
+<div class="mengchen"></div>
+<div class="read_box" style="z-index: 1000;">
+    <h1>申请互助必读</h1>
+    <p>一、确定你已经达到申请互助的标准。视网膜病变三级标准。</p>
+    <p>二、 如果你需要将你账号余额中收到的互助金，提现到银行卡，将扣除提现总额的5%，作为平台技术服务费。</p>
+    <p>三、 互助申请人已承诺，涉及本项目的文字、图片、证明等相关信息完全真实、有效，且不存在未经他人授权冒用他人名义进行求助的行为。
+        若发起人存在违反上述承诺的行为，愿自行承担全部法律责任。</p>
+    <p>四、审核通过已经开始公示后的项目不可以再次修改。</p>
+    <hr color="979797">
+    <!--<input type="submit" value="我知道了" class="know">-->
+    <div class="know">
+        我知道了
+    </div>
+</div>
+
+<h2 class="warn">请确认相关信息无误后，选择需申请互助用户。</h2>
+
+<div class="main flex-item clearfix">
+    <h3>姓名</h3>
+    <h4>$!{userDO.userName}</h4>
+</div>
+<div class="main flex-item clearfix">
+    <h3>证件号码</h3>
+    <h4>$!{userDO.card}</h4>
+</div>
+<div class="main flex-item clearfix">
+    <h3>参加时间</h3>
+    <h4>$!{joinTime}</h4>
+</div>
+<div class="main flex-item clearfix">
+    <h3>联系方式</h3>
+    <h4>$!{userDO.mobile}</h4>
+</div>
+<div class="tips">
+    <span>请选择符合条件的互助申请对象</span>
+</div>
+#foreach($userVO in $list)
+    #if($userVO.canApply)
+    <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,
+        '/v2/claim/apply.htm'),$request)&relationId=$!{userVO.id}">
+        <div class="datum—box flex-item clearfix">
+            <div class="datum1">
+                <h2>$!{userVO.ensureName}</h2>
+                <h6>姓名</h6>
+            </div>
+            <div class="datum2">
+                <h2>$!{userVO.ageDesc}</h2>
+                <h6>年龄</h6>
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+        </div>
+    </a>
+    #else
+
+    <div class="datum—box flex-item clearfix">
+        <div class="datum1">
+            <h2>$!{userVO.ensureName}</h2>
+            <h6>姓名</h6>
+        </div>
+        <div class="datum2">
+            <h2>$!{userVO.ageDesc}</h2>
+            <h6>年龄</h6>
+        </div>
+
+    </div>
+    #end
+
+#end
+<!--
+<h5 class="amend image">
+    理赔联系人信息有误，我要修改
+</h5>
+-->
+<script>
+    Zepto(function ($) {
+        $(".mengchen").show();
+        $(".read_box").show();
+        //点击提交数据
+        $(".know").click(function () {
+            $(".mengchen").hide();
+            $(".read_box").hide();
+
+        });
+
+    });
+</script>

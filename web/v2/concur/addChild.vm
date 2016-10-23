@@ -1,0 +1,201 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurNmae=$!{concurPlan.name})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/addchild.css">
+<style>
+    .verify {
+        line-height: 1.5;
+        width: 10.83rem;
+        text-align: center;
+        background-color: #FFF3D7;
+        color: #8B572A;
+        font-size: 0.6rem;
+        padding-top: 0.76rem;
+        padding-bottom: 0.76rem;
+        margin: 0 auto;
+        margin-top: 0.5rem;
+        display: none;
+    }
+
+    .add_box {
+        border: none;
+        color: #4a90e2;
+        line-height: 2rem;
+        font-size: 0.7rem;
+    }
+</style>
+<form id="submitform">
+    <div class="infor_box">
+        <h1>被保障人父母亲信息：</h1>
+        <div class="infor_cont">
+            <input type="text" name="userName" id="userName" class="infor" value="$!{user.userName}"
+                   placeholder="请输入真实姓名" #if($!stringUtils.isNotBlank($!{user.userName})) readonly #end>
+        </div>
+        <div class="infor_cont">
+            <input type="text" class="infor" name="card" id="card" value="$!{user.card}"
+                   placeholder="请输入正确身份证号" #if($!stringUtils.isNotBlank($!{user.card})) readonly #end>
+        </div>
+        <p>请务必填写正确新生儿的体重信息，如果数字与出生证明上的信息不符合，将被拒绝互助。如果是多胞胎，需全部都参加，否则不予互助，所扣互助金也不予退还 </p>
+
+    </div>
+
+    <div class="infor_box infor_box2">
+        <h1>请填写第一个小孩信息：</h1>
+        <div class="infor_cont">
+            <input type="text" class="infor" name="ensureName1" id="ensureName1" placeholder="请输入新生儿姓名">
+            <span>请输入新生儿姓名</span>
+        </div>
+
+        <div class="infor_cont">
+            <input type="number" class="infor" name="weight1" id="weight1" placeholder="请输入出生体重（G）">
+        </div>
+        <div class="infor_cont">
+            <input type="text" onfocus="(this.type='date')" class="infor" id="birthDay1" name="birthDay1"
+                   placeholder="请输入出生日期">
+        </div>
+        <div class="infor_cont">
+            <select name="childWeek1" id="childWeek1">
+                <option value="0" class="infor">--请选择出生孕周（周）--</option>
+                <option value="20">20周以下</option>
+                <option value="21">21周</option>
+                <option value="22">22周</option>
+                <option value="23">23周</option>
+                <option value="24">24周</option>
+                <option value="25">25周</option>
+                <option value="26">26周</option>
+                <option value="27">27周</option>
+                <option value="28">28周</option>
+                <option value="29">29周</option>
+                <option value="30">30周</option>
+                <option value="31">31周</option>
+                <option value="32">32周</option>
+                <option value="33">33周</option>
+                <option value="34">34周</option>
+                <option value="35">35周</option>
+                <option value="36">36周</option>
+                <option value="37">37周</option>
+                <option value="38">38周</option>
+                <option value="39">39周</option>
+            </select>
+            <!--<input type="text" class="infor" placeholder="出生孕周（周）">-->
+        </div>
+    </div>
+
+
+    <div class="add_box add_btn">
+        <!--<input type="button" class="add" value="如果多胞胎请增加">-->
+        <h6 class="add">
+            如果多胞胎请增加
+        </h6>
+    </div>
+    <input id="_token_" name="_token_" value="$!{request.getAttribute('_token_')}" type="hidden">
+    <input id="ajax" name="ajax" value="true" type="hidden">
+    <div class="verify"></div>
+    <div class="submit">确定</div>
+</form>
+<script>
+    Zepto(function ($) {
+        var count = 0;
+        var arrNum = ["一", "二", "三"];
+        var date = 'date';
+        //$("body").on("click",".add_btn",function(){
+        $(".add_btn").click(function () {
+            console.log("执行一次")
+            count++;
+            if (count > 2) {
+                $(".add_box").html("目前最多支持三胞胎").removeClass('add_btn');
+            } else {
+                var html =
+                        '<h1>请填写第' + arrNum[count] + '个小孩信息：</h1>' +
+                        '<div class="infor_cont">' +
+                        '<input type="text" class="infor" name="ensureName' + (count + 1) + '" id="ensureName"' + (count + 1) + '" placeholder="请输入新生儿姓名">' +
+                        '</div>' +
+
+                        '<div class="infor_cont">' +
+                        '<input type="number" class="infor" name="weight' + (count + 1) + '" id="weight' + (count + 1) + '" placeholder="请输入出生体重（G）">' +
+                        '</div>' +
+                        '<div class="infor_cont">' +
+                        '<input type="text" onfocus="(this.type=\'date\')" class="infor" id="birthDay' + (count + 1) + '" name="birthDay' + (count + 1) + '" placeholder="请输入出生日期">' +
+                        '</div>' +
+                        '<div class="infor_cont">' +
+                        '<select name="childWeek' + (count + 1) + '" id="childWeek' + (count + 1) + '">' +
+                        '<option value="0" class="infor">--请选择出生孕周（周）--</option>' +
+                        '<option value="20">20周以下</option>' +
+                        '<option value="21">21周</option>' +
+                        '<option value="22">22周</option>' +
+                        '<option value="23">23周</option>' +
+                        '<option value="24">24周</option>' +
+                        '<option value="25">25周</option>' +
+                        '<option value="26">26周</option>' +
+                        '<option value="27">27周</option>' +
+                        '<option value="28">28周</option>' +
+                        '<option value="29">29周</option>' +
+                        '<option value="30">30周</option>' +
+                        '<option value="31">31周</option>' +
+                        '<option value="32">32周</option>' +
+                        '<option value="33">33周</option>' +
+                        '<option value="34">34周</option>' +
+                        '<option value="35">35周</option>' +
+                        '<option value="36">36周</option>' +
+                        '<option value="37">37周</option>' +
+                        '<option value="38">38周</option>' +
+                        '<option value="39">39周</option>' +
+                        '</select>' +
+                        '</div>';
+                console.log(html);
+                $(".infor_box2").append(html);
+            }
+
+        });
+
+        var verifyWrong = function (msg) {
+            $(".verify").html(msg).show();
+        }
+        var verifyPass = function () {
+            $(".verify").html("").hide()
+        }
+
+        //点击提交数据
+        $(".submit").click(function () {
+            var postData = $('form').serializeArray();
+            //这里错误提示的样式还没给出）
+            console.log(postData);
+
+            // postData是你需要提交的信息，
+            // ajax写在这里
+            //填写资料提交处理
+            var fullUrl = '$!requestTool.getFullUrl('/v2/concur/addChildAction.htm',$request)';
+            Zepto.ajax({
+                type: 'GET',
+                url: fullUrl,
+                // data to be added to query string:
+                data: postData,
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 3000,
+                context: $('body'),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code != "SUCCESS") {
+                        if (data.code == 'USER_JOIN_CONCUR_DELAY_AGE_FAIL' || data.code == 'USER_JOIN_CONCUR_AGE_FAIL') {
+                            verifyWrong("很抱歉，你的年龄，不能参加该计划，<br/>即将推出一个中老年计划，敬请期待。");
+                        } else {
+                            verifyWrong(data.desc);
+                        }
+                    } else {
+                        window.location.href = "$!requestTool.getFullUrl('/v2/concur/addStep1.htm',$request)";
+                    }
+
+                },
+                error: function (xhr, type) {
+                    //alert('Ajax error!')
+                    console.error(xhr);
+
+                }
+            });
+            console.log(postData);
+            //back();
+
+        });
+    })
+    ;
+</script>

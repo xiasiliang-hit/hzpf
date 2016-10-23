@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserAppOpenId">
+
+    <typeAlias alias="userAppOpenId" type="com.line.bqxd.platform.client.dataobject.UserAppOpenIdDO"/>
+    <typeAlias alias="userAppOpenIdQuery" type="com.line.bqxd.platform.client.dataobject.query.UserAppOpenIdQueryDO"/>
+
+    <resultMap id="userAppOpenIdResultMap" class="userAppOpenId">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="pfAppId" column="pf_app_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="unionId" column="union_id"/>
+        <result property="openId" column="open_id"/>
+
+    </resultMap>
+
+    <sql id="userAppOpenId_columns">
+        id,gmt_create,gmt_modified,pf_app_id,user_id,union_id,open_id
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="userAppOpenIdResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userAppOpenId_columns"/>
+        <![CDATA[
+			FROM user_app_openid
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="userAppOpenId">
+        <![CDATA[
+			INSERT INTO user_app_openid(
+		gmt_create,gmt_modified,
+        pf_app_id,user_id,union_id,open_id)
+			VALUES(NOW(),NOW(),#pfAppId#,#userId#,#unionId#,#openId#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <delete id="delete" parameterClass="long">
+        delete from user_app_openid where id=#id#
+    </delete>
+
+    <select id="selectAll"  resultMap="userAppOpenIdResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userAppOpenId_columns"/>
+        <![CDATA[
+			FROM user_app_openid
+			order by gmt_create desc
+		]]>
+    </select>
+
+    <select id="selectByQuery" parameterClass="userAppOpenIdQuery" resultMap="userAppOpenIdResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userAppOpenId_columns"/>
+        <![CDATA[
+			FROM user_app_openid
+			WHERE 1=1
+			]]>
+        <isGreaterThan property="userId" prepend=" AND " compareValue="0">
+            <![CDATA[
+        user_id=#userId#
+        ]]>
+        </isGreaterThan>
+
+        <isGreaterThan property="pfAppId" prepend=" AND " compareValue="0">
+            <![CDATA[
+        pf_app_id = #pfAppId#
+        ]]>
+        </isGreaterThan>
+        <isNotEmpty prepend=" AND " property="unionId">
+            <![CDATA[
+					union_id = #unionId#
+				]]>
+        </isNotEmpty>
+        <isNotEmpty prepend=" AND " property="openId">
+            <![CDATA[
+					open_id = #openId#
+				]]>
+        </isNotEmpty>
+        <![CDATA[
+			order by gmt_create desc
+		]]>
+
+    </select>
+
+
+</sqlMap>

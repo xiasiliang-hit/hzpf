@@ -1,0 +1,286 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurPlan=$!{myConcur.concurPlanDO})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/apply.css">
+<script>
+    wx.config({
+        #if(${wxSign.debugLevel})
+            debug: true, //调试阶段建议开启
+        #end
+        appId: '${wxSign.wxAppId}',
+        timestamp:${wxSign.timestamp},
+        nonceStr: '${wxSign.nonceStr}',
+        signature: '${wxSign.signature}',
+        jsApiList: [
+            /*
+            * 所有要调用的 API 都要加到这个列表中
+            * 这里以图像接口为例
+            */
+            "chooseImage",
+            "uploadImage"
+        ]
+    });
+</script>
+<style>
+    .fl{
+        float: left;
+    }
+    .add_img{
+        border: 1px dashed #e1e1e1;
+        font-size: 1.6rem;
+        padding-top: 0.5rem;
+        width: 4rem;
+        height: 3.5rem;
+        color:#e1e1e1;
+        text-align: center;
+    }
+    .add_img span{
+        font-size: 0.5rem;
+        line-height: 0.6rem;
+    }
+    .img_nav{
+        width: 4rem;
+        height: 4rem;
+        border: 1px solid #e1e1e1;
+        margin-right: 0.5rem;
+        /*overflow: hidden;*/
+        position:relative;
+    }
+    .img_nav h2{
+        width:0.8rem;
+        color:#999999;
+        font-size:0.6rem;
+        line-height:0.8rem;
+        text-align:center;
+        background-color:#E0E0E0;
+        border-radius:50%;
+        position:absolute;
+        top:-0.3rem;
+        right:-0.3rem;
+    }
+</style>
+<form id="submitform">
+    <div class="diagnosis_box">
+        <div class="diagnosis">
+            <input type="text" placeholder="请输入确诊医院" id="verifyHospital" name="verifyHospital">
+        </div>
+        <div class="diagnosis">
+            <input type="text" placeholder="请选择确诊时间" onfocus="(this.type='date')" id="verifyTime" name="verifyTime">
+        </div>
+
+        <div class="diagnosis">
+            <input type="text" placeholder="请输入诊断医生姓名" name="verifyUser" id="verifyUser">
+        </div>
+        <div class="diagnosis">
+            <input type="number" placeholder="请输入医生联系电话" name="verifyTel" id="verifyTel">
+        </div>
+        <div class="diagnosis">
+            <input type="text" placeholder="请输入银行名称(用于提现理赔金)" name="bankName" id="bankName">
+        </div>
+        <div class="diagnosis">
+            <input type="text" placeholder="请输入银行卡账号(用于提现理赔金)" name="bankNo" id="bankNo">
+        </div>
+        <div class="diagnosis">
+            <select  id="verifyEventId" name="verifyEventId">
+                <option value="0" class="infor">--请选择病症--</option>
+                <option value="1">脑瘫</option>
+                <option value="2">视网膜病变</option>
+            </select>
+        </div>
+    </div>
+
+    <p class="tips">
+        其他会员质疑时，平台会联系医院核实材料的真实性
+    </p>
+
+    <div class="diagnosis_box">
+        <div class="diagnosis">
+            <textarea name="descr" id="descr" cols="30" rows="8" placeholder="建议详细描述受助人的基本情况：如家庭背景、经济状况、患病经历等。"
+                      required></textarea>
+        </div>
+    </div>
+
+    <div class="pic_box">
+        <div class="post_img_box clearfix">
+            <!--
+            <div id="123" class="img_nav fl">
+                <img src="" alt="" width="100%" />
+                <h2 class="close_pic" close_id="123">X</h2>
+            </div>
+            -->
+            <div class="add_img add_img_btn fl img_upload">
+                <div>+</div>
+            <span>
+                上传图片<br>最多8张
+            </span>
+
+            </div>
+        </div>
+        <p>照片必须上传新生儿出生证明、医院诊断证明照片、孩子住院时照片、孩子住院时床头标牌照片、医生证明等照片，提高项目可信度。</p>
+    </div>
+    <input type="hidden" id="picArray" name="picArray" value="">
+    <input type="hidden" id="relationId" name="relationId" value="$!{relationId}">
+    <div class="verify"></div>
+    <div class="submit">
+        提交
+    </div>
+</form>
+<script>
+    var add_img, change_img;
+    Zepto(function ($) {
+
+        add_img = function (id) {
+            var html = '<div id =' + id + ' class="img_nav fl"><img id="real_'+id+'" serviceImgSrc="" src="" alt="" style="height: 4rem;" width="100%" /><h2 class="close_pic" close_id="'+id+'">X</h2></div>';
+            $(".post_img_box").prepend(html);
+        };
+        change_img = function (id, src,serviceImgSrc) {
+            $(".img_nav").each(function (i, e) {
+                console.log(id, e)
+                if ($(e).attr("id") == id) {
+                    $("#real_"+id).attr("src",src);
+                    $("#real_"+id).attr("serviceImgSrc",serviceImgSrc);
+                    //$(e).html('<img src=' + src + ' alt="" width="100%" />');
+                }
+            });
+        };
+        var index = 0;
+        var maxSum = 8;
+        var succSum = 0;
+        //执行添加图片按钮
+        $("body").on("click", ".add_img_btn fl", function () {
+
+        });
+
+        $(".pic_box").on("click", ".close_pic", function () {
+            var closeId=$(this).attr("close_id");
+            var serviceImgSrc=$("#real_"+closeId).attr("serviceImgSrc");;
+            $("#"+closeId).remove();
+            if(serviceImgSrc!=null&&serviceImgSrc!=''){
+                var picArray=$("#picArray").val();
+                picArray=picArray.replace(serviceImgSrc+";","");
+                $("#picArray").val(picArray);
+            }
+            $(".img_upload").show();
+            succSum--;
+        });
+
+
+
+
+
+        //点击提交数据
+        $(".img_upload").click(function () {
+            var localIds;
+            if (maxSum <= succSum) {
+                alert("最多上传8张图片");
+                return;
+            }
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: 'compressed', // 可以指定是原图还是压缩图，默认二者都有
+                //sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    //alert(localIds);
+                    add_img("img_show_" + index);
+                    wx.uploadImage({
+                        localId: localIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+
+                            Zepto.ajax({
+                                type: 'GET',
+                                url: '/v2/claim/upload.htm?serverId=' + serverId,
+                                // data to be added to query string:
+                                data: '',
+                                // type of data we are expecting in return:
+                                dataType: 'json',
+                                timeout: 5000,
+                                context: $('body'),
+                                success: function (data) {
+                                    if (data.code == "SUCCESS") {
+                                        var pic = $("#picArray").val();
+                                        if(index==0){
+                                            $("#picArray").val(data.data+";");
+                                        }else{
+                                            $("#picArray").val(pic +  data.data+";");
+                                        }
+                                        change_img("img_show_" + index, localIds,data.data);
+                                        succSum++;
+                                        index++;
+                                        if (maxSum <= succSum) {
+                                            $(".img_upload").hide();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type) {
+                                    //alert('Ajax error!')
+                                    console.error(xhr);
+
+                                }
+                            });
+
+                        },
+                        fail: function (res) {
+                            alert("上传失败" + res.errMsg);
+                        }
+                    });
+                }
+
+            });
+
+        });
+
+        var verifyWrong = function (msg) {
+            $(".verify").html(msg).show();
+        }
+        var verifyPass = function () {
+            $(".verify").html("").hide()
+        }
+
+        //点击提交数据
+        $(".submit").click(function () {
+            var postData = $('form').serializeArray();
+            //这里错误提示的样式还没给出）
+            console.log(postData);
+
+            // postData是你需要提交的信息，
+            // ajax写在这里
+            //填写资料提交处理
+            var fullUrl = '$!requestTool.getFullUrl('/v2/claim/applySubmit.htm',$request)';
+            Zepto.ajax({
+                type: 'post',
+                url: fullUrl,
+                // data to be added to query string:
+                data: postData,
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 3000,
+                context: $('body'),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code != "SUCCESS") {
+                        if (data.code == 'USER_JOIN_CONCUR_DELAY_AGE_FAIL' || data.code == 'USER_JOIN_CONCUR_AGE_FAIL') {
+                            verifyWrong("很抱歉，你的年龄，不能参加该计划，<br/>即将推出一个中老年计划，敬请期待。");
+                        } else {
+                            verifyWrong(data.desc);
+                        }
+                    } else {
+                        alert("互助申请提交成功!");
+                        window.location.href = "$!requestTool.getFullUrl('/v2/concur/my.htm',$request)";
+                    }
+
+                },
+                error: function (xhr, type) {
+                    //alert('Ajax error!')
+                    console.error(xhr);
+
+                }
+            });
+            console.log(postData);
+            //back();
+
+        });
+
+    });
+</script>

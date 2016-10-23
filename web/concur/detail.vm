@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        //声明_czc对象:
+        var _czc = _czc || [];
+        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+        _czc.push(["_setAccount", "1259101635"]);
+    </script>
+    <meta charset="UTF-8">
+    <title>扁鹊兄弟互助</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="keywords" content=“扁鹊兄弟互助平台,扁鹊兄弟,网络互助平台,兄弟互助,互助平台,网络互助,网络保障平台,网络保障” />
+    <meta name="description" content=“扁鹊兄弟互助平台,更低互助金,更高更公平的可信赖的保障” />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/home.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/base.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/tip.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/mutualaid.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/activity.css">
+
+    <script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto-min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        !function () {
+            function a() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+            }
+
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b), b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+    </script>
+    <script>
+        var channelId='渠道'+$!{activity.channelId};
+        var shareTextId='文案'+$!{activity.shareTextId};
+        var lurkDesc=channelId+'_'+shareTextId;
+        _czc.push(["_trackEvent",'重疾详情','访问',lurkDesc,'','']);
+    </script>
+    <script>
+        wx.config({
+            #if(${wxSign.debugLevel})
+                debug: true, //调试阶段建议开启
+            #end
+            appId: '${wxSign.wxAppId}',
+            timestamp:${wxSign.timestamp} ,
+            nonceStr: '${wxSign.nonceStr}',
+            signature: '${wxSign.signature}',
+            jsApiList: [
+                /*
+                 * 所有要调用的 API 都要加到这个列表中
+                 * 这里以图像接口为例
+                 */
+                "onMenuShareAppMessage",
+                "onMenuShareTimeline"
+            ]
+        });
+        wx.ready(function () {
+            wx.onMenuShareTimeline({
+                title: '$!{activity.title}',
+                link: '$!{activity.turl}',
+                imgUrl: '${activity.headImgUrl}',
+                trigger: function (res) {
+                    //alert('用户点击分享到朋友圈');
+                },
+                success: function (res) {
+                    //alert('已分享');
+                    _czc.push(["_trackEvent",'重疾详情','分享朋友圈',lurkDesc,'','']);
+                    Zepto.ajax({
+                        type: 'GET',
+                        url: '/myconcur/share.htm',
+                        // data to be added to query string:
+                        data: {activityId:$!{activity.activityId},shareUserId:$!{activity.shareUserId}, channelId:$!{activity.channelId},shareTextId:$!{activity.shareTextId},level:$!{activity.shareLevel},f:'t'},
+                        // type of data we are expecting in return:
+                        dataType: 'json',
+                        timeout: 3000,
+                        context: $('body'),
+                        success: function(data){
+                            console.log(data);
+                        },
+                        error: function(xhr, type){
+                            //alert('Ajax error!')
+                            console.error(data);
+                        }
+                    });
+                ##if(${wxAttention}=='false')
+                    //openCode();
+                ##end
+
+                },
+                cancel: function (res) {
+                    //alert('已取消');
+                    console.info("cancle")
+                },
+                fail: function (res) {
+                    console.error(JSON.stringify(res));
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '$!{activity.title}', // 分享标题
+                desc: '$!{activity.descr}', // 分享描述
+                link: '$!{activity.aurl}', // 分享链接
+                imgUrl: '${activity.headImgUrl}', // 分享图标
+                type: 'link', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    //alert('已分享');
+                    _czc.push(["_trackEvent",'重疾详情','分享给朋友',lurkDesc,'','']);
+                    Zepto.ajax({
+                        type: 'GET',
+                        url: '/myconcur/share.htm',
+                        // data to be added to query string:
+                        data: {activityId:$!{activity.activityId},shareUserId:$!{activity.shareUserId}, channelId:$!{activity.channelId},shareTextId:$!{activity.shareTextId},level:$!{activity.shareLevel},f:'a'},
+                        // type of data we are expecting in return:
+                        dataType: 'json',
+                        timeout: 3000,
+                        context: $('body'),
+                        success: function(data){
+                            console.log(data);
+                        },
+                        error: function(xhr, type){
+                            //alert('Ajax error!')
+                            console.error(data);
+                        }
+                    });
+                ##if(${wxAttention}=='false')
+                    //openCode();
+                ##end
+
+                },
+                cancel: function () {
+                    console.error(data);
+                }
+            });
+        });
+    </script>
+
+</head>
+<style>
+    .celebrate{
+        font-size: 0.54rem;
+        color: #f3fcf2;
+        width: 100%;
+        background-color: #f83c3c;
+        height: 1.5rem;
+        line-height: 1.5rem;
+        opacity: 0.5;
+        text-align: center;
+    }
+</style>
+<body style="margin-bottom: 3rem">
+<div class="celebrate">热烈庆祝扁鹊兄弟互助获得浙江省政府旗下基金战略投资</div>
+<div class="mengchen" ></div>
+<div style="display:none">
+    <script src="http://s95.cnzz.com/z_stat.php?id=1259101635&web_id=1259101635" language="JavaScript"></script>
+</div>
+<div class="mask" style="position: fixed;"></div>
+<div class="arrow" style="position: fixed;">
+    <img src="http://res.xiongdihuzhu.com/res/weixin/images/jiantou.png" width="100%" alt="">
+</div>
+<div class="main">
+    <!-- 顶部tab按钮 -->
+    <ul class="top-tab flex-box">
+        <li class="flex-item active">
+            <a href="$!requestTool.getActivityUrl($!urlTool.getAbsoluteUrl($request,'/concur/detail.htm'),$!request)" class="a-fill" style="font-size: 14px;">
+                <i class="icon i1"></i>互助计划
+            </a>
+        </li>
+        <li class="flex-item">
+            <a href="$!requestTool.getActivityUrl($!urlTool.getAbsoluteUrl($request,'/myconcur/index.htm'), $!request)" class="a-fill" style="font-size: 14px;">
+                <i class="icon i2"></i>我的互助
+            </a>
+        </li>
+    </ul>
+    <div class="top-warp">
+        <div class="text t16">
+            互助计划是一种全新的保障概念，成员之间用互帮互助的形式来抵御风险。
+        </div>
+    </div>
+    <div class="page-status">
+        <div class="page-box">
+            <div class="title t20">
+                1.立即加入
+            </div>
+            <div class="sub-title t18">
+                出生30天~50岁
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img1.jpg" width="100%" alt="">
+            <div class="ft-t t14">
+                小明充值就加入了扁鹊兄弟互助
+            </div>
+        </div>
+        <div class="page-box">
+            <div class="title t20">
+                2.度过等待期
+            </div>
+            <div class="sub-title t18">
+                防止用户带病参加互助
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img2.jpg" width="100%" alt="">
+            <div class="ft-t t14" style="text-align:left">
+                小明度过等待期后，开始享受互助金保障
+            </div>
+        </div>
+        <div class="page-box">
+            <div class="title t20">
+                3.生病
+            </div>
+            <div class="sub-title t18">
+                50种重大疾病(包括癌症)
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img3.jpg" width="100%" alt="">
+            <div class="ft-t t14">
+                这个时候，小明突然生了大病 <br>
+                （50种重大疾病中的一种）
+            </div>
+        </div>
+        <div class="page-box">
+            <div class="title t20">
+                4.申请互助
+            </div>
+            <div class="sub-title t18">
+                拨打互助电话
+            </div>
+            <div class="sub-title" style="font-size: 32px;color: #4A4A4A;letter-spacing: 0px;">4000-390-559</div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img4.jpg" width="100%" alt="">
+            <div class="ft-t t14">
+                小明赶紧打电话申请互助
+            </div>
+        </div>
+        <div class="page-box">
+            <div class="title t20">
+                5.开始调查
+            </div>
+            <div class="sub-title t18">
+                委托专业机构开始调查
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img5.jpg" width="100%" alt="">
+            <div class="ft-t t14" >
+                收到小明的申请后，平台将委托 <br>
+                专业持牌保险公估机构进行病情核查 <br>
+                (该机构同时服务于中国人寿等保险公司) <br>
+            </div>
+        </div>
+        <div class="page-box">
+            <div class="title t20">
+                6.公示病例
+            </div>
+            <div class="sub-title t18">
+                所有证明材料在全平台公示
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img6.jpg" width="100%" alt="">
+            <div class="ft-t t14" >
+                核实病情无误后，将病例在全平台公示 <br>
+                所有的会员都能在平台上查看到资料
+            </div>
+        </div>
+
+        <div class="page-box">
+            <div class="title t20">
+                7.通知会员充值
+            </div>
+            <div class="sub-title t18">
+                给自己的账号充值
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img7.jpg" width="100%" alt="">
+            <div class="ft-t t14" >
+                公示病例后，平台开始通知其他会员充值<br>
+                每人每次捐助不超过6元
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img8.jpg" width="100%" alt="">
+            <div class="ft-t t14" >
+                一周后开始扣款，所有的互助金都将直接划给小明
+                根据实际人数情况，小明最多可得30万
+            </div>
+            <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img9.jpg" width="100%" alt="">
+            <div class="ft-t t14" >
+                若有人不参与互助，即视为主动退出，
+                将失去30万保障，重新加入需要再经过等待期
+            </div>
+        </div>
+
+    </div>
+    <div class="page-box">
+        <div class="title t20">
+            8.划款记录公示
+        </div>
+        <div class="sub-title t18">
+            将所有的扣款记录公示
+        </div>
+        <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/img6.jpg" width="100%" alt="">
+        <div class="ft-t t14" >
+            所有的划款记录详情都会在平台公示 <br>
+            所有的会员都能查看
+        </div>
+    </div>
+    <!-- 特色 -->
+    <div class="characteristic">
+        <h2 class="t20">扁鹊兄弟互助-三大特色</h2>
+        <div class="flex-box">
+            <div class="flex-item">
+                <div class="img-box" style="width: 1.8rem;padding-top: 0.2rem;height: 1.8rem;">
+                    <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/icon1.png" width="100%" alt="">
+
+                </div>
+                <div class="t14">真实透明</div>
+            </div>
+            <div class="flex-item">
+                <div class="img-box">
+                    <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/icon2.png" width="100%" alt="">
+
+                </div>
+                <div class="t14">资金安全</div>
+            </div>
+            <div class="flex-item">
+                <div class="img-box" style="width: 2rem;padding-top: 0.4rem;height: 1.6rem;">
+                    <img src="http://res.xiongdihuzhu.com/res/weixin/images/home_img/icon3.png" width="100%" alt="">
+
+                </div>
+                <div class="t14">公益互助</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="problems">
+        <div class="title">
+            常见问题
+        </div>
+        <ul>
+            <li>
+                <div class="q">客官问: 这么点会员费，就有30万保障不会是骗子吧？</div>
+                <div class="a">小二答: 会员管理费为互助社群入会的门槛，防止一定带病投保用户参加，同时享受终身会员资格，可获得平台今后更多的会员医疗服务。</div>
+            </li>
+            <li>
+                <div class="q">客官问: 每次都捐，总共要花多少钱啊？</div>
+                <div class="a">小二答: 我们参考了阿里巴巴内部重大疾病互助基金5年运作的经验，再加上保险精算师的推算。我们按照现在会员年龄预估，年轻用户捐助额<font color="F5A623">一个月10元-20元，平均每天不到1元钱。</font></div>
+            </li>
+            <li>
+                <div class="q">客官问: 什么是阿里巴巴蒲公英计划？</div>
+                <div class="a">小二答: 阿里巴巴蒲公英计划是针对阿里内部员工的一个重大疾病互助计划，每年员工出80元，公司出160元，共240元，实现了43种重大疾病20万元的保障。但是该计划只限阿里内部员工参加。所以扁鹊兄弟互助是希望做一个人人都能参加的互助计划。</div>
+            </li>
+            <li>
+                <div class="q">客官问: 生病我有医保，还参加互助干嘛？</div>
+                <div class="a">小二答: 亲，医保很好，但是治疗重大疾病一般是不够的。互助保障是确诊后一次性给你的，是医保的有力补充。</div>
+            </li>
+        </ul>
+    </div>
+    <div class="comment">
+        <ul>
+            #foreach($commet in $commentList)
+                <li class="clearfix">
+                    <div class="comment-photo">
+                        <img src="${commet.headImgUrl}" width="100%" alt="">
+                    </div>
+                    <div class="user-say">
+                        ${commet.nickName}
+                        <br/> ${commet.content}
+                    </div>
+                </li>
+            #end
+
+        </ul>
+    </div>
+    <div class="p-text" style="padding-top: 0.2rem;padding-right: 0px;padding-bottom: 1rem;padding-left: 0px;">
+        <div class="k k1"></div>
+        <div class="k k2"></div>
+        <div class="k k3"></div>
+        <div class="k k4"></div>
+        <p class='t18'>
+            <span class="center">关于我们</span><br>
+            扁鹊兄弟互助核心创始团队来自于阿里巴巴，在职期间受到阿里内部蒲公英重大疾病互助计划的保障，使我们想打造一份有温度的事业，希望帮助更多人。 </p>
+    </div>
+    <div class="agree-clause clearfix">
+        <div class="left-box active btn">
+        </div>
+        <div class="right-box">
+            我同意<a class="pact-btn">《扁鹊兄弟互助会员公约》</a>
+            <br/> 和
+            <a class="article-btn">《重大疾病互助计划条款》</a>
+        </div>
+    </div>
+    <div class="bottom-text" style="#if($!alreadyJoin=='true') padding-bottom: 3rem; #end">法律顾问：大成律师事务所</div>
+    <!-- 加入 -->
+    <!--div class="goAdd go-add-disable">
+        已经加入
+    </div-->
+    <!-- 加入 -->
+    #if($!alreadyJoin=='true')
+        <!--div class="goAdd go-add-disable">
+            已经加入
+        </div-->
+        <div class="footer">
+            <h3>
+                邀请一位朋友加入，保障增加1000元（限10位）
+            </h3>
+            <h4>
+                朋友可多得1万元额外保障
+            </h4>
+            <div class="btn goInvitation" id="invite">马上邀请</div>
+        </div>
+    #else
+
+        #if($!joinFee=='0')
+            <div class="goAdd" style="height: 2.5rem;z-index:300;line-height: 2.5rem;">
+                免费加入
+            </div>
+        #else
+            <div class="goAdd" style="height: 2.5rem;z-index:300;line-height: 1.5rem;">
+                微信充值$!{joinFee}元加入
+                <br/><span style="font-size:0.55rem;">1万名创始会员费限时优惠</span>
+            </div>
+        #end
+
+
+    #end
+
+</div>
+
+
+
+<script>
+    Zepto(function ($) {
+        $(".click-li").click(function(){
+            var num = $(this).attr("data-li-num");
+            var statYm = $(this).attr("data-statistics-ym");
+            _czc.push(["_trackEvent",'重疾详情',statYm,lurkDesc,'','']);
+
+            $(".tip").hide();
+            $(".tip .active").removeClass('active');
+            $(".tip-"+num).parent().show();
+            $(".tip-"+num).addClass("active");
+
+            $(".mengchen").show();
+            //$("body").addClass("ov");
+        });
+        $(".tip-close-btn").click(function(){
+            $(".tip").hide();
+            $(".mengchen").hide();
+            //$(".ov").removeClass("ov");
+        });
+
+        /*
+        var t = getid("text-slider-box"),
+                t1 = getid("text-slider-text"),
+                t2 = getid("text-slider-copy"),
+                timer;
+        t2.innerHTML = t1.innerHTML;
+        var count = 0;
+        var back = function () {
+            $(".page-2").hide();
+            $(".main").show();
+        };
+
+        function mar() {
+            if (t.scrollTop % 30 == 0) {
+                count++;
+                if (count % 30 == 0) {
+                    t.scrollTop++;
+                }
+            } else {
+                if (t2.offsetTop <= t.scrollTop)
+                    t.scrollTop -= t1.offsetHeight;
+                else
+                    t.scrollTop++;
+            }
+        }
+
+        timer = setInterval(mar, 30);
+
+        function getid(id) {
+            return document.getElementById(id);
+        }
+        */
+
+        //点击选中
+        var clickFlag = true;
+        var goAddDom = $(".goAdd");
+        var radioDom = $(".agree-clause .btn")
+        $(".agree-clause .btn").click(function () {
+            if (clickFlag) {
+                clickFlag = false;
+                radioDom.removeClass("active");
+                goAddDom.addClass('go-add-disable');
+            } else {
+                clickFlag = true;
+                radioDom.addClass('active');
+                goAddDom.removeClass("go-add-disable")
+            }
+        });
+
+        goAddDom.click(function () {
+            if (goAddDom.hasClass('go-add-disable')) {
+                return
+            } else {
+                _czc.push(["_trackEvent", '重疾详情', '加入点击', lurkDesc, '', '']);
+                window.location.href = "$!requestTool.getActivityUrl($!urlTool.getAbsoluteUrl($request,'/concur/information.htm'),$request)";
+                //$(".page-2").show();
+                $(".main").hide();
+            }
+        });
+        $(".pact-btn").click(function(){
+            _czc.push(["_trackEvent",'重疾详情','公约点击',lurkDesc,'','']);
+            window.location.href = "http://res.xiongdihuzhu.com/res/static/pact.html";
+        });
+        $(".article-btn").click(function(){
+            _czc.push(["_trackEvent",'重疾详情','条款点击',lurkDesc,'','']);
+            window.location.href = "http://res.xiongdihuzhu.com/res/static/article.html";
+        });
+        $(".tip-footer").click(function(){
+            _czc.push(["_trackEvent",'保障简介','50种点击',lurkDesc,'','']);
+            window.location.href = "http://res.xiongdihuzhu.com/res/static/article.html#zdjb";
+        });
+
+    });
+</script>
+
+<script>
+    Zepto(function($) {
+        var maskDom = $(".mask");
+        var arrow = $(".arrow");
+        var show = function(){
+            maskDom.show();
+            arrow.show();
+        }
+        var hide = function(){
+            maskDom.hide();
+            arrow.hide();
+        }
+        var timer;
+        $(".goInvitation").click(function(){
+            show();
+            _czc.push(["_trackEvent",'重疾详情','点击分享按钮',lurkDesc,'','invite']);
+            //点击影藏
+            $(".mask").on("click",function(){
+                hide();
+                clearTimeout(timer);
+            });
+            //延迟影藏
+            timer = setTimeout(function(){
+                hide();
+                clearTimeout(timer);
+            },5000);
+        });
+    });
+</script>
+
+
+</body>
+
+</html>

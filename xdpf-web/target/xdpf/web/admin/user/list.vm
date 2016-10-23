@@ -1,0 +1,98 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="用户列表")
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/user/list.htm">首页</a></li>
+            <li class="active"><span>用户列表</span>$!{page.totalRecord}</li>
+        </ol>
+    </div>
+</div>
+<script>
+    function userDel(userId,nickName){
+        if(confirm("删除是不可恢复的，你确认要"+nickName+"删除吗？\n删除数据包括本用户和子账户")){
+            window.location.href = "/admin/user/deleteUser.htm?userId="+userId;
+        }
+    }
+</script>
+
+<div class="main-box no-header clearfix">
+    <div class="main-box-body clearfix">
+        <div class="table-responsive">
+            <table class="table user-list table-hover">
+                <thead>
+                <tr class="info">
+                    <th>用户</th>
+                    <th>手机号码</th>
+                    <th>身份证</th>
+                    <th>用户位置</th>
+                    <th>最后登录时间</th>
+                    <th>用户渠道ID</th>
+                    <th>用户状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($user in $page.modle)
+                    <tr>
+                        <td>
+                            <img src="$!{user.headImgurl}" alt=""/>
+                            <a href="#" class="user-link">$!{user.nickName}</a>
+                            <span class="user-subhead">$!{user.userName}</span>
+                        </td>
+                        <td>
+                            $!{user.mobile}
+                        </td>
+                        <td>
+                            $!{user.card}
+                        </td>
+                        <td>
+                            $!{user.province}/$!{user.city}
+                        </td>
+                        <td>
+                            $!dateUtils.getDateTimeFormat("yyyy-MM-dd HH:mm:ss",$!{user.lastLoginDate})
+                        </td>
+                        <td>
+                            $!{user.channelId}
+                        </td>
+                        <td class="text-center">
+                            #if($!{user.status}==1)
+                                <span class="label label-success">正常</span>
+                            #elseif($!{user.status}==2)
+                                <span class="label label-danger">注销</span>
+                            #end
+                            #if($!{user.userType}==2)
+                                <span class="label label-warning">子</span>
+                            #end
+                        </td>
+
+
+                        <td style="width: 20%;">
+                            <a href="/admin/user/view.htm?userId=$!{user.userId}" class="table-link" alt="详情">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            <a href="#" class="table-link">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            <a href="#" class="table-link danger" onclick="userDel($!{user.userId},'$!{user.nickName}')">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            #pageShow('/admin/user/list.htm')
+
+            <div>
+                <div>
+                    <div>

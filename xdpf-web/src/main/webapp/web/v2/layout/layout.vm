@@ -1,0 +1,60 @@
+
+<!doctype html>
+<html>
+<head>
+    <script>
+        //声明_czc对象:
+        var _czc = _czc || [];
+        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+        _czc.push(["_setAccount", "1259101635"]);
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="扁鹊兄弟互助,扁鹊兄弟,网络互助平台,兄弟互助,互助平台,网络互助,网络保障平台,网络保障" />
+    <meta name="description" content="扁鹊兄弟互助平台,更低互助金,更高更公平的可信赖的保障" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+    <meta name="baidu-site-verification" content="rl2LXkR5gu" />
+    <meta name="sogou_site_verification" content="IFMGfZflnQ"/>
+    <meta name="360-site-verification" content="fd4c3d7254909b7d6aedcfd5eea85ff7" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto-min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <title>$!{concurPlan.name}</title>
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/common.css">
+    <script>
+        !function () {
+            function a() {
+                if(document.documentElement.clientWidth<=1000){
+                    document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+                }
+
+            }
+
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b);
+                b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+    </script>
+</head>
+<style>
+    .mengchen {
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: 0.5;
+        position: fixed;
+        z-index: 1000;
+        display: none;
+    }
+</style>
+<body>
+
+$screen_content
+
+
+</body>
+</html>

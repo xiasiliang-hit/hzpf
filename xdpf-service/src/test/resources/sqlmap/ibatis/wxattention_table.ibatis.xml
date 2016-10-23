@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="WXAttention">
+
+    <typeAlias alias="wxAttention" type="com.line.bqxd.platform.client.dataobject.WXAttentionDO"/>
+    <typeAlias alias="wxAttentionQueryDO" type="com.line.bqxd.platform.client.dataobject.query.WXAttentionQueryDO"></typeAlias>
+
+
+    <resultMap id="wxAttentionResultMap" class="wxAttention">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="openId" column="openid"/>
+        <result property="tag" column="tag"/>
+    </resultMap>
+
+    <sql id="wxAttention_columns">
+        id,gmt_create,gmt_modified,openid,tag
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="wxAttentionResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="wxAttention_columns"/>
+        <![CDATA[
+			FROM wx_attention
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="wxAttention">
+        <![CDATA[
+			INSERT INTO wx_attention(
+		gmt_create,gmt_modified,openid,tag) VALUES(NOW(),NOW(),#openId#,#tag#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <delete id="delete" parameterClass="long">
+        delete from wx_attention where id=#id#
+    </delete>
+
+    <delete id="deleteByOpenId" parameterClass="String">
+        delete from wx_attention where openid=#openId#
+    </delete>
+
+    <select id="selectByQuery" parameterClass="wxAttentionQueryDO" resultMap="wxAttentionResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="wxAttention_columns"/>
+        <![CDATA[
+			FROM wx_attention
+			WHERE 1=1
+		]]>
+        <isNotEmpty property="openId" prepend=" AND ">
+            <![CDATA[
+					openid = #openId#
+				]]>
+        </isNotEmpty>
+        <isGreaterThan property="tag" prepend=" AND " compareValue="0">
+            <![CDATA[
+					tag = #tag#
+				]]>
+        </isGreaterThan>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+
+</sqlMap>

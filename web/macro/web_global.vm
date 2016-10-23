@@ -1,0 +1,45 @@
+#macro( pageShow $url )
+    #if($!page.totalPage>1)
+
+        #if($!page.currentPage>1)
+            #set($prevPage=$!page.currentPage - 1)
+        #else
+            #set($prevPage= 1)
+        #end
+
+        #if($!page.currentPage>=$!page.totalPage)
+            #set($nextPage=$!page.totalPage)
+        #else
+            #set($nextPage= $!page.currentPage + 1)
+        #end
+    <div>
+        <ul class="pagination pull-right hide-if-no-paging">
+            <li class="footable-page-arrow #if($!page.currentPage==1) disabled #end"><a data-page="first" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=1">«</a></li>
+            <li class="footable-page-arrow #if($!page.currentPage==1) disabled #end"><a data-page="prev" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{prevPage}">‹</a></li>
+            #if($!page.currentPage - 2 >0)
+                #set($showPage= $!page.currentPage - 2)
+                <li class="footable-page "><a data-page="0" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{showPage}">$!{showPage}</a></li>
+            #end
+            #if($!page.currentPage - 1 >0)
+                #set($showPage= $!page.currentPage - 1)
+                <li class="footable-page "><a data-page="0" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{showPage}">$!{showPage}</a></li>
+            #end
+            <li class="footable-page active"><a data-page="0" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{page.currentPage}">$!{page.currentPage}</a></li>
+
+            #if($!page.currentPage + 1 <=$!page.totalPage)
+                #set($showPage= $!page.currentPage + 1)
+                <li class="footable-page "><a data-page="0" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{showPage}">$!{showPage}</a></li>
+            #end
+            #if($!page.currentPage + 2 <=$!page.totalPage)
+                #set($showPage= $!page.currentPage + 2)
+                <li class="footable-page "><a data-page="0" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{showPage}">$!{showPage}</a></li>
+            #end
+
+            <li class="footable-page-arrow #if($!page.currentPage==$!page.totalPage) disabled #end"><a data-page="next" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{nextPage}">›</a></li>
+            <li class="footable-page-arrow #if($!page.currentPage==$!page.totalPage) disabled #end"><a data-page="last" href="$!{url}?queryJson=$!{page.queryJson}&pageNum=$!{page.totalPage}">»</a></li>
+        </ul>
+    <div>
+
+    #end
+
+#end

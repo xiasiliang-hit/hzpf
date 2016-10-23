@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserConcurRelation">
+
+    <typeAlias alias="userConcurRelation" type="com.line.bqxd.platform.client.dataobject.UserConcurRelationDO"/>
+    <typeAlias alias="userConcurRelationQuery" type="com.line.bqxd.platform.client.dataobject.query.UserConcurRelationQueryDO"/>
+
+    <resultMap id="userConcurRelationResultMap" class="userConcurRelation">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="concurPlanId" column="concur_plan_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="ratio" column="ratio"/>
+        <result property="userType" column="user_type"/>
+        <result property="ensureName" column="ensure_name"/>
+        <result property="birthDay" column="birth_day"/>
+        <result property="weight" column="weight"/>
+        <result property="childWeek" column="child_week"/>
+        <result property="joinTime" column="join_time"/>
+        <result property="ensureStatus" column="ensure_status"/>
+        <result property="ensureStartTime" column="ensure_start_time"/>
+        <result property="firstFillMoney" column="first_fill_money"/>
+        <result property="upperLimit" column="upper_limit"/>
+
+    </resultMap>
+
+    <resultMap id="userConcurRelationStatisticsMap" class="java.util.HashMap">
+        <result property="amount"  javaType="java.lang.Long"/>
+        <result property="sumRatio" javaType="java.lang.Long"/>
+    </resultMap>
+
+    <sql id="userConcurrelation_columns">
+        id,gmt_create,gmt_modified,
+        concur_plan_id,user_id,user_type,ratio,ensure_name,birth_day,weight,child_week,join_time,ensure_status,ensure_start_time,first_fill_money,upper_limit
+    </sql>
+
+    <sql id="userConcurrelation_query_conditon" >
+
+
+        <isGreaterThan property="concurPlanId" prepend=" AND " compareValue="0">
+            <![CDATA[
+					concur_plan_id = #concurPlanId#
+				]]>
+        </isGreaterThan>
+
+        <isGreaterThan property="userId" prepend=" AND " compareValue="0">
+            <![CDATA[
+					user_id = #userId#
+				]]>
+        </isGreaterThan>
+        <isNotEmpty prepend=" AND " property="ensureStatusList">
+            ensure_status in
+            <iterate prepend="" property="ensureStatusList" open="(" close=")"
+                     conjunction=",">
+                <![CDATA[ #ensureStatusList[]# ]]>
+            </iterate>
+        </isNotEmpty>
+        <isNotEmpty prepend=" AND " property="userIds">
+            user_id in
+            <iterate prepend="" property="userIds" open="(" close=")"
+                     conjunction=",">
+                <![CDATA[ #userIds[]# ]]>
+            </iterate>
+        </isNotEmpty>
+        <isGreaterThan compareValue="0" prepend=" AND " property="userType">
+            <![CDATA[
+					user_type = #userType#
+				]]>
+        </isGreaterThan>
+        <isNotEmpty property="joinTime" prepend=" AND ">
+            <![CDATA[
+					join_time = #joinTime#
+				]]>
+        </isNotEmpty>
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="userConcurRelationResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userConcurrelation_columns"/>
+        <![CDATA[
+			FROM pf_user_concur_relation
+			WHERE id = #id#
+		]]>
+    </select>
+
+    <insert id="insert" parameterClass="userConcurRelation">
+
+        <![CDATA[
+			INSERT INTO pf_user_concur_relation(
+		gmt_create,gmt_modified,
+		concur_plan_id,user_id,user_type,ratio,ensure_name,birth_day,weight,child_week,join_time,ensure_status,ensure_start_time,first_fill_money,upper_limit)
+			VALUES(NOW(),NOW(),#concurPlanId#,#userId#,#userType#,#ratio#,#ensureName#,#birthDay#,#weight#,#childWeek#,#joinTime#,#ensureStatus#,#ensureStartTime#,#firstFillMoney#,#upperLimit#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="userConcurRelation">
+        <![CDATA[
+			UPDATE pf_user_concur_relation SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+
+            <isGreaterThan property="userType" prepend="," compareValue="0">
+                <![CDATA[
+					user_type = #userType#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="ratio" prepend="," compareValue="0">
+                <![CDATA[
+					ratio = #ratio#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="ensureStatus" prepend="," compareValue="0">
+                <![CDATA[
+					ensure_status = #ensureStatus#
+				]]>
+            </isGreaterThan>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from pf_user_concur_relation where id=#id#
+    </delete>
+
+    <select id="selectByQuery" parameterClass="userConcurRelationQuery" resultMap="userConcurRelationResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userConcurrelation_columns"/>
+        <![CDATA[
+			FROM pf_user_concur_relation
+			WHERE 1=1
+		]]>
+        <include refid="userConcurrelation_query_conditon"></include>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+    <select id="countByQuery" parameterClass="userConcurRelationQuery" resultClass="Long">
+        <![CDATA[
+			SELECT count(1)
+			FROM pf_user_concur_relation
+			WHERE 1=1
+		]]>
+        <include refid="userConcurrelation_query_conditon" />
+    </select>
+
+    <select id="selectStatistics" parameterClass="userConcurRelationQuery" resultMap="userConcurRelationStatisticsMap">
+        <![CDATA[
+			SELECT count(1) as amount,sum(ratio) as sumRatio
+			FROM pf_user_concur_relation
+			WHERE 1=1
+		]]>
+        <isGreaterThan property="concurPlanId" prepend=" AND " compareValue="0">
+            <![CDATA[
+					concur_plan_id = #concurPlanId#
+				]]>
+        </isGreaterThan>
+        <isGreaterThan property="userType" prepend=" AND " compareValue="0">
+            <![CDATA[
+					user_type = #userType#
+				]]>
+        </isGreaterThan>
+    </select>
+</sqlMap>

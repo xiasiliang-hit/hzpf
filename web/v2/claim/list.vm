@@ -1,0 +1,104 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurPlan=$!{myConcur.concurPlanDO})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/publicity.css">
+
+<ul class="menu_box flex-item clearfix">
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/detail.htm'),$request)"
+           class="menu1">
+            <i class="icon-i1"></i>
+            互助计划
+        </a>
+    </li>
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/claim/list.htm'),$request)"
+           class="menu2-active">
+            <i class="icon-i2-active"></i>
+            互助公示
+        </a>
+    </li>
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/my.htm'),$request)"
+           class="menu3">
+            <i class="icon-i3"></i>
+            我的互助
+        </a>
+    </li>
+</ul>
+
+
+#if($!{page.totalRecord}<=0)
+<div class="details">
+    暂无公示信息
+</div>
+#else
+    #foreach($claimApplyVO in $page.modle)
+    <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,
+        '/v2/claim/view.htm'),$request)&id=$!{claimApplyVO.id}">
+        <div class="contain_box">
+            <div class="top_box clearfix">
+                <div class="pic">
+                    <img src="$!{claimApplyVO.userPicUrl}" alt="">
+                </div>
+                <div class="name">
+                    <h5>$!{claimApplyVO.ensureName}</h5>
+                    <h6>$!dateUtils.getDateTimeFormat(
+                        'yyyy-MM-dd',$!dateUtils.Convert($!{claimApplyVO.eventSubmitDay}))</h6>
+                </div>
+                <h4>
+                    #if($!{claimApplyVO.status}==1)
+                        用户提交互助申请
+                    #elseif($!{claimApplyVO.status}==2)
+                        平台受理
+                    #elseif($!{claimApplyVO.status}==3)
+                        公估公司核查
+                    #elseif($!{claimApplyVO.status}==4)
+                        接受理赔
+                    #elseif($!{claimApplyVO.status}==5)
+                        拒绝理赔
+                    #elseif($!{claimApplyVO.status}==6)
+                        已公示<span>$!{claimApplyVO.publishDays}</span>天
+                    #elseif($!{claimApplyVO.status}==7)
+                        筹款结束
+                    #elseif($!{claimApplyVO.status}==8)
+                        打款中
+                    #elseif($!{claimApplyVO.status}==9)
+                        筹款结束已经打款
+                    #elseif($!{claimApplyVO.status}==10)
+                        案件质疑
+                    #end
+                </h4>
+            </div>
+            <h1>$!{claimApplyVO.title}</h1>
+            <div class="contain clearfix">
+                <p>$!{claimApplyVO.descr}</p>
+
+                <img src="$!{claimApplyVO.firstPicUrl}" alt="">
+            </div>
+            <div class="bottom clearfix">
+                <h5>患病：
+                    #if($!{claimApplyVO.verifyEventId}==1)
+                        脑瘫
+                    #elseif($!{claimApplyVO.verifyEventId}==2)
+                        视网膜病变
+                    #end
+                </h5>
+                <h6>
+                    #if($!{claimApplyVO.status}==4||$!{claimApplyVO.status}==6)
+                        互助目标金额：$!bizUtils.changeF2Y($!{claimApplyVO.preCollectMoney})元
+                    #elseif($!{claimApplyVO.status}==7||$!{claimApplyVO.status}==8||$!{claimApplyVO.status}==9)
+                        实际筹款金额：$!bizUtils.changeF2Y($!{claimApplyVO.collectMoney})元
+                    #end
+                </h6>
+
+            </div>
+        </div>
+    </a>
+    #end
+#end
+
+
+
+
+
+

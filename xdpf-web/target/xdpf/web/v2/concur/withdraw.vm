@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <script>
+        //声明_czc对象:
+        var _czc = _czc || [];
+        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+        _czc.push(["_setAccount", "1259101635"]);
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="扁鹊兄弟互助,扁鹊兄弟,网络互助平台,兄弟互助,互助平台,网络互助,网络保障平台,网络保障" />
+    <meta name="description" content="扁鹊兄弟互助平台,更低互助金,更高更公平的可信赖的保障" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+    <meta name="baidu-site-verification" content="rl2LXkR5gu" />
+    <meta name="sogou_site_verification" content="IFMGfZflnQ"/>
+    <meta name="360-site-verification" content="fd4c3d7254909b7d6aedcfd5eea85ff7" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <title>提现</title>
+    <link rel="stylesheet" href="css/top-up.css">
+    <link rel="stylesheet" href="css/common.css">
+    <script>
+        !function () {
+            function a() {
+                if(document.documentElement.clientWidth<=640){
+                    document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+                }
+
+            }
+
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b);
+                b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+    </script>
+</head>
+
+<body>
+<div class="read_box">
+    <h1>提现提醒</h1>
+    <p>一、只有会员退出互助保障计划或者已经享受到互助理赔的用户，才能向平台申请提取该计划的互助保障金。</p>
+    <p>二、提取互助金视为退出保障计划，您的孩子将不享受早产儿互助平台的各项权利。</p>
+    <p>三、 会员申请提现的互助金为一次性提取，暂时不支撑多次提现。</p>
+    <p>四、会员账户余额提现，单笔提现手续费5元，提取现金余额只能提到会员本人银行账户内，因为银行手续费原因，少于5元不能申请提现。</p>
+    <hr color="979797">
+    <!--<input type="submit" value="我知道了" class="know">-->
+    <div class="know">
+        我知道了
+    </div>
+</div>
+
+<div class="head clearfix">
+    <div class="pic">
+        <img src="images/0.jpeg" alt="">
+    </div>
+    <h2>黄某某</h2>
+    <h6>余额：52.1元</h6>
+</div>
+
+<div class="main_box">
+    <h6>提现姓名需与银行卡姓名一致</h6>
+    <input type="number" id="bankNo" name="bankNo" placeholder="到账银行卡号">
+    <input type="text" id="bankName" name="bankName"  placeholder="到账银行名称和支行名称">
+    <!--<span>提现金额</span>-->
+    <div class="sum clearfix">
+        <h2>¥</h2>
+        <input type="number" placeholder="提现金额">
+    </div>
+</div>
+
+<div class="tips">
+    <p>五个工作日内到账</p>
+    <p>请注意，提现需扣除5%的费用作为平台的技术服务费</p>
+</div>
+
+<div class="bank">
+    提现到银行卡
+</div>
+
+</body>
+</html>

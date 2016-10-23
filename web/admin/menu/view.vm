@@ -1,0 +1,185 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="活动")
+
+<script type=text/javascript>
+    function trim_leading_comments(str) {
+        str = str.replace(/^(\s*\/\/[^\n]*\n)+/, '');
+        str = str.replace(/^\s+/, '');
+        return str;
+
+    }
+
+    function unpacker_filter(source) {
+
+        if (document.getElementById('detect-packers').checked) {
+            var stripped_source = trim_leading_comments(source);
+            var unpacked = '';
+            if (P_A_C_K_E_R.detect(stripped_source)) {
+                unpacked = P_A_C_K_E_R.unpack(stripped_source);
+                if (unpacked !== stripped_source) {
+                    return unpacker_filter(unpacked);
+                }
+            }
+
+            if (EscapedBookmarklet.detect(source)) {
+                unpacked = EscapedBookmarklet.unpack(source);
+                if (unpacked !== stripped_source) {
+                    return unpacker_filter(unpacked);
+                }
+
+            }
+
+            if (JavascriptObfuscator.detect(stripped_source)) {
+                unpacked = JavascriptObfuscator.unpack(stripped_source);
+                if (unpacked !== stripped_source) {
+                    return unpacker_filter(unpacked);
+                }
+            }
+        }
+        return source;
+
+    }
+
+    function do_js_beautify() {
+
+        //document.getElementById('beautify').disabled = true;
+
+        var js_source = document.getElementById('content').value.replace(/^\s+/, '');
+
+        var indent_size = document.getElementById('tabsize').value;
+
+        var indent_char = ' ';
+
+        var preserve_newlines = document.getElementById('preserve-newlines').checked;
+
+        var keep_array_indentation = document.getElementById('keep-array-indentation').checked;
+
+        var braces_on_own_line = document.getElementById('braces-on-own-line').checked;
+
+        if (indent_size == 1) {
+            indent_char = '\t';
+        }
+
+        if (js_source && js_source[0] === '<' && js_source.substring(0, 4) !== '<!--') {
+
+            document.getElementById('content').value = style_html(js_source, indent_size, indent_char, 80);
+
+        } else {
+
+            document.getElementById('content').value =
+
+                    js_beautify(unpacker_filter(js_source), {
+
+                        indent_size: indent_size,
+
+                        indent_char: indent_char,
+
+                        preserve_newlines: preserve_newlines,
+
+                        braces_on_own_line: braces_on_own_line,
+
+                        keep_array_indentation: keep_array_indentation,
+
+                        space_after_anon_function: true
+                    });
+
+        }
+
+        //document.getElementById('beautify').disabled = false;
+
+        return false;
+
+    }
+
+
+</SCRIPT>
+
+<SCRIPT type=text/javascript src="http://res.xiongdihuzhu.com/res/jsonformat/beautify.js"></SCRIPT>
+
+<SCRIPT type=text/javascript src="http://res.xiongdihuzhu.com/res/jsonformat/beautify-html.js"></SCRIPT>
+
+<SCRIPT type=text/javascript src="http://res.xiongdihuzhu.com/res/jsonformat/javascriptobfuscator_unpacker.js"></SCRIPT>
+
+<SCRIPT type=text/javascript src="http://res.xiongdihuzhu.com/res/jsonformat/bookmarklet_unpacker.js"></SCRIPT>
+
+<SCRIPT type=text/javascript src="http://res.xiongdihuzhu.com/res/jsonformat/p_a_c_k_e_r_unpacker.js"></SCRIPT>
+
+
+<UL style="display:none">
+
+    <LI><SELECT id=tabsize name="tabsize">
+        <option value="1"></option>
+        <option value="2"></option>
+        <option value="3"></option>
+        <option selected value="4"></option>
+        <option value="8"></option>
+    </SELECT></LI>
+
+    <LI><input id="braces-on-own-line" type="checkbox"><LABEL for="braces-on-own-line"> </LABEL><br></LI>
+
+    <LI><input id="preserve-newlines" checked type="checkbox"><LABEL for="preserve-newlines"></LABEL><br></LI>
+
+    <LI><input id="detect-packers" checked type="checkbox"><LABEL for="detect-packers"></LABEL><br></LI>
+
+    <LI><input id="keep-array-indentation" type="checkbox">
+
+        <LABEL for="keep-array-indentation"> Keep array indentation?</LABEL></LI>
+</UL>
+
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/index.htm">首页</a></li>
+            <li class="active">
+                <span>微信公众号菜单修改</span>
+            </li>
+
+        </ol>
+
+    </div>
+</div>
+</br>
+<div class="main-box  clearfix">
+    <div class="tabs-wrapper">
+        <div class="tab-content">
+
+            </br>
+            <div class="main-box-body clearfix">
+                <form class="form-horizontal" action="modifiyMenu.htm" method="post">
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-lg-2 control-label">公众号菜单JSON</label>
+                        <!--label for="exampleTextarea">Textarea</label-->
+                        <div class="col-lg-8">
+                            <textarea class="form-control" id="content" name="content" rows="25">$!content</textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button type="submit" class="btn btn-success">修改菜单</button>
+                            #if($!error!='')
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                    <strong>$!error</strong>
+                                </div>
+                            #end
+                            #if($!success=='true')
+                                <div class="alert alert-success">
+                                    <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                    <strong>菜单修改成功</strong>
+                                </div>
+                            #end
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    do_js_beautify();
+</script>

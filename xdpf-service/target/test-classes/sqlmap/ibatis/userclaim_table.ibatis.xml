@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserClaim">
+
+    <typeAlias alias="userClaim" type="com.line.bqxd.platform.client.dataobject.ClaimDO"/>
+
+
+    <resultMap id="userClaimResultMap" class="userClaim">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="data" column="data"/>
+        <result property="claimApplyId" column="claim_apply_id"/>
+        <result property="feeToType" column="fee_to_type"/>
+        <result property="account" column="account"/>
+        <result property="totalFee" column="total_fee"/>
+        <result property="userFee" column="user_fee"/>
+        <result property="otherFee" column="other_fee"/>
+        <result property="claimCompanyFee" column="claim_company_fee"/>
+        <result property="claimCompany" column="claim_company"/>
+        <result property="claimCompanyTel" column="claim_company_tel"/>
+        <result property="claimCompanyUser" column="claim_company_user"/>
+        <result property="publishUrl" column="publish_url"/>
+
+    </resultMap>
+
+    <sql id="userClaim_columns">
+        id,gmt_create,gmt_modified,
+        data,claim_apply_id,fee_to_type,account,total_fee,user_fee,other_fee,claim_company_fee,claim_company,claim_company_tel,claim_company_user,publish_url
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="userClaimResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userClaim_columns"/>
+        <![CDATA[
+			FROM user_claim
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="userClaim">
+        <![CDATA[
+			INSERT INTO user_claim(
+		gmt_create,gmt_modified,
+        data,claim_apply_id,fee_to_type,account,total_fee,user_fee,other_fee,claim_company_fee,claim_company,claim_company_tel,claim_company_user,publish_url)
+			VALUES(NOW(),NOW(),#data#,#claimApplyId#,#feeToType#,#account#,#totalFee#,#userFee#,#otherFee#,#claimCompanyFee#,#claimCompany#,#claimCompanyTel#,#claimCompanyUser#,#publishUrl#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="userClaim">
+        <![CDATA[
+			UPDATE user_claim SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+
+            <isNotEmpty property="data" prepend=",">
+                <![CDATA[
+					data = #data#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="account" prepend=",">
+                <![CDATA[
+					account = #account#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan compareValue="0" prepend="," property="feeToType">
+                <![CDATA[
+					fee_to_type = #feeToType#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="claimCompany" prepend=",">
+                <![CDATA[
+					claim_company = #claimCompany#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="claimCompanyTel" prepend=",">
+            <![CDATA[
+					claim_company_tel = #claimCompanyTel#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="claimCompanyUser" prepend=",">
+                <![CDATA[
+					claim_company_user = #claimCompanyUser#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan property="totalFee" prepend="," compareValue="0">
+                <![CDATA[
+					total_fee = #totalFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="userFee" prepend="," compareValue="0">
+                <![CDATA[
+					user_fee = #userFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="otherFee" prepend="," compareValue="0">
+                <![CDATA[
+					other_fee = #otherFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="claimCompanyFee" prepend="," compareValue="0">
+                <![CDATA[
+					claim_company_fee = #claimCompanyFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="publishUrl" prepend="," compareValue="0">
+                <![CDATA[
+					publish_url = #publishUrl#
+				]]>
+            </isGreaterThan>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from user_claim where id=#id#
+    </delete>
+
+
+</sqlMap>

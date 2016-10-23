@@ -1,0 +1,153 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurNmae=$!{concurPlan.name})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/infor-submit.css">
+<style>
+    .verify {
+        line-height: 1.5;
+        width: 10.83rem;
+        text-align: center;
+        background-color: #FFF3D7;
+        color: #8B572A;
+        font-size: 0.6rem;
+        padding-top: 0.76rem;
+        padding-bottom: 0.76rem;
+        margin: 0 auto;
+        margin-top: 0.5rem;
+        display: none;
+    }
+    .getCodeBtn-disable{
+        background-color: #D6D6D6;
+        color:#fff;
+    }
+</style>
+<form id="submitform">
+    <body>
+    <h1 class="title">填写手机号：</h1>
+    <div class="phone_box">
+        <input type="text" id="mobile" name="mobile" placeholder="请输入手机号码：">
+        <div class="test clearfix">
+            <input type="tel" name="mcode" id="mcode" maxlength="4" placeholder="请输入验证码："/>
+            <a class="getCodeButton">获取验证码</a>
+        </div>
+        <p>手机号用于紧急情况下联系通知您，我们承诺绝不向第三方泄露您的隐私。</p>
+    </div>
+    <div class="verify"></div>
+    <div class="submit">提交资料</div>
+    </body>
+</form>
+<script>
+    Zepto(function($) {
+        var checkMobile = function (mobile, result) {
+            mobile=mobile.trim();
+            if (mobile.length == 11 && mobile != "") {
+                result.mobile = "ok";
+            } else if (mobile == "") {
+                result.mobile = "nothing";
+            } else if (mobile.length != 11) {
+                result.mobile = "lengthWrong-mobile";
+            }
+        }
+        var verifyWrong = function (msg) {
+            $(".verify").html(msg).show();
+        }
+        var verifyPass = function () {
+            $(".verify").html("").hide()
+        }
+
+        var flagCodeButton = true;
+        var num = 60;
+        var timeInterval;
+        //点击获取验证码按钮
+        $(".getCodeButton").click(function () {
+            if (flagCodeButton) {
+                var result = {};
+                var mobile = $("#mobile").val();
+                checkMobile(mobile, result);
+                if (result.mobile == 'nothing') {
+                    verifyWrong("手机号码未填写完整");
+                    return;
+                } else if (result.mobile == 'lengthWrong-mobile') {
+                    verifyWrong("请输入正确的手机号码");
+                    return;
+                }
+
+                //手机发送验证码
+                Zepto.ajax({
+                    type: 'GET',
+                    url: '/v2/concur/regSendCode.htm?mobile='+mobile,
+                    // data to be added to query string:
+                    data: {},
+                    // type of data we are expecting in return:
+                    dataType: 'json',
+                    timeout: 3000,
+                    context: $('body'),
+                    success: function (data) {
+                        console.log(data);
+                        if (data.code != "SUCCESS") {
+                            verifyWrong(data.desc);
+                        } else {
+                            verifyPass();
+                            flagCodeButton = !flagCodeButton;
+                            $(".getCodeButton").addClass('getCodeBtn-disable');
+                            $(".getCodeButton").html(num + "s");
+                            timeInterval = setInterval(function () {
+                                num--;
+                                $(".getCodeButton").html(num + "s");
+                                if (num < 0) {
+                                    num = 60;
+                                    $(".getCodeButton").html("获取验证码").removeClass('getCodeBtn-disable');
+                                    flagCodeButton = !flagCodeButton;
+                                    clearInterval(timeInterval);
+                                }
+                            }, 1000);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        //alert('Ajax error!')
+                        console.error(xhr);
+
+                    }
+                });
+            }
+        });
+
+        //点击提交数据
+        $(".submit").click(function () {
+            var postData = $('form').serializeArray();
+            //这里错误提示的样式还没给出）
+            console.log(postData);
+
+            // postData是你需要提交的信息，
+            // ajax写在这里
+            //填写资料提交处理
+            var fullUrl='$!requestTool.getFullUrl('/v2/concur/verifySms.htm',$request)';
+            Zepto.ajax({
+                type: 'GET',
+                url: fullUrl,
+                // data to be added to query string:
+                data: postData,
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 3000,
+                context: $('body'),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code != "SUCCESS") {
+                        verifyWrong(data.desc);
+                    } else {
+                        window.location.href = "$!requestTool.getFullUrl('/v2/concur/addStep3.htm',$request)";
+                    }
+
+                },
+                error: function (xhr, type) {
+                    //alert('Ajax error!')
+                    console.error(xhr);
+
+                }
+            });
+            console.log(postData);
+            //back();
+
+        });
+    });
+</script>

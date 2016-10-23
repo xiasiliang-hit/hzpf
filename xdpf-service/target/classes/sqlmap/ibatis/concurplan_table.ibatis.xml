@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ConcurPlan">
+
+	<typeAlias alias="concurPlan" type="com.line.bqxd.platform.client.dataobject.ConcurPlanDO"/>
+	<typeAlias alias="concurPlanQuery" type="com.line.bqxd.platform.client.dataobject.query.ConcurPlanQueryDO"/>
+
+	<resultMap id="concurPlanResultMap" class="concurPlan">
+		<result property="id" column="id" />
+		<result property="gmtCreate" column="gmt_create" />
+		<result property="gmtModified" column="gmt_modified" />
+
+		<result property="pfAppId" column="pf_app_id" />
+		<result property="name" column="name" />
+		<result property="ensureName" column="ensure_name" />
+		<result property="ensureMoney" column="ensure_money" />
+		<result property="ensureMoneyDesc" column="ensure_money_desc" />
+
+		<result property="ensureTime" column="ensure_time" />
+		<result property="ensureRequire" column="ensure_require" />
+		<result property="firstStoreMoneyDesc" column="first_store_money_desc" />
+		<result property="firstStoreMoney" column="first_store_money" />
+		<result property="costMoneyDesc" column="cost_money_desc" />
+		<result property="costMoney" column="cost_money" />
+		<result property="ensureContinueDesc" column="ensure_continue_desc" />
+		<result property="ensureContinue" column="ensure_continue" />
+		<result property="bannerUrl" column="banner_url" />
+		<result property="tenetUrl" column="tenet_url" />
+		<result property="concurDescUrl" column="concur_desc_url" />
+		<result property="serviceUrl" column="service_url" />
+		<result property="detailDesc" column="detail_desc" />
+	</resultMap>
+
+	<sql id="concurplan_columns" >
+		id,gmt_create,gmt_modified,
+		pf_app_id,name,ensure_name,ensure_money,ensure_money_desc,ensure_time,ensure_require,first_store_money_desc,first_store_money
+		,cost_money_desc,cost_money,ensure_continue_desc,ensure_continue,banner_url,tenet_url,concur_desc_url,service_url,detail_desc
+	</sql>
+
+
+	<select id="selectById" parameterClass="long" resultMap="concurPlanResultMap">
+		<![CDATA[
+			SELECT
+		]]>
+		<include refid="concurplan_columns" />
+		<![CDATA[
+			FROM pf_concur_plan
+			WHERE id = #id#
+		]]>
+	</select>
+
+
+	<insert id="insert" parameterClass="concurPlan">
+		<![CDATA[
+			INSERT INTO pf_concur_plan(
+		gmt_create,gmt_modified,
+		pf_app_id,name,ensure_name,ensure_money,ensure_money_desc,ensure_time,ensure_require,first_store_money_desc,first_store_money
+		,cost_money_desc,cost_money,ensure_continue_desc,ensure_continue,banner_url,tenet_url,concur_desc_url,service_url,detail_desc
+		)
+			VALUES(NOW(),NOW(),
+			#pfAppId#,#name#,#ensureName#,#ensureMoney#,#ensureMoneyDesc#,#ensureTime#,#ensureRequire#,#firstStoreMoneyDesc#,#firstStoreMoney#
+		,#costMoneyDesc#,#costMoney#,#ensureContinueDesc#,#ensureContinue#,#bannerUrl#,#tenetUrl#,#concurDescUrl#,#serviceUrl#,#detailDesc#
+			)
+		]]>
+		<selectKey keyProperty="id" resultClass="Long">
+			<![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+		</selectKey>
+	</insert>
+
+
+
+
+	<delete id="delete" parameterClass="long">
+		delete from pf_concur_plan where id=#id#
+	</delete>
+
+
+	<select id="selectAll"  resultMap="concurPlanResultMap">
+		<![CDATA[
+			SELECT
+		]]>
+		<include refid="concurplan_columns" />
+		<![CDATA[
+			FROM pf_concur_plan order by gmt_create desc
+		]]>
+	</select>
+
+	<select id="selectByQuery" parameterClass="concurPlanQuery" resultMap="concurPlanResultMap">
+		<![CDATA[
+			SELECT
+		]]>
+		<include refid="concurplan_columns"/>
+		<![CDATA[
+			FROM pf_concur_plan
+			WHERE 1=1
+		]]>
+		<isGreaterThan property="pfAppId" compareValue="0" prepend=" AND ">
+			<![CDATA[
+					pf_app_id = #pfAppId#
+				]]>
+		</isGreaterThan>
+		<![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+	</select>
+</sqlMap>

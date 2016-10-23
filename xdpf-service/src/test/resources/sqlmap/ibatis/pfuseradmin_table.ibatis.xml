@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="PfUserAdmin">
+
+    <typeAlias alias="pfUserAdmin" type="com.line.bqxd.platform.client.dataobject.PfUserAdminDO"/>
+    <typeAlias alias="pfUserAdminQuery" type="com.line.bqxd.platform.client.dataobject.query.PfUserAdminQueryDO"/>
+
+    <resultMap id="pfUserAdminResultMap" class="pfUserAdmin">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="loginName" column="login_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="password" column="password"/>
+        <result property="corpId" column="corp_id"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+    </resultMap>
+
+    <sql id="pfUserAdmin_columns">
+        id,gmt_create,gmt_modified,
+        login_name,nick_name,password,corp_id,last_login_ip,last_login_time
+    </sql>
+
+    <select id="selectById" parameterClass="long" resultMap="pfUserAdminResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfUserAdmin_columns"/>
+        <![CDATA[
+			FROM pf_user_admin
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="pfUserAdmin">
+        <![CDATA[
+			INSERT INTO pf_user_admin(
+		gmt_create,gmt_modified,
+        login_name,nick_name,password,corp_id,last_login_ip,last_login_time)
+			VALUES(NOW(),NOW(),#loginName#,#nickName#,#password#,#corpId#,#lastLoginIp#,#lastLoginTime#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <delete id="delete" parameterClass="long">
+        delete from pf_user_admin where id=#id#
+    </delete>
+
+    <select id="selectAll"  resultMap="pfUserAdminResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfUserAdmin_columns"/>
+        <![CDATA[
+			FROM pf_user_admin
+			order by gmt_create desc
+		]]>
+    </select>
+
+    <update id="update" parameterClass="pfUserAdmin">
+        <![CDATA[
+			UPDATE pf_user_admin SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isNotEmpty property="nickName" prepend=",">
+                <![CDATA[
+					nick_name = #nickName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="lastLoginIp" prepend=",">
+                <![CDATA[
+					last_login_ip = #lastLoginIp#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="lastLoginTime" prepend=",">
+                <![CDATA[
+					last_login_time = #lastLoginTime#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+
+    <select id="selectByQuery" parameterClass="pfUserAdminQuery" resultMap="pfUserAdminResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfUserAdmin_columns"/>
+        <![CDATA[
+			FROM pf_user_admin
+			WHERE 1=1
+			]]>
+        <isNotEmpty prepend=" AND " property="loginName">
+            <![CDATA[
+					login_name = #loginName#
+				]]>
+        </isNotEmpty>
+        <isNotEmpty prepend=" AND " property="nickName">
+            <![CDATA[
+					nick_name = #nickName#
+				]]>
+        </isNotEmpty>
+        <![CDATA[
+			order by gmt_create desc
+		]]>
+
+    </select>
+
+
+</sqlMap>

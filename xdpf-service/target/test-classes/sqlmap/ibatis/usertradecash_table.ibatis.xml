@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserTradeCash">
+
+    <typeAlias alias="userTradeCash" type="com.line.bqxd.platform.client.dataobject.UserTradeCashDO"/>
+    <typeAlias alias="userTradeCashQuery" type="com.line.bqxd.platform.client.dataobject.query.UserTradeCashQueryDO"/>
+
+    <resultMap id="userTradeCashResultMap" class="userTradeCash">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="userId" column="user_id"/>
+        <result property="tradeId" column="trade_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="feeToType" column="fee_to_type"/>
+        <result property="account" column="account"/>
+        <result property="channel" column="channel"/>
+        <result property="userFee" column="user_fee"/>
+        <result property="procedureFee" column="procedure_fee"/>
+        <result property="totalFee" column="total_fee"/>
+        <result property="status" column="status"/>
+        <result property="explains" column="explains"/>
+        <result property="refushCode" column="refush_code"/>
+        <result property="refushMsg" column="refush_msg"/>
+
+    </resultMap>
+
+    <sql id="userTradeCash_columns">
+        id,gmt_create,gmt_modified,
+        user_id,trade_id,open_id,fee_to_type,account,channel,user_fee,procedure_fee,total_fee,status,explains,refush_code,refush_msg
+    </sql>
+    <sql id="userTradeCash_query_conditon" >
+        <dynamic>
+            <isGreaterThan property="userId" compareValue="0" prepend=" AND ">
+                <![CDATA[
+					user_id = #userId#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="tradeId" prepend=" AND ">
+                <![CDATA[
+					trade_id = #tradeId#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan property="status" compareValue="0" prepend=" AND ">
+                <![CDATA[
+					status = #status#
+				]]>
+            </isGreaterThan>
+        </dynamic>
+    </sql>
+    <select id="selectById" parameterClass="long" resultMap="userTradeCashResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userTradeCash_columns"/>
+        <![CDATA[
+			FROM user_trade_cash
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="userTradeCash">
+        <![CDATA[
+			INSERT INTO user_trade_cash(
+		gmt_create,gmt_modified,
+		user_id,trade_id,open_id,fee_to_type,account,channel,user_fee,procedure_fee,total_fee,status,explains,refush_code,refush_msg)
+			VALUES(NOW(),NOW(),#userId#,#tradeId#,#openId#,#feeToType#,#account#,#channel#,#userFee#,#procedureFee#,#totalFee#,#status#,#explains#,#refushCode#,#refushMsg#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="userTradeCash">
+        <![CDATA[
+			UPDATE user_trade_cash SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isGreaterThan property="userFee" compareValue="0" prepend=",">
+                <![CDATA[
+					user_fee = #userFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="procedureFee" compareValue="0" prepend=",">
+                <![CDATA[
+					procedure_fee = #procedureFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="totalFee" compareValue="0" prepend=",">
+                <![CDATA[
+					total_fee = #totalFee#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="status" compareValue="0" prepend=",">
+                <![CDATA[
+					status = #status#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="refushCode" prepend=",">
+                <![CDATA[
+					refush_code = #refushCode#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="refushMsg" prepend=",">
+                <![CDATA[
+					refush_msg = #refushMsg#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="explains" prepend=",">
+                <![CDATA[
+					explains = #explains#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from user_trade_cash where id=#id#
+    </delete>
+
+
+    <select id="selectByQuery" parameterClass="userTradeCashQuery" resultMap="userTradeCashResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userTradeCash_columns"/>
+        <![CDATA[
+			FROM user_trade_cash
+			WHERE 1=1
+		]]>
+        <include refid="userTradeCash_query_conditon"></include>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+    <select id="countByQuery" parameterClass="userTradeCashQuery" resultClass="Integer">
+        <![CDATA[
+			SELECT count(1)
+			FROM user_trade_cash
+			WHERE 1=1
+		]]>
+        <include refid="userTradeCash_query_conditon"></include>
+    </select>
+</sqlMap>

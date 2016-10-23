@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="user">
+
+    <typeAlias alias="user" type="com.line.bqxd.platform.client.dataobject.UserDO"/>
+    <typeAlias alias="userQueryDO" type="com.line.bqxd.platform.client.dataobject.query.UserQueryDO"/>
+
+
+    <resultMap id="userResultMap" class="user">
+        <result property="userId" column="user_id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="unionid" column="unionid"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="userName" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="mobile" column="mobile"/>
+        <result property="card" column="card"/>
+        <result property="sex" column="sex"/>
+        <result property="birth" column="birth"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="country" column="country"/>
+        <result property="headImgurl" column="head_imgurl"/>
+        <result property="status" column="status"/>
+        <result property="level" column="level"/>
+        <result property="lastLoginDate" column="last_login_date"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="channelId" column="channel_id"/>
+
+    </resultMap>
+
+    <sql id="user_columns">
+        user_id,unionid,nick_name,user_name,password,mobile,card,sex,birth,
+        province,city,country,head_imgurl,status,level,last_login_date,last_login_ip,channel_id,
+        gmt_create,gmt_modified
+    </sql>
+
+    <sql id="user_query_conditon" >
+        <isNotEmpty property="card" prepend=" AND ">
+            <![CDATA[
+					card = #card#
+				]]>
+        </isNotEmpty>
+        <isNotEmpty property="mobile" prepend=" AND ">
+            <![CDATA[
+					mobile = #mobile#
+				]]>
+        </isNotEmpty>
+        <isNotEmpty property="userName" prepend=" AND ">
+            <![CDATA[
+					user_name = #userName#
+				]]>
+        </isNotEmpty>
+        <isGreaterThan compareValue="0" prepend=" AND " property="status">
+            <![CDATA[
+					status = #status#
+				]]>
+        </isGreaterThan>
+
+        <isNotEmpty prepend=" AND " property="idList">
+            user_id in
+            <iterate prepend="" property="idList" open="(" close=")"
+                     conjunction=",">
+                <![CDATA[ #idList[]# ]]>
+            </iterate>
+        </isNotEmpty>
+    </sql>
+
+    <sql id="user_update_columns">
+        <dynamic>
+            <isNotEmpty prepend="," property="userName">
+                <![CDATA[
+					user_name = #userName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="mobile">
+                <![CDATA[
+					mobile = #mobile#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="card">
+                <![CDATA[
+					card = #card#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="birth">
+                <![CDATA[
+					birth = #birth#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan prepend="," compareValue="0" property="sex">
+                <![CDATA[
+					sex = #sex#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan prepend="," compareValue="0" property="status">
+                <![CDATA[
+					status = #status#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan prepend="," compareValue="0" property="level">
+                <![CDATA[
+					level = #level#
+				]]>
+            </isGreaterThan>
+
+            <isNotEmpty prepend="," property="lastLoginIp">
+                <![CDATA[
+					last_login_ip = #lastLoginIp#
+				]]>
+            </isNotEmpty>
+            <isNotNull prepend="," property="lastLoginDate">
+                <![CDATA[
+					last_login_date = #lastLoginDate#
+				]]>
+            </isNotNull>
+        </dynamic>
+
+    </sql>
+
+
+    <select id="selectByUnionId" parameterClass="String" resultMap="userResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="user_columns"/>
+        <![CDATA[
+			FROM pf_user
+			WHERE unionid = #unionid#
+		]]>
+    </select>
+
+    <insert id="insert" parameterClass="user">
+        <![CDATA[
+			INSERT INTO pf_user(
+		unionid,nick_name,user_name,password,mobile,card,sex,birth,
+		province,city,country,head_imgurl,status,level,last_login_date,last_login_ip,channel_id,
+		gmt_create,gmt_modified)
+			VALUES(#unionid#,#nickName#,#userName#,#password#,#mobile#,#card#,#sex#,#birth#,
+		#province#,#city#,#country#,#headImgurl#,#status#,#level#,#lastLoginDate#,#lastLoginIp#,#channelId#,
+		NOW(),NOW())
+		]]>
+        <selectKey keyProperty="userId" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterClass="user">
+        <![CDATA[
+			UPDATE pf_user SET gmt_modified = NOW()
+		]]>
+        <include refid="user_update_columns" />
+
+        WHERE user_id = #userId#
+    </update>
+
+
+
+
+    <update id="updateWXByUnionId" parameterClass="user">
+        <![CDATA[
+			UPDATE pf_user SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isNotEmpty prepend="," property="nickName">
+                <![CDATA[
+					nick_name = #nickName#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan prepend="," compareValue="0" property="sex">
+                <![CDATA[
+					sex = #sex#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty prepend="," property="city">
+                <![CDATA[
+					city = #city#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="province">
+                <![CDATA[
+					province = #province#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="country">
+                <![CDATA[
+					country = #country#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="headImgurl">
+                <![CDATA[
+					head_imgurl = #headImgurl#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend="," property="lastLoginIp">
+                <![CDATA[
+					last_login_ip = #lastLoginIp#
+				]]>
+            </isNotEmpty>
+            <isNotNull prepend="," property="lastLoginDate">
+                <![CDATA[
+					last_login_date = #lastLoginDate#
+				]]>
+            </isNotNull>
+            <isGreaterThan prepend="," compareValue="0" property="channelId">
+                <![CDATA[
+					channel_id = #channelId#
+				]]>
+            </isGreaterThan>
+        </dynamic>
+        WHERE unionid = #unionid#
+    </update>
+
+
+    <select id="selectByQuery" parameterClass="userQueryDO" resultMap="userResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="user_columns"/>
+        <![CDATA[
+			FROM pf_user
+			WHERE 1=1
+		]]>
+        <include refid="user_query_conditon" />
+        <![CDATA[
+			order by gmt_create desc
+		]]>
+
+    </select>
+
+    <select id="selectByQueryPage" parameterClass="userQueryDO" resultMap="userResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="user_columns"/>
+        <![CDATA[
+			FROM pf_user
+			WHERE 1=1
+		]]>
+        <include refid="user_query_conditon" />
+        <![CDATA[
+			order by gmt_create desc
+			LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+    <select id="countByQueryPage" parameterClass="userQueryDO" resultClass="Long">
+        <![CDATA[
+			SELECT count(1)
+			FROM pf_user
+			WHERE 1=1
+		]]>
+        <include refid="user_query_conditon" />
+    </select>
+
+    <select id="selectByUserId" parameterClass="long" resultMap="userResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="user_columns"/>
+        <![CDATA[
+			FROM pf_user
+			WHERE user_id = #userId#
+		]]>
+    </select>
+
+    <delete id="delete" parameterClass="long">
+        delete from user where user_id=#userId#
+    </delete>
+
+
+</sqlMap>

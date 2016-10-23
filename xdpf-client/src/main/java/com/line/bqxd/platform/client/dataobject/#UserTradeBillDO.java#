@@ -1,0 +1,93 @@
+package com.line.bqxd.platform.client.dataobject;
+
+import com.line.bqxd.platform.client.common.DBBaseDO;
+import com.line.bqxd.platform.client.dataobject.UserTradeBillDO;
+
+
+import java.io.Serializable;
+import java.util.*;
+
+/**
+ * Created by huangjianfei on 16/5/2.
+ */
+public class UserTradeBillDO extends DBBaseDO implements Serializable {
+
+    private static final long serialVersionUID = -7040978018873658398L;
+    private long concurId;
+    private long userId;
+    /*
+      com.line.bqxd.platform.client.constant.BillListType
+     */
+    private String listType;
+
+    private String tradeId;
+
+    private long fee;
+
+    public long getConcurId() {
+        return concurId;
+    }
+
+    public void setConcurId(long concurId) {
+        this.concurId = concurId;
+    }
+
+    private String attach;
+
+    private String explains;
+
+    public String getListType() {
+        return listType;
+    }
+
+    public void setListType(String listType) {
+        this.listType = listType;
+    }
+
+    public String getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(String tradeId) {
+        this.tradeId = tradeId;
+    }
+
+    public long getFee() {
+        return fee;
+    }
+
+    public void setFee(long fee) {
+        this.fee = fee;
+    }
+
+    public String getAttach() {
+        return attach;
+    }
+
+    public void setAttach(String attach) {
+        this.attach = attach;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+
+    public String getExplains() {
+        return explains;
+    }
+
+    public void setExplains(String explains) {
+        this.explains = explains;
+    }
+
+    public List<UserTradeBillDO> getAllTransactions(long concurId)
+    {
+	List<UserTradeBillDO> resultList = new ArrayList<UserTradeBillDO>();
+	return resultList;
+    }
+}

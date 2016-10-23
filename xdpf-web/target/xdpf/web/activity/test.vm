@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>他们卧底阿里7年，获得公司最高核心机密后毅然赠予社会</title>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto-min.js"></script>
+</head>
+<script>
+    !function() {
+        function a() {
+            document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+        }
+        var b = null;
+        window.addEventListener("resize", function() {
+            clearTimeout(b), b = setTimeout(a, 300)
+        }, !1), a()
+    }(window);
+</script>
+<script>
+    //声明_czc对象:
+    var _czc = _czc || [];
+    //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+    _czc.push(["_setAccount", "1259101635"]);
+    var lurkDesc="渠道13_文章1";
+    _czc.push(["_trackEvent",'文章浏览','访问',lurkDesc,'','']);
+
+</script>
+<script>
+    wx.config({
+        #if(${wxSign.debugLevel})
+            debug: true, //调试阶段建议开启
+        #end
+        appId: '${wxSign.wxAppId}',
+        timestamp:${wxSign.timestamp} ,
+        nonceStr: '${wxSign.nonceStr}',
+        signature: '${wxSign.signature}',
+        jsApiList: [
+            /*
+             * 所有要调用的 API 都要加到这个列表中
+             * 这里以图像接口为例
+             */
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline"
+        ]
+    });
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '他们卧底阿里7年，获得公司最高核心机密后毅然赠予社会',
+            link: '',
+            imgUrl: 'http://res.xiongdihuzhu.com/res/images/mazong.jpg',
+            trigger: function (res) {
+                //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                //alert('已分享');
+                _czc.push(["_trackEvent",'文章浏览','分享朋友圈',lurkDesc,'','']);
+
+
+            },
+            cancel: function (res) {
+                //alert('已取消');
+                console.info("cancle")
+            },
+            fail: function (res) {
+                console.error(JSON.stringify(res));
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '他们卧底阿里7年，获得公司最高核心机密后毅然赠予社会', // 分享标题
+            desc: '马总说“相信十年后癌症会困扰每一个家庭”，但是没钱治疗癌症，他们找到了解决方法', // 分享描述
+            link: '', // 分享链接
+            imgUrl: 'http://res.xiongdihuzhu.com/res/images/mazong.jpg', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                //alert('已分享');
+                _czc.push(["_trackEvent",'文章浏览','分享给朋友',lurkDesc,'','']);
+
+            },
+            cancel: function () {
+                console.error(data);
+            }
+        });
+    });
+</script>
+<style>
+    img{
+        max-width:100%;
+    }
+</style>
+
+<style>
+    *{
+        padding: 0;
+        margin:0;
+        border:0;
+    }
+    a {
+        text-decoration: none;
+    }
+    .bottom-fixed{
+        /*height: 6rem;*/
+
+        /*opacity: 0.5;*/
+        background-color:rgba(0,0,0,0.7);
+        position: fixed;
+        bottom:0;
+        padding: 0.5rem 0rem;
+        width:100%;
+    }
+    .bottom-img{
+        width:2rem;
+        height: 2rem;
+        overflow: hidden;
+        float:left;
+        margin-left:5%;
+    }
+    .bottom-btn{
+        background-color:#5AD143 ;
+        float:right;
+        color:#fff;
+        text-align: center;
+        font-size: 0.8rem;
+        margin-right:5%;
+        height: 1.8rem;
+        line-height:1.8rem;
+        padding:0.1rem 0.5rem;
+        border-radius:0.3rem;
+    }
+    .bottom-text{
+        padding-left: 0.5rem;
+        font-size: 0.8rem;
+        color: #fff;
+        width: 7rem;
+
+    }
+    .bottom-text h2{
+        font-size:0.8rem;
+        line-height: 1.5;
+        white-space:nowrap;
+        text-overflow:ellipsis; /* for internet explorer */
+        overflow:hidden;
+        width:100%;
+        display:block;
+        margin: 0;
+    }
+    .bottom-text span{
+        font-size:0.7rem;
+        white-space:nowrap;
+        text-overflow:ellipsis; /* for internet explorer */
+        overflow:hidden;
+        width:100%;
+        display:block;
+    }
+    .fl{
+        float:left;
+    }
+    .head{
+        padding: 1rem 5%;
+        line-height: 1.5;
+    }
+    .head h1{
+        font-weight: bold;
+        font-size:1.1rem;
+        padding-bottom: 0.3rem;
+        /*border-bottom: 1px solid #EAEAEA;*/
+    }
+    .head p{
+        padding-top: 0.3rem;
+        font-size: 0.7rem;
+        color:#7F7F7F;
+    }
+    .head a{
+        color:#6b88ac;
+    }
+
+</style>
+<body>
+<div style="display:none">
+    <script src="http://s95.cnzz.com/z_stat.php?id=1259101635&web_id=1259101635" language="JavaScript"></script>
+</div>
+<div style="margin:0 auto;width:0px;height:0px;overflow:hidden;">
+    <img src="http://res.xiongdihuzhu.com/res/images/logo.jpg" width="700px"/>
+</div>
+<div class="head">
+    <h1>
+        他们卧底阿里7年，获得公司最高核心机密后毅然赠予社会
+    </h1>
+    <p>
+        2016-06-09 扁鹊兄弟 <a href="https://mp.weixin.qq.com/s?__biz=MzI2MjI3NzEwNA==&mid=100000006&idx=1&sn=7839531a7b1b098516abc332d9a882d6&scene=1&srcid=06126tz0M6uQMlQQ6f1DGPGQ&key=f5c31ae61525f82ec5382f4ab6efeedbe1d515cda70e1f545787257c6e4e07c9ed532130f7c7982a6b333472dfda8fb1&ascene=0&uin=MTcwODAxNjc0Mw%3D%3D&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ECDUoQI094KxYPCt52xc50Z%2Bc49tCLOcCD%2B%2Fv5F2ZXwa47Tki2X2bab03N3P%2Bg6z">扁鹊兄弟互助</a>
+    </p>
+</div>
+
+
+
+<div style="width:90%;margin:0 auto;">
+    <section data-id="86322" class="135editor" style="border: 0px none; padding: 0px;">
+        <section class="layout" data-width="100%" style="margin-right: auto; margin-left: auto; width: 100%;">
+            <section style="margin-top: 2em; padding-top: 0.5em; padding-bottom: 0.5em; font-size: 1em; line-height: 22.4px; border-style: solid none none; border-top-width: 1px; border-color: rgb(204, 204, 204) rgb(117, 117, 118) rgb(117, 117, 118); text-decoration: inherit; color: rgb(117, 117, 118);">
+                <section style="margin-top: -2.6em; text-align: center; line-height: 1.4;">
+                    <section style="margin-top: 10px; margin-bottom: 10px; padding: 8px 12px; display: inline-block; border: 1px solid rgb(117, 117, 118); color: inherit; background-color: rgb(254, 254, 254);">
+                        <span class="135brush" data-brushtype="text">感动整个阿里的危急20小时</span>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+    <p>
+        <span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-align: justify; text-transform: uppercase;">“天若有情天亦老！也请求大家帮帮我的女儿。帮帮她，我女儿无商业保险，无社保，无农合，去年底才上的户口，农合一年才能买一次，所以也无效，所有费用都要自己自费”</span>
+    </p>
+    <p>
+        <span style=";color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-align: justify; text-transform: uppercase;;line-height: 25.5938px;"><img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGV4Q3hZUkgwNE9CMkRlRzZNUGJXaFhJQ2JwQldWTWdBY1VHSU5lVlFJcWZsZ2ljYVdpY3ZuOUQ2US8wP3d4X2ZtdD1wbmc=" title="不放弃.png" class="" data-ratio="0.3654545454545455" data-w="550" data-type="png" style="z-index: -1; cursor: pointer; line-height: 25.5938px;"/></span>
+    </p>
+    <p>
+        <span style="font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-align: justify; text-transform: uppercase; color: #C00000;">这封求助信看哭了很多阿里人、阿里校友，大家纷纷参加了这场爱心接力，在短短20小时内，募集善款176万，这就是一家公司的互助精神的响应速度<span style="font-size: 12px; line-height: 25.5938px;">&nbsp;。</span></span>
+    </p>
+    <p>
+        <span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-align: justify; text-transform: uppercase;"><img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGVpY0NURGE5WVY2M25oQVJBa3pYWGFPUEwzOVFYV2hlVGM2em5MNnpFUk84SU52bGRaS1ZjbWx3LzA/d3hfZm10PXBuZw==" title="阿里同学会.png" class="" data-ratio="1.778181818181818" data-w="550" data-type="png"/></span>
+    </p>
+    <p>
+        <img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGU4TTFmQVVXbEtRN1BUc2FxbXpvZ2FxWXYyTm9JRGNGYkM4RVZWQUNYRHZxaElBRWNpYlhBSmJ3LzA/d3hfZm10PXBuZw==" class="" data-ratio="0.02" data-w="550" data-type="png" style="margin-right: auto; margin-left: auto; width: 100%; display: inline-block;"/>&nbsp;
+    </p>
+    <p>
+        <section data-id="85870" class="135editor" style="border: 0px none; padding: 0px;">
+            <section data-id="us90582" class="135editor" style="border: 0px none; padding: 0px;">
+                <section class="135editor" style="border: 0px none; padding: 0px;">
+                    <section style="color: rgb(115, 115, 115);">
+    <p>
+        <img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGVxOXMybGliTkZUajBOUzRSV1JrdDNtSzJpYmRVcld3Qk5yWk9kbGdNMGVGbmNSeTBpY2liMG83Vnp3LzA/d3hfZm10PXBuZw==" class="" data-ratio="0.9473684210526315" data-w="19" data-type="png" style="height: 18px; color: inherit; width: 19px;"/>
+    </p>
+    <section class="135brush" style="padding: 20px 30px;">
+        <p style="text-align: justify;">
+            <span style="color: #7F7F7F; font-family: sans-serif; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase; font-size: 14px;">陈曦，一名天才型的设计专家，之前是腾讯设计中心CDC元老级的员工。&nbsp;现任淘宝无线视觉设计专家，原本一个轻松的泰国甜蜜之旅，却被一个意外车祸，改变了一切 &nbsp;</span>
+        </p>
+    </section>
+    <p style="margin-bottom: 25px; text-align: right;">
+        <img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGU3YVh3Nk9EUDZhT2ppY2lheXdjdnVVUXVPUjBnY0FIMjRDdUxBMDhKOE0xVGljN3ltejVNWGdPT2cvMD93eF9mbXQ9cG5n" class="" data-ratio="0.9473684210526315" data-w="19" data-type="png" style="height: 18px; color: inherit; line-height: inherit; width: 19px;"/>
+    </p>
+    </section>
+    </section>
+    </section>
+    </section>
+    </p>
+    <p>
+        <span style="font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-align: justify; text-transform: uppercase; color: #C00000;">事故发生后，阿里大家庭短短时间内为其筹集76万，腾讯公司也募集23万，用于紧急的治疗，这又是互助精神一次快速响应。</span>
+    </p>
+    <p>
+        <span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-align: justify; text-transform: uppercase;"><img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGU5SUtyVU1IaWE1T3dFejJjeGU0Mk9pYXFOSFo2czc1TjY1NUFhNXdpYXphdFVpYWY2S0lmUTcwektnLzA/d3hfZm10PXBuZw==" title="陈曦76万.png" class="" data-ratio="0.58" data-w="550" data-type="png"/></span>
+    </p>
+    <p>
+        <br/>
+    </p>
+    <p>
+        <section data-id="86322" class="135editor" style="border: 0px none; padding: 0px;">
+            <section class="layout" data-width="100%" style="margin-right: auto; margin-left: auto; width: 100%;">
+                <section style="margin-top: 2em; padding-top: 0.5em; padding-bottom: 0.5em; font-size: 1em; line-height: 22.4px; border-style: solid none none; border-top-width: 1px; border-color: rgb(204, 204, 204) rgb(117, 117, 118) rgb(117, 117, 118); text-decoration: inherit; color: rgb(117, 117, 118);">
+                    <section style="margin-top: -2.6em; text-align: center; line-height: 1.4;">
+                        <section style="margin-top: 10px; margin-bottom: 10px; padding: 8px 12px; display: inline-block; border: 1px solid rgb(117, 117, 118); color: inherit; background-color: rgb(254, 254, 254);">
+                            <span class="135brush" data-brushtype="text">阿里核心机密－互助精神</span>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </p>
+    <p>
+        <span style="font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase; color: #C00000;"></span>
+    </p>
+    <p>
+        <span style="font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase; color: #C00000;">互助精神：</span><span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase;">阿里员工福利的核心机密其实是“发扬我为人人、人人为我的团结互助精神“，</span><br/>
+    </p>
+    <p style="line-height: 25.6px;">
+        <span style="font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase; color: #C00000;">蒲公英计划：</span><span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase;">阿里内部有蒲公英计划，大家自愿参加，员工一年出80元，公司就出160元，组成一个互助基金，谁要得了43种重大疾病就可以获得补助20万元，可是当前蒲公英计划只有在职员工享受</span>
+    </p>
+    <p style="line-height: 25.6px;">
+        <span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase;"><br/></span>
+    </p>
+    <p>
+        <section data-id="86322" class="135editor" style="border: 0px none; padding: 0px;">
+            <section class="layout" data-width="100%" style="margin-right: auto; margin-left: auto; width: 100%;">
+                <section style="margin-top: 2em; padding-top: 0.5em; padding-bottom: 0.5em; font-size: 1em; line-height: 22.4px; border-style: solid none none; border-top-width: 1px; border-color: rgb(204, 204, 204) rgb(117, 117, 118) rgb(117, 117, 118); text-decoration: inherit; color: rgb(117, 117, 118);">
+                    <section style="margin-top: -2.6em; text-align: center; line-height: 1.4;">
+                        <section style="margin-top: 10px; margin-bottom: 10px; padding: 8px 12px; display: inline-block; border: 1px solid rgb(117, 117, 118); color: inherit; background-color: rgb(254, 254, 254);">
+                            <span class="135brush" data-brushtype="text">人人都能参与的“蒲公英计划”</span>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </p>
+    <p>
+        <img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGVZYnY5YnE1NDFHQUxjSVo5NUFFMkJrQ09YZDhIOU10M1JjcFBlaWJGRmVWbXVOaWJuUWliN1RCekEvMD93eF9mbXQ9anBlZw==" title="30.pic.jpg" class="" data-ratio="0.7272727272727273" data-w="550" data-type="jpeg" style="z-index: -1; cursor: pointer; color: rgb(127, 127, 127); font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase;"/><span style="color: #7F7F7F; font-family: sans-serif; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase; font-size: 14px;">几位前阿里人决定做一个人人都能参加的蒲公英互助计划（扁鹊兄弟互助平台），从而能服务保障更多的老阿里人、阿里家属，平台</span><span style="color: #7F7F7F; font-family: sans-serif; font-size: 14px; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase;"><span style="line-height: 25.5938px;">通过诚信互助为核心出发点</span><span style="line-height: 25.5938px;">，待会员发生理赔后，互助成员快速响应，</span></span><span style="color: #7F7F7F; font-family: sans-serif; letter-spacing: 3px; line-height: 25.5938px; text-transform: uppercase; font-size: 14px;">实现“无病我帮人，患病人帮我”核心互助精神。</span>
+    </p>
+    <p>
+        <img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGVpYVJmbk5pY1I0aWNQUDZrN1FzN2t0dmo4emljSXY2SE1CNXlmUTlHNExodHFCd2NoaEs2bElkc1dBLzA/d3hfZm10PXBuZw==" title="互助对比.png" class="" data-ratio="0.3527272727272727" data-w="550" data-type="png"/>
+    </p>
+    <p>
+        <section data-id="86322" class="135editor" style="border: 0px none; padding: 0px;">
+            <section class="layout" data-width="100%" style="margin-right: auto; margin-left: auto; width: 100%;">
+                <section style="margin-top: 2em; padding-top: 0.5em; padding-bottom: 0.5em; font-size: 1em; line-height: 22.4px; border-style: solid none none; border-top-width: 1px; border-color: rgb(204, 204, 204) rgb(117, 117, 118) rgb(117, 117, 118); text-decoration: inherit; color: rgb(117, 117, 118);">
+                    <section style="margin-top: -2.6em; text-align: center; line-height: 1.4;">
+                        <section style="margin-top: 10px; margin-bottom: 10px; padding: 8px 12px; display: inline-block; border: 1px solid rgb(117, 117, 118); color: inherit; background-color: rgb(254, 254, 254);">
+                            <span class="135brush" data-brushtype="text">3大原因你需要加入保障</span>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </p>
+    <p>
+        <span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; ">1.<strong>身边癌症高发，身体大不如前啊</strong>，中国人一生患癌症概率22%，雾霾、水污染、食品</span><span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; ">安全、工作压力都影响着我们。身体也不如以前，毕业5年前，你能随便通宵几个晚上，毕业7年前，你是篮球场上飞奔少年，毕业8年前，你的眼角没有任何纹路，脸颊没有任何斑点，毕业10年前，你可以吹自己是一夜7次郎&nbsp;，而现在... ...</span>
+    </p>
+    <p>
+        <span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; "><img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGVhNWpONENvSk9sTjBrbkVaWFJ0OWljaWJFd0VWRVBDU0lLN3lpY081UjNzSlRBMXJrWnZmYUlEQlEvMD93eF9mbXQ9Z2lm" title="17c30291b57a77993b58bbf93954e42b.gif" class="" data-ratio="0.5" data-w="500" data-type="gif"/></span>
+    </p>
+    <p>
+        <span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; ">2.</span><strong><span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; ">主要是互助金便宜啊</span></strong><span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; ">，其实我们都有意识要一份保障，但是年缴成千上万的保费，实在压力山大啊，但是阿里蒲公英一年240元即可有效保障阿里员工，也就一顿饭钱，太划算，这性价比，你懂的。</span>
+    </p>
+    <p style="text-align: center;">
+        <span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; "><img src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGVuRE92U285ajZWcTdvcXB5TFlYWWo2UG1LaWJlMlY0SDJrbE5na3RJbllCaWIwNkFOaWNlaks1VXcvMD93eF9mbXQ9Z2lm" title="2184e51fcf29bcc16d4851ae138c1256.gif" class="" data-ratio="0.8571428571428571" data-w="175" data-type="gif"/></span>
+    </p>
+    <p style="line-height: 25.6px;">
+        <span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; ">3.<strong>是家庭</strong><strong>的爱与责任啊</strong>，主要是身边总能听到哪个哪个得了癌症，然后好惨。一份保障到底是为了谁？为自己？为家人？其实都是承载的是你对家庭的爱与责任。</span>
+    </p>
+    <p style="line-height: 25.6px;">
+        <img data-type="gif" src="http://image2.135editor.com/cache/remote/aHR0cHM6Ly9tbWJpei5xbG9nby5jbi9tbWJpei92aWJsUVIxS1BraHZJUHJrWnR5SnZlMjBza0xNM0xBWGV1NWM1QUt4b2xVeU9rbnBWdFVzMVNNMDJ2emlhQ0dTM1VHNU5GaWNtc3RaOElMaHd3UGx0S0R2US8wP3d4X2ZtdD1naWY=" data-ratio="0.562" data-w="500"/><br/>
+    </p>
+    <p>
+        <br/>
+    </p>
+
+    <p>
+        <section data-id="85976" class="135editor" style="border: 0px none; padding: 0px;">
+            <section style="margin: 0.5em auto;">
+    <p style="padding-top: 5px; padding-bottom: 5px; text-align: center; line-height: 1em; font-size: 14px; text-indent: 0em;">
+        <br/>
+    </p>
+
+
+    <section data-id="86322" class="135editor" style="border: 0px none; padding: 0px;">
+        <section class="layout" data-width="100%" style="margin-right: auto; margin-left: auto; width: 100%;">
+            <section style="margin-top: 2em; padding-top: 0.5em; padding-bottom: 0.5em; font-size: 1em; line-height: 22.4px; border-style: solid none none; border-top-width: 1px; border-color: rgb(204, 204, 204) rgb(117, 117, 118) rgb(117, 117, 118); text-decoration: inherit; color: rgb(117, 117, 118);">
+                <section style="margin-top: -2.6em; text-align: center; line-height: 1.4;">
+                    <section style="margin-top: 10px; margin-bottom: 10px; padding: 8px 12px; display: inline-block; border: 1px solid rgb(117, 117, 118); color: inherit; background-color: rgb(254, 254, 254);">
+                        <span class="135brush" data-brushtype="text">不单单是阿里人的福利</span>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+    <p style="text-align: center;">
+        <span style="color: #7F7F7F; font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; white-space: pre-wrap;">我们来源于阿里，却服务整个社会</span>
+    </p>
+    <p style="text-align: center;">
+        <font color="#7f7f7f"><span style="font-size: 14px; letter-spacing: 3px; line-height: 24px; text-transform: uppercase; white-space: pre-wrap;">符合要求都可以参加</span></font>
+    </p>
+    <p style="text-align:center">
+        <img src="http://qdn.135editor.com/files/users/78/786722/201606/Mt2wxQzT_jJaw.gif" title="7860c94f53d8d3adeaed0e3157557f80.gif" alt="7860c94f53d8d3adeaed0e3157557f80.gif"/>
+    </p>
+
+    <p style="padding-top: 5px; padding-bottom: 5px; line-height: 1em; font-size: 14px; text-indent: 0em;">
+        <br/>
+    </p>
+    <p style="padding-top: 5px; padding-bottom: 5px; line-height: 1em; font-size: 14px; text-indent: 0em;">
+        <br/>
+    </p>
+    <p style="padding-top: 5px; padding-bottom: 5px; line-height: 1em; font-size: 14px; text-indent: 0em;">
+        <br/>
+    </p>
+    <section style="margin-top: -20em;">
+        <p style="padding-top: 5px; padding-bottom: 5px; text-align: center; line-height: 1em; font-size: 14px; text-indent: 0em;">
+            <br/>
+        </p>
+        <p style="padding-top: 5px; padding-bottom: 5px; text-align: center; line-height: 1em; font-size: 14px; text-indent: 0em;">
+            <br/>
+        </p>
+    </section>
+    </section>
+    <section style="width: 0px; height: 0px; clear: both;"></section>
+    </section>
+    </p>
+    <p>
+        <br/>
+    </p>
+    <p>
+        <br/>
+    </p>
+    <p>
+        <br/>
+    </p>
+    <p>
+        <br/>
+    </p>
+
+</div>
+
+
+<div class="bottom-fixed clearfix">
+    <div class="bottom-img fl">
+        <img src="http://res.xiongdihuzhu.com/res/images/logo.jpg" width="100%" alt="">
+    </div>
+    <div class="bottom-text fl">
+        <h2>扁鹊兄弟互助</h2>
+        <span>0元享300000元保障</span>
+    </div>
+    <div class="bottom-btn">查看详情</div>
+</div>
+
+<script>
+    $(".bottom-btn").click(function () {
+        _czc.push(["_trackEvent",'文章浏览','免费加入',lurkDesc,'','']);
+        window.location.href = "$!requestTool.getActivityUrl('http://www.xiongdihuzhu.com/concur/detail.htm',$!request)";
+    });
+</script>
+
+</body>
+
+</html>

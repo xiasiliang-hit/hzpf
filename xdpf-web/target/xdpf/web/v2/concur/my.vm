@@ -1,0 +1,134 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurPlan=$!{myConcur.concurPlanDO})
+#set($user=$!{myConcur.userDO})
+#set($userList=$!{myConcur.userList})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/mutually.css">
+<body>
+<ul class="menu_box flex-item clearfix">
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/detail.htm'),$request)"
+           class="menu1">
+            <i class="icon-i1"></i>
+            互助计划
+        </a>
+    </li>
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/claim/list.htm'),$request)"
+           class="menu2">
+            <i class="icon-i2"></i>
+            互助公示
+        </a>
+    </li>
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/my.htm'),$request)"
+           class="menu3-active">
+            <i class="icon-i3-active"></i>
+            我的互助
+        </a>
+    </li>
+</ul>
+
+<div class="banner_box">
+    <img src="http://res.xiongdihuzhu.com/res/xdpf/images/Z-banner2@2x.jpg" alt="">
+
+</div>
+
+<a href="$!requestTool.getAppUrl($!urlTool.getAbsoluteUrl($request,
+    '/v2/concur/detail.htm'),$request)&concurPlanId=$!{concurPlan.id}">
+    <div class="title_box flex-item clearfix">
+        <div class="title1">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/heart@2x.jpg" alt="">
+            <h2>$!{concurPlan.name}</h2>
+        </div>
+        <div class="xq">
+            <a href="$!requestTool.getAppUrl($!urlTool.getAbsoluteUrl($request,
+                '/v2/concur/detail.htm'),$request)&concurPlanId=$!{concurPlan.id}">详情</a>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+        </div>
+    </div>
+</a>
+<div class="Num_box flex-item clearfix">
+    <div class="fl">
+        <h1>$!{myConcur.concurUserQuantity}</h1>
+        <span>已加入(人)</span>
+    </div>
+    <div class="fl">
+        <h1>$!bizUtils.changeF2Y($!{myConcur.concurBalanceQuantity})</h1>
+        <span>互助基金池(元)</span>
+    </div>
+    <div class="fl no-border">
+        <h1>$!{myConcur.concurEventQuantity}</h1>
+        <span>互助事件(起)</span>
+    </div>
+</div>
+<dl class="personal_infor flex-item clearfix">
+    <dt>$!{user.userName}（投保人）</dt>
+    <dd class="assets">
+        <h1>
+            #if($!{myConcur.userDonateBalanceQuantity}>0)
+                $!bizUtils.changeF2Y($!{myConcur.userDonateBalanceQuantity})
+            #else
+                0
+            #end
+        </h1>
+        <span>累计捐助(元)</span>
+    </dd>
+    <dd class="assets">
+        <h1>$!bizUtils.changeF2Y($!{myConcur.userBalanceQuantity})</h1>
+        <span>余额(元)</span>
+    </dd>
+</dl>
+
+<div class="account_box flex-item clearfix">
+    <a href="top-up.html">
+        <div class="account">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/cz@2x.jpg" alt="">
+            <h4>充值</h4>
+        </div>
+    </a>
+    <a href="take-cash.html">
+        <div class="account">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/tx@2x.jpg" alt="">
+            <h4>提现</h4>
+        </div>
+    </a>
+    <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/transaction.htm'),$request)" >
+        <div class="account">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/mx@2x.jpg" alt="">
+            <h4>明细</h4>
+        </div>
+    </a>
+</div>
+
+    #foreach($userVO in $userList)
+    <div class="insurant_box">
+        <div class="status flex-item clearfix">
+            <h5>$!{userVO.ensureName}</h5>
+            <h6>$!{userVO.ensureDesc}</h6>
+        </div>
+        <div class="insurant_main flex-item clearfix">
+            <div class="insurant">
+                <h3>$!{userVO.ageDesc}</h3>
+                <h6>年龄</h6>
+            </div>
+            <div class="insurant">
+                <h3>$!{userVO.ratioFormat}</h3>
+                <h6>分摊系数</h6>
+            </div>
+            <div class="insurant">
+                <h3>$!{userVO.upperLimitYuan}</h3>
+                <h6>每次最多分摊（元）</h6>
+            </div>
+        </div>
+    </div>
+    #end
+    #if($!stringUtils.isBlank($!{errorCode}))
+        #if($!{myConcur.applyConcur})
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/claim/choose.htm'),$request)">
+            <div class="submit">申请互助</div>
+        </a>
+        #else
+        <div class="submit" style="background-color: #cecece">申请互助</div>
+        #end
+    #end
+</body>

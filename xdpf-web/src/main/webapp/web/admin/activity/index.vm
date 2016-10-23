@@ -1,0 +1,149 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="活动")
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/concur/list.htm">首页</a></li>
+            <li><a href="/admin/activity/list.htm">活动管理</a></li>
+            <li class="active">
+                <span>
+                    #if($!action=='add')
+                        分享文案/渠道增加
+                    #else
+                        分享文案/渠道修改
+                    #end
+            </span>
+            </li>
+
+        </ol>
+
+    </div>
+</div>
+</br>
+<div class="main-box  clearfix">
+    <div class="tabs-wrapper">
+        <ul class="nav nav-tabs">
+            <li #if($!type=='shareText') class="active" #end><a href="#tab-shearText" data-toggle="tab">
+                #if($!action=='add')
+                    分享文案增加
+                #else
+                    分享文案修改
+                #end
+            </a></li>
+            <li #if($!type=='channel') class="active" #end><a href="#tab-channel" data-toggle="tab">
+                #if($!action=='add')
+                    渠道增加
+                #else
+                    渠道修改
+                #end
+            </a></li>
+        </ul>
+        <div class="tab-content">
+
+            <div class="tab-pane fade in #if($!type=='shareText') active #end" id="tab-shearText">
+
+                <div class="main-box-body clearfix">
+                    <form class="form-horizontal" action="addShareText.htm" method="post">
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">标题</label>
+                            <div class="col-lg-8">
+                                <input tpe="title" class="form-control" id="title" placeholder="分享标题" name="title"
+                                       value="$!shareText.title">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">描述</label>
+                            <div class="col-lg-8">
+                                <input type="descr" class="form-control" id="descr" placeholder="分享描述" name="descr"
+                                       value="$!shareText.descr">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">分享地址</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" id="url" placeholder="分享地址" name="url"
+                                       value="$!shareText.url">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input type="hidden" id="id" name="id"
+                                       value="#if($!shareText.id>0) $!shareText.id #else 0 #end">
+                                <button type="submit" class="btn btn-success">提交分享文案</button>
+                                #if($!type=='shareText'&&$!error!='')
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                        <strong>$!error</strong>
+                                    </div>
+                                #end
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tab-pane fade in #if($!type=='channel') active #end" id="tab-channel">
+                <div class="main-box-body clearfix">
+                    <form class="form-horizontal" action="addChannel.htm" method="post">
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">渠道名称</label>
+                            <div class="col-lg-8">
+                                <input type="channelName" class="form-control" id="channelName" placeholder="渠道名称"
+                                       name="channelName" value="$!channel.channelName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">渠道描述</label>
+                            <div class="col-lg-8">
+                                <input type="descr" class="form-control" id="descr" placeholder="渠道描述" name="descr"
+                                       value="$!channel.descr">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">分享方式</label>
+                            <div class="col-lg-8">
+                                <select class="form-control" id="channelType" name="channelType">
+                                    <option value="wx"  #if($!channel.channelType=='wx') SELECTED #end>微信渠道</option>
+                                    <option value="qq"  #if($!channel.channelType=='qq') SELECTED #end>qq渠道</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">分享渠道ID</label>
+                            <div class="col-lg-8">
+                                <input type="channelOutId" class="form-control" id="channelOutId" placeholder="分享渠道ID"
+                                       name="channelOutId" value="$!channel.channelOutId">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">渠道费用</label>
+                            <div class="col-lg-8">
+                                <input type="input" class="form-control" id="fee" placeholder="渠道费用"
+                                       name="fee" value="$!channel.fee">&nbsp;推广每人费用(单位分)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input type="hidden" id="id" name="id" value="$!channel.id">
+                                <button type="submit" class="btn btn-success">提交分享渠道</button>
+                                #if($!type=='channel'&&$!error!='')
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                        <strong>$!error</strong>
+                                    </div>
+                                #end
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

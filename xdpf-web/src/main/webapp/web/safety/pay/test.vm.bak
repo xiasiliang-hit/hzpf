@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--因为在手机中，所以添加viewport-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>微信支付测试</title>
+
+</head>
+<body>
+<div style="display:none">
+    <script src="http://s95.cnzz.com/z_stat.php?id=1259101635&web_id=1259101635" language="JavaScript"></script>
+</div>
+<button id="weixin" style="display: block;margin: 2em auto">微信接口测试</button>
+<span class="desc">获取“分享到朋友圈”按钮点击状态及自定义分享内容接口</span>
+<button class="btn btn_primary" id="onMenuShareTimeline">分享朋友圈</button>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    /*
+    wx.config({
+        #if(${wxSign.debugLevel})
+            debug: true,
+        #end
+        appId: '${wxSign.wxAppId}',
+        timestamp:${wxSign.timestamp},
+        nonceStr: '${wxSign.nonceStr}',
+        signature: '${wxSign.signature}',
+        jsApiList: [
+            "chooseWXPay",
+            "onMenuShareTimeline",
+            "chooseImage",
+            "previewImage",
+            "uploadImage",
+            "downloadImage"
+        ]
+    });
+    var btn = document.getElementById('weixin');
+    wx.ready(function () {
+        // 在这里调用 API
+        btn.onclick = function () {
+            wx.chooseImage({
+                success: function (res) {
+                    var localIds = res.localIds;
+                }
+            });
+        }
+        wx.onMenuShareTimeline({
+            title: '扁鹊兄弟互助朋友圈分享',
+            link: 'http://www.xiongdihuzhu.com/safety/share.htm',
+            imgUrl: 'http://gdp.alicdn.com/imgextra/i1/134363478/TB2WX5jnFXXXXbrXpXXXXXXXXXX-134363478.jpg',
+            trigger: function (res) {
+                alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                alert('已分享');
+            },
+            cancel: function (res) {
+                alert('已取消');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    });
+
+*/
+    function onBridgeReady() {
+        WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    "appId" : '${appId}',
+                    "timeStamp":'${timeStamp}',
+                    "nonceStr" : '${nonceStr}',
+                    "package" : '${package}',
+                    "signType" : '${signType}',
+                    "paySign" : '${sign}'
+        },
+        function (res) {
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                alert("ok");
+            } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                alert("cancel")
+            } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+
+                alert("fail")
+            }
+            alert(res.err_msg+res.err_desc);
+        }
+
+    );
+    }
+
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+
+</script>
+</body>
+</html>

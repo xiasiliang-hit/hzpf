@@ -1,0 +1,77 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="分组用户列表")
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/index.htm">首页</a></li>
+            <li><a href="/admin/concur/list.htm">互助列表</a></li>
+            <li><a href="/admin/concur/groupList.htm?concurId=3">互助分组列表</a></li>
+            <li class="active"><span>互助分组用户列表</span></li>
+        </ol>
+
+    </div>
+</div>
+
+<div class="main-box  clearfix">
+    <header class="main-box-header clearfix">
+        <div class="filter-block pull-right">
+            <form role="search" action="/admin/concur/groupUserList.htm" method="post">
+                <div class="form-group pull-left">
+                    <input type="text" id="userName" name="userName" class="form-control" placeholder="输入用户名称..."
+                           value="$!userName">
+                    <button type="submit" class="fa fa-search search-icon" contenteditable="true"></button>
+                    <input type="hidden" id="concurPlanGroupId" name="concurPlanGroupId"
+                           value="$!{query.concurPlanGroupId}"/>
+                </div>
+            </form>
+        </div>
+    </header>
+    <div class="main-box-body clearfix">
+        <div class="table-responsive">
+            <table class="table user-list table-hover">
+                <thead>
+                <tr class="info">
+                    <th>用户ID</th>
+                    <th>用户昵称</th>
+                    <th>用户名</th>
+                    <th>分摊系统</th>
+                    <th>等待时间</th>
+                    <th>保障开始时间</th>
+                    <th>邀请用户/保障</th>
+                    <th>被邀请保障</th>
+                    <th>微信关注保障</th>
+                    <th>加入时间</th>
+                    <th>操作</th>
+                </thead>
+                <tbody>
+                    #foreach($relationDO in $page.modle)
+                    <tr>
+                        <td>$!{relationDO.userId}</td>
+                        <td>$!{relationDO.nickName}</td>
+                        <td>$!{relationDO.userName}</td>
+                        <td>$!{relationDO.illRatio}/$!{relationDO.dieRatio}</td>
+                        <td>$!{relationDO.waitDays}</td>
+                        <td>$!{relationDO.ensureStartTime}</td>
+                        <td>$!{relationDO.inviteCount}/$!{relationDO.preInviteAmount}</td>
+                        <td>$!{relationDO.inviteAmount}</td>
+                        <td>$!{relationDO.wxAttentionAmount}</td>
+                        <td>$!{relationDO.joinTime}</td>
+                        <td style="width: 5%;">
+                            <a href="/admin/concur/delGroupUser.htm?id=$!{relationDO.id}&concurId=$!{relationDO.concurPlanGroupId}"
+                               class="table-link danger" title="删除">
+																<span class="fa-stack">
+																	<i class="fa fa-square fa-stack-2x"></i>
+																	<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																</span>
+                            </a>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            #pageShow('/admin/concur/groupUserList.htm')
+
+    <div>
+
+
+

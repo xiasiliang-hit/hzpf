@@ -1,0 +1,82 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="互助计划列表")
+
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/concur/list.htm">首页</a></li>
+            <li class="active"><span>互助计划列表</span></li>
+        </ol>
+
+    </div>
+</div>
+
+
+<div class="main-box no-header clearfix">
+    <div class="main-box-body clearfix">
+        <div class="table-responsive">
+            <table class="table user-list table-hover">
+                <thead>
+                <tr class="info">
+                    <th>编号</th>
+                    <th>互助名称</th>
+                    <th>保障范围1</th>
+                    <th>保障额度1</th>
+                    <th>保障年龄1</th>
+                    <!--
+                    <th>保障范围2</th>
+                    <th>保障额度2</th>
+                    <th>保障年龄2</th>
+                    -->
+                    <th>总用户数</th>
+                    <th>子用户数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($concurPlanDO in $list)
+                    <tr>
+                    <tr>
+                        <td>$!{concurPlanDO.id}</td>
+                        <td>$!{concurPlanDO.name}</td>
+                        <td>$!{concurPlanDO.ensureRange1}</td>
+                        <td>$!{concurPlanDO.ensureLimit1}</td>
+                        <td>$!{concurPlanDO.ensureAgeStart1}-$!{concurPlanDO.ensureAgeEnd1}</td>
+                        <!--
+                        <td>$!{concurPlanDO.ensureRange2}</td>
+                        <td>$!{concurPlanDO.ensureLimit2}</td>
+                        <td>$!{concurPlanDO.ensureAgeStart2}-$!{concurPlanDO.ensureAgeEnd2}</td>
+                        -->
+                        <td width="8%">$!{concurPlanDO.quantity}</td>
+                        <td width="8%">$!{concurPlanDO.subUserQuantity}</td>
+
+                        <td style="width: 10%;">
+                            <a href="/admin/concur/groupList.htm?concurId=$!{concurPlanDO.id}" class="table-link" title="分组列表">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            <!--
+                            <a href="/admin/concur/view.htm?concurId=$!{concurPlanDO.id}" class="table-link" title="详细">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            <a href="#" class="table-link danger">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            -->
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            <div>
+                <div>
+                    <div>
+

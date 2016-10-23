@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        //声明_czc对象:
+        var _czc = _czc || [];
+        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+        _czc.push(["_setAccount", "1259101635"]);
+    </script>
+    <meta charset="UTF-8">
+    <title>添加家人</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="keywords" content=“扁鹊兄弟互助平台,扁鹊兄弟,网络互助平台,兄弟互助,互助平台,网络互助,网络保障平台,网络保障” />
+    <meta name="description" content=“扁鹊兄弟互助平台,更低互助金,更高更公平的可信赖的保障” />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/base.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/information.css">
+    <script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto-min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        !function () {
+            function a() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+            }
+
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b), b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+    </script>
+    <style>
+        .verify {
+            line-height: 1.5;
+            width: 10.83rem;
+            text-align: center;
+            background-color: #FFF3D7;
+            color: #8B572A;
+            font-size: 0.6rem;
+            padding-top: 0.76rem;
+            padding-bottom: 0.76rem;
+            margin: 0 auto;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+
+
+<script>
+    var channelId='渠道'+$!{activity.channelId};
+    var shareTextId='文案'+$!{activity.shareTextId};
+    var lurkDesc=channelId+'_'+shareTextId;
+    _czc.push(["_trackEvent",'添加家人','访问',lurkDesc,'','']);
+    //_czc.push(["_trackEvent", '重疾互助_' + channelId, '点连接', '点连接', '', '']);
+</script>
+<script>
+    wx.config({
+        #if(${wxSign.debugLevel})
+            debug: true, //调试阶段建议开启
+        #end
+        appId: '${wxSign.wxAppId}',
+        timestamp:${wxSign.timestamp},
+        nonceStr: '${wxSign.nonceStr}',
+        signature: '${wxSign.signature}',
+        jsApiList: [
+            /*
+             * 所有要调用的 API 都要加到这个列表中
+             * 这里以图像接口为例
+             */
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline"
+        ]
+    });
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '$!{activity.title}',
+            link: '$!{activity.turl}',
+            imgUrl: '${activity.headImgUrl}',
+            trigger: function (res) {
+                //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                //alert('已分享');
+                _czc.push(["_trackEvent", '添加家人', '分享朋友圈', lurkDesc, '', '']);
+                Zepto.ajax({
+                    type: 'GET',
+                    url: '/myconcur/share.htm',
+                    // data to be added to query string:
+                    data: {
+                        activityId:$!{activity.activityId},
+                        shareUserId:$!{activity.shareUserId},
+                        channelId:$!{activity.channelId},
+                        shareTextId:$!{activity.shareTextId},
+                        shareLevel:$!{activity.shareLevel},
+                        f: 't'
+                    },
+                    // type of data we are expecting in return:
+                    dataType: 'json',
+                    timeout: 3000,
+                    context: $('body'),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, data, type) {
+                        //alert('Ajax error!')
+                        console.error(data);
+                    }
+                });
+
+
+            },
+            cancel: function (res) {
+                //alert('已取消');
+                console.info("cancle")
+            },
+            fail: function (res) {
+                console.error(JSON.stringify(res));
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '$!{activity.title}', // 分享标题
+            desc: '$!{activity.descr}', // 分享描述
+            link: '$!{activity.aurl}', // 分享链接
+            imgUrl: '${activity.headImgUrl}', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                //alert('已分享');
+                _czc.push(["_trackEvent", '添加家人', '分享给朋友', lurkDesc, '', '']);
+                Zepto.ajax({
+                    type: 'GET',
+                    url: '/myconcur/share.htm',
+                    // data to be added to query string:
+                    data: {
+                        activityId:$!{activity.activityId},
+                        shareUserId:$!{activity.shareUserId},
+                        channelId:$!{activity.channelId},
+                        shareTextId:$!{activity.shareTextId},
+                        shareLevel:$!{activity.shareLevel},
+                        f: 'a'
+                    },
+                    // type of data we are expecting in return:
+                    dataType: 'json',
+                    timeout: 3000,
+                    context: $('body'),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, data, type) {
+                        //alert('Ajax error!')
+                        console.error(data);
+                    }
+                });
+
+            },
+            cancel: function () {
+                console.error(data);
+            }
+        });
+    });
+</script>
+
+</head>
+
+<body>
+<div style="display:none">
+    <script src="http://s95.cnzz.com/z_stat.php?id=1259101635&web_id=1259101635" language="JavaScript"></script>
+</div>
+
+
+<div class="form">
+    <form>
+        <table class='form-table'>
+            <tr>
+                <td class="td1">姓　名:</td>
+                <td class="td2">
+                    <input type="text" name='userName' placeholder="被保人真实姓名" maxlength="12"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="td1">身份证:</td>
+                <td class="td2">
+                    <input type="text" name="card" placeholder="被保人身份证号码" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="small-tip">
+    身份证号仅用于理赔时核实身份，我们尊重你的隐私，承诺不会向第三方泄露。
+</div>
+<div class="verify"></div>
+<div class="greenbutton" style="height: 2.1rem;line-height: 2.1rem;">
+    提交资料
+</div>
+
+<script>
+    Zepto(function ($) {
+        var checkUserName = function (userName, result) {
+            userName=userName.trim();
+            if (userName != "") {
+                result.userName = "ok";
+            } else {
+                result.userName = "nothing";
+            }
+        }
+        var checkCard = function (card, result) {
+            card=card.trim();
+            if (card.length == 18 && card != "") {
+                result.card = "ok"
+            } else if (card == "") {
+                result.card = "nothing";
+            } else if (card.trim().length != 18) {
+                result.card = "lengthWrong-card";
+            }
+        }
+
+        var check = function (obj, result) {
+            var result = {};
+            for (var i = 0; i < obj.length; i++) {
+                switch (obj[i].name) {
+                    case "userName":
+                        checkUserName(obj[i].value, result);
+                        break;
+                    case "card":
+                        checkCard(obj[i].value, result);
+                        break;
+                }
+            }
+            return result;
+        }
+        var verifyWrong = function (msg) {
+            $(".verify").html(msg).show();
+        }
+        var verifyPass = function () {
+            $(".verify").html("").hide()
+        }
+
+        var flagCodeButton = true;
+        var num = 60;
+        var timeInterval;
+        //点击获取验证码按钮
+
+
+        //点击提交数据
+        $(".greenbutton").click(function () {
+            _czc.push(["_trackEvent", '添加家人', '提交', lurkDesc, '', '']);
+            var postData = $('form').serializeArray();
+            //这里错误提示的样式还没给出）
+            var afterCheckData = check(postData);
+            console.log(afterCheckData);
+            for (var key in afterCheckData) {
+                switch (afterCheckData[key]) {
+                    case "nothing":
+                        verifyWrong("信息未填写完整");
+                        return;
+                        break;
+                    case "lengthWrong-card":
+                        verifyWrong("身份证号位数不对，请核对重新输入");
+                        return;
+                        break;
+                }
+            }
+            // postData是你需要提交的信息，
+            // ajax写在这里
+            //填写资料提交处理
+            Zepto.ajax({
+                type: 'GET',
+                url: '/concur/subUserJoinConcur.htm',
+                // data to be added to query string:
+                data: postData,
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 3000,
+                context: $('body'),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code != "SUCCESS") {
+                        _czc.push(["_trackEvent", '添加家人', '加入失败', data.desc, '', '']);
+                        if(data.code=='USER_JOIN_CONCUR_DELAY_AGE_FAIL'||data.code=='USER_JOIN_CONCUR_AGE_FAIL'){
+                            verifyWrong("很抱歉，你的年龄，不能参加该计划，<br/>即将推出一个中老年计划，敬请期待。");
+                        }else{
+                            verifyWrong(data.desc);
+                        }
+                    } else {
+                        _czc.push(["_trackEvent", '添加家人', '加入成功', lurkDesc, '', '']);
+                        window.location.href = "$!requestTool.getActivityUrl($!urlTool.getAbsoluteUrl($request,'/myconcur/index.htm?show=code&type=family'),$request)";
+                    }
+                },
+                error: function (xhr, type) {
+                    _czc.push(["_trackEvent", '添加家人', '加入失败', "出错", '', '']);
+                    //alert('Ajax error!')
+                    console.error(xhr);
+
+                }
+            });
+            console.log(postData);
+            //back();
+
+        });
+    });
+</script>
+</body>
+
+</html>

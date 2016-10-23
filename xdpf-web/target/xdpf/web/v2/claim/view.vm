@@ -1,0 +1,176 @@
+#set($layout="v2/layout/layout.vm")
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/pub-details.css">
+
+<div class="mengchen"></div>
+<div class="plan_name clearfix">
+    <img src="http://res.xiongdihuzhu.com/res/xdpf/images/heart@2x.jpg" alt="">
+    <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/detail.htm'),$request)"><h2>$!{concurPlan.name}</h2></a>
+</div>
+
+<div class="datum—box flex-item clearfix">
+    <div class="pic">
+        <img src="$!{claimUser.headImgurl}" alt="">
+    </div>
+    <div class="datum1 clearfix">
+        <h2>$!{claimUser.userName}</h2>
+        <h6>姓名</h6>
+    </div>
+    <div class="datum2">
+        <h2>$!dateUtils.countAge($!dateUtils.parse($!{claimUser.birth}, "yyyyMMdd"))岁</h2>
+        <h6>年龄</h6>
+    </div>
+</div>
+<div class="prot_box clearfix">
+    <div class="protect">
+        <h2>$!{relationVO.ensureName}</h2>
+        <h6>受助人</h6>
+    </div>
+    <div class="protect">
+        <h2>$!{relationVO.weight}g</h2>
+        <h6>体重</h6>
+    </div>
+    <div class="protect">
+        <h2>$!{relationVO.ageDesc}</h2>
+        <h6>年龄</h6>
+    </div>
+</div>
+
+<div class="time_box clearfix">
+    <h3>加入时间</h3>
+    <h5>已加入$!dateUtils.differDayCurrentDate($!{relationVO.joinTime})天</h5>
+</div>
+<div class="time_box clearfix">
+    <h3>生效时间</h3>
+    <h5>已生效$!dateUtils.differDayCurrentDate($!{relationVO.ensureStartTime})天</h5>
+</div>
+<div class="time_box clearfix">
+    <h3>确诊时间</h3>
+    <h5>$!dateUtils.getDateTimeFormat('yyyy年MM月dd日',$!dateUtils.Convert($!{claimApply.verifyTime}))</h5>
+</div>
+
+<div class="disease_box clearfix">
+    <div class="dis1">
+        <h5>
+            #if($!{claimApply.verifyEventId}==1)
+                脑瘫
+            #elseif($!{claimApply.verifyEventId}==2)
+                视网膜病变
+            #end
+        </h5>
+        <h6>所患疾病</h6>
+    </div>
+    <div class="dis2">
+        <h5>$!bizUtils.changeF2Y($!{claimApply.preCollectMoney})元</h5>
+        <h6>互助目标金额</h6>
+    </div>
+</div>
+<div class="hos_box clearfix">
+    <h3>确诊医院</h3>
+    <h4>$!{claimApply.verifyHospital}</h4>
+</div>
+<div class="hos_box clearfix">
+    <img src="http://res.xiongdihuzhu.com/res/xdpf/images/clasp@2x.jpg" alt="">
+    <span>已经致电医院和医生核实诊断信息</span>
+</div>
+
+#if($!collectionUtils.isNotEmpty($!relationVOList))
+<div class="title">
+    <h1>本次互助扣款信息</h1>
+</div>
+<div class="reduce_box">
+    #foreach($relationVO in $relationVOList)
+        <div class="infor clearfix">
+            <h4>$!{relationVO.ensureName}</h4>
+            <div class="num">
+                <h5>$!{relationVO.ratioFormat}</h5>
+                <h6>分摊系数</h6>
+            </div>
+            <div class="num">
+                <h5>$!bizUtils.changeF2Y($!{relationVO.realDunkMoney})</h5>
+                <h6>分摊金额</h6>
+            </div>
+        </div>
+    #end
+    <div class="join clearfix">
+        <h2>参与人数：$!{claimApply.joinUserCount}</h2>
+        <h3>扣款时间：$!dateUtils.getDateTimeFormat('yyyy-MM-dd',$!dateUtils.Convert($!{claimApply.dunkDay}))</h3>
+    </div>
+</div>
+#end
+
+<div class="stuff_box">
+    <div class="name_s clearfix">
+        <h2>申请互助提供的材料：</h2>
+        <h6>已公示<span>$!{claimApply.publishDays}</span>天</h6>
+    </div>
+    <div class="name_s clearfix">
+        <h4>申请互助时间：$!dateUtils.getDateTimeFormat('yyyy-MM-dd',$!dateUtils.Convert($!{claimApply.eventSubmitDay}))</h4>
+        <h5>结束公示时间：$!dateUtils.getDateTimeFormat('yyyy-MM-dd',$!dateUtils.Convert($!{claimApply.publishStartDay}))</h5>
+    </div>
+</div>
+<div class="con_box">
+    <p>$!{claimApply.descr}</p>
+</div>
+<div class="con_pic">
+    <div class="content_pic clearfix">
+        #foreach($pic in $claimApply.picUrl)
+            <img src="$!pic" alt="" class="smaill_pic">
+        #end
+    </div>
+    <div class="pop_pic uploadImg" style="z-index: 1000;">
+        <img src="" alt="" class="real_pic">
+        <h2 class="close_pop">X</h2>
+    </div>
+</div>
+<div class="notice">
+    <p>互助申请人已承诺，涉及本项目的文字、图片、证明等相关信息完全真实、有效，且不存在未经他人授权冒用他人名义进行求助的行为。</p>
+    <p>若发起人存在违反上述承诺的行为，愿自行承担全部法律责任。</p>
+</div>
+
+#if($!{claimApply.status}==9)
+<div class="dy">
+    <div class="dynamic_box">
+        <h2>公示动态</h2>
+    </div>
+    <div class="dynamic_box">
+        <div class="dynamic">
+            <h3>$!dateUtils.getDateTimeFormat('yyyy年MM月dd日',$!dateUtils.Convert($!{claimApply.bandyStartDay}))，银行汇款完成</h3>
+            <img src="$!{claimApply.bankProofPic}" alt="" class="smaill_bank_pic">
+        </div>
+        <div class="pop_pic uploadBankImg" style="z-index: 1000;">
+            <img src="" alt="" class="real_bank_pic">
+            <h2 class="close_bank_pop">X</h2>
+        </div>
+    </div>
+</div>
+#end
+
+<script>
+    Zepto(function ($) {
+        $(".uploadImg").hide();
+        $(".uploadBankImg").hide();
+        $(".close_pop").click(function () {
+            $(".uploadImg").hide();
+            $(".mengchen").hide();
+        });
+
+
+        $(".smaill_pic").click(function () {
+            $(".mengchen").show();
+            var src=$(this).attr("src");
+            $(".real_pic").attr("src",src);
+            $(".uploadImg").show();
+        });
+
+        $(".close_bank_pop").click(function () {
+            $(".uploadBankImg").hide();
+            $(".mengchen").hide();
+        });
+        $(".smaill_bank_pic").click(function () {
+            $(".mengchen").show();
+            var src=$(this).attr("src");
+            $(".real_bank_pic").attr("src",src);
+            $(".uploadBankImg").show();
+        });
+    });
+</script>

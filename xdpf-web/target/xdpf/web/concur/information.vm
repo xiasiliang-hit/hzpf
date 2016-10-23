@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        //声明_czc对象:
+        var _czc = _czc || [];
+        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
+        _czc.push(["_setAccount", "1259101635"]);
+    </script>
+    <meta charset="UTF-8">
+    <title>完善资料</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="keywords" content=“扁鹊兄弟互助平台,扁鹊兄弟,网络互助平台,兄弟互助,互助平台,网络互助,网络保障平台,网络保障” />
+    <meta name="description" content=“扁鹊兄弟互助平台,更低互助金,更高更公平的可信赖的保障” />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/base.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/information.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/weixin/style/info-validate.css">
+    <script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto-min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        !function () {
+            function a() {
+                document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+            }
+
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b), b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+
+    </script>
+    <style>
+        body{
+            position: relative;
+        }
+        .verify {
+            line-height: 1.5;
+            width: 10.83rem;
+            text-align: center;
+            background-color: #FFF3D7;
+            color: #8B572A;
+            font-size: 0.6rem;
+            padding-top: 0.76rem;
+            padding-bottom: 0.76rem;
+            margin: 0 auto;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .verifymobile {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 1.28rem;
+            background-color: #6EC159;
+            height: 1.92rem;
+            font-size: 0.768rem;
+            text-align: center;
+            line-height: 1.92rem;
+            color: #fff;
+            border-radius: 0.3rem;
+            display: block;
+        }
+    </style>
+</head>
+
+
+<script>
+    var channelId='渠道'+$!{activity.channelId};
+    var shareTextId='文案'+$!{activity.shareTextId};
+    var lurkDesc=channelId+'_'+shareTextId;
+    _czc.push(["_trackEvent",'补充资料','访问',lurkDesc,'','']);
+    //_czc.push(["_trackEvent", '重疾互助_' + channelId, '点连接', '点连接', '', '']);
+</script>
+<script>
+    wx.config({
+        #if(${wxSign.debugLevel})
+            debug: true, //调试阶段建议开启
+        #end
+        appId: '${wxSign.wxAppId}',
+        timestamp:${wxSign.timestamp},
+        nonceStr: '${wxSign.nonceStr}',
+        signature: '${wxSign.signature}',
+        jsApiList: [
+            /*
+             * 所有要调用的 API 都要加到这个列表中
+             * 这里以图像接口为例
+             */
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline"
+        ]
+    });
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '$!{activity.title}',
+            link: '$!{activity.turl}',
+            imgUrl: '${activity.headImgUrl}',
+            trigger: function (res) {
+                //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                //alert('已分享');
+                _czc.push(["_trackEvent", '补充资料', '分享朋友圈', lurkDesc, '', '']);
+                Zepto.ajax({
+                    type: 'GET',
+                    url: '/myconcur/share.htm',
+                    // data to be added to query string:
+                    data: {
+                        activityId:$!{activity.activityId},
+                        shareUserId:$!{activity.shareUserId},
+                        channelId:$!{activity.channelId},
+                        shareTextId:$!{activity.shareTextId},
+                        shareLevel:$!{activity.shareLevel},
+                        f: 't'
+                    },
+                    // type of data we are expecting in return:
+                    dataType: 'json',
+                    timeout: 3000,
+                    context: $('body'),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, data, type) {
+                        //alert('Ajax error!')
+                        console.error(data);
+                    }
+                });
+
+
+            },
+            cancel: function (res) {
+                //alert('已取消');
+                console.info("cancle")
+            },
+            fail: function (res) {
+                console.error(JSON.stringify(res));
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '$!{activity.title}', // 分享标题
+            desc: '$!{activity.descr}', // 分享描述
+            link: '$!{activity.aurl}', // 分享链接
+            imgUrl: '${activity.headImgUrl}', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                //alert('已分享');
+                _czc.push(["_trackEvent", '补充资料', '分享给朋友', lurkDesc, '', '']);
+                Zepto.ajax({
+                    type: 'GET',
+                    url: '/myconcur/share.htm',
+                    // data to be added to query string:
+                    data: {
+                        activityId:$!{activity.activityId},
+                        shareUserId:$!{activity.shareUserId},
+                        channelId:$!{activity.channelId},
+                        shareTextId:$!{activity.shareTextId},
+                        shareLevel:$!{activity.shareLevel},
+                        f: 'a'
+                    },
+                    // type of data we are expecting in return:
+                    dataType: 'json',
+                    timeout: 3000,
+                    context: $('body'),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (xhr, data, type) {
+                        //alert('Ajax error!')
+                        console.error(data);
+                    }
+                });
+
+            },
+            cancel: function () {
+                console.error(data);
+            }
+        });
+    });
+
+</script>
+
+
+</head>
+
+<body>
+<div class="mengchen" ></div>
+<div style="display:none">
+    <script src="http://s95.cnzz.com/z_stat.php?id=1259101635&web_id=1259101635" language="JavaScript"></script>
+</div>
+
+<div class="info-title" id="titlestep1">
+    填写被保障人信息
+</div>
+<div class="info-title" id="titlestep2" style="display: none;">
+    填写联系方式
+</div>
+<div class="form">
+    <form id="submitform" style="display: none;">
+        <table class='form-table'>
+
+            <tr>
+                <td class="td1">手机号:</td>
+                <td class="td2">
+                    <input type="tel" id="mobile" name="mobile" placeholder="严格保密您个人隐私" />
+                </td>
+            </tr>
+            <tr>
+                <td class="td1">验证码:</td>
+                <td class="td2 flex-box">
+                    <div class='flex-item check-item'>
+                        <!-- 验证码最大的长度,是4你可以改变这个值来改变最大长度的限制-->
+                        <input type="tel" name="mcode" id="mcode" maxlength="4"/>
+                    </div>
+                    <div class='flex-item check-item check-text getCodeButton'>
+                        获取验证码
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="userName" id="userName" />
+        <input type="hidden" id="card" name="card" />
+        <input type="hidden" name="memberFee" id="memberFee" value="0"/>
+        <input type="hidden" name="alreadyPay" id="alreadyPay" value="false"/>
+    </form>
+    <form id="verifyform">
+        <table class='form-table'>
+            <tr>
+                <td class="td1">姓　名:</td>
+                <td class="td2">
+                    <input type="text" name='verifyUserName' id="verifyUserName" placeholder="与身份证姓名保持一致" maxlength="12"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="td1">身份证:</td>
+                <td class="td2">
+                    <input type="text" name="verifyCard" id="verifyCard" placeholder="用于理赔,会严格保密" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="verify"></div>
+<div class="small-tip" id="infostep1">
+    我承诺被保障人身体健康,无癌症或其它重大病史我同意<a  class="pact-btn">《会员公约》</a>和<a class="article-btn">《计划条款》</a>
+</div>
+<div class="small-tip" id="infostep2" style="display: none;">
+    手机号仅用于找回账号、获取扣款、充值、公示等重要信息
+</div>
+<div class="verifymobile" style="height: 2.1rem;line-height: 2.1rem;margin-top: 0.5rem;">
+    提交资料
+</div>
+<div class="greenbutton" style="height: 2.1rem;line-height: 2.1rem;display: none;margin-top: 0.5rem;">
+    确认提交
+</div>
+<div class="box-foot">
+    <div class="icon-box flex-box">
+        <div class="icon-item flex-item">
+            <div class="icon-img">
+                <img src="http://res.xiongdihuzhu.com/res/weixin/images/info_img/gvm.png" width="100%" alt="">
+            </div>
+            <span>政府基金战略投资</span>
+        </div>
+        <div class="icon-item flex-item">
+            <div class="icon-img">
+                <img src="http://res.xiongdihuzhu.com/res/weixin/images/info_img/icon1.png" width="100%" alt="">
+            </div>
+            <span>公估理赔全员评估</span>
+        </div>
+        <div class="icon-item flex-item">
+            <div class="icon-img">
+                <img src="http://res.xiongdihuzhu.com/res/weixin/images/info_img/yun.png" width="100%" alt="">
+            </div>
+                <span>
+            阿里云加密存储信息安全
+        </span>
+        </div>
+    </div>
+</div>
+<script>
+    Zepto(function ($) {
+        (function(){$("body").height(document.body.scrollHeight+"px")})();
+        var checkUserName = function (userName, result) {
+            userName=userName.trim();
+            if (userName != "") {
+                result.userName = "ok";
+            } else {
+                result.userName = "nothing";
+            }
+        }
+        var checkCard = function (card, result) {
+            card=card.trim();
+            if (card.length == 18 && card != "") {
+                result.card = "ok"
+            } else if (card == "") {
+                result.card = "nothing";
+            } else if (card.trim().length != 18) {
+                result.card = "lengthWrong-card";
+            }
+        }
+        var checkMobile = function (mobile, result) {
+            mobile=mobile.trim();
+            if (mobile.length == 11 && mobile != "") {
+                result.mobile = "ok";
+            } else if (mobile == "") {
+                result.mobile = "nothing";
+            } else if (mobile.length != 11) {
+                result.mobile = "lengthWrong-mobile";
+            }
+        }
+        var checkCode = function (mcode, result) {
+            mcode=mcode.trim();
+            if (mcode != "") {
+                result.mcode = "ok";
+            } else {
+                result.mcode = "nothing";
+            }
+        }
+        var check = function (obj, result) {
+            var result = {};
+            for (var i = 0; i < obj.length; i++) {
+                switch (obj[i].name) {
+                    case "userName":
+                        checkUserName(obj[i].value, result);
+                        break;
+                    case "card":
+                        checkCard(obj[i].value, result);
+                        break;
+                    case "mobile":
+                        checkMobile(obj[i].value, result);
+                        break;
+                    case "mcode":
+                        checkCode(obj[i].value, result);
+                        break;
+                }
+            }
+            return result;
+        }
+        var verifyWrong = function (msg) {
+            $(".verify").html(msg).show();
+        }
+        var verifyPass = function () {
+            $(".verify").html("").hide()
+        }
+
+        var flagCodeButton = true;
+        var num = 60;
+        var timeInterval;
+        //点击获取验证码按钮
+        $(".getCodeButton").click(function () {
+            if (flagCodeButton) {
+                var result = {};
+                var mobile = $("#mobile").val();
+                checkMobile(mobile, result);
+                if (result.mobile == 'nothing') {
+                    verifyWrong("手机号码未填写完整");
+                    return;
+                } else if (result.mobile == 'lengthWrong-mobile') {
+                    verifyWrong("请输入正确的手机号码");
+                    return;
+                }
+
+                //手机发送验证码
+                Zepto.ajax({
+                    type: 'GET',
+                    url: '/concur/regSendCode.htm?mobile='+mobile,
+                    // data to be added to query string:
+                    data: {},
+                    // type of data we are expecting in return:
+                    dataType: 'json',
+                    timeout: 3000,
+                    context: $('body'),
+                    success: function (data) {
+                        console.log(data);
+                        if (data.code != "SUCCESS") {
+                            verifyWrong(data.desc);
+                        } else {
+                            _czc.push(["_trackEvent", '补充资料', '获取验证码', lurkDesc, '', '']);
+                            verifyPass();
+                            flagCodeButton = !flagCodeButton;
+                            $(".getCodeButton").addClass('getCodeBtn-disable');
+                            $(".getCodeButton").html(num + "s");
+                            timeInterval = setInterval(function () {
+                                num--;
+                                $(".getCodeButton").html(num + "s");
+                                if (num < 0) {
+                                    num = 60;
+                                    $(".getCodeButton").html("获取验证码").removeClass('getCodeBtn-disable');
+                                    flagCodeButton = !flagCodeButton;
+                                    clearInterval(timeInterval);
+                                }
+                            }, 1000);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        //alert('Ajax error!')
+                        console.error(xhr);
+
+                    }
+                });
+            }
+        });
+
+
+        $(".verifymobile").click(function () {
+            var result = {};
+            var userName = $("#verifyUserName").val();
+            var card = $("#verifyCard").val();
+            checkUserName(userName, result);
+            if (result.mobile == 'nothing') {
+                verifyWrong("真实姓名未填写完整");
+                return;
+            }
+            checkCard(card, result);
+            if (result.card == 'nothing') {
+                verifyWrong("身份证号未填写完整");
+                return;
+            }else if(result.card == 'lengthWrong-card'){
+                verifyWrong("身份证号位数不对，请核对重新输入");
+                return;
+            }
+            //手机发送验证码
+            Zepto.ajax({
+                type: 'GET',
+                url: '/concur/verifyCard.htm?userName='+userName+"&card="+card,
+                // data to be added to query string:
+                data: {},
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 3000,
+                context: $('body'),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code != "SUCCESS") {
+                        verifyWrong(data.desc);
+                    } else {
+                        _czc.push(["_trackEvent", '补充资料', '身份证号码验证成功', lurkDesc, '', '']);
+                        verifyPass();
+
+                        $("#verifyform").hide();
+                        $("#submitform").show();
+
+                        $("#infostep1").hide();
+                        $("#infostep2").show();
+
+                        $("#titlestep1").hide();
+                        $("#titlestep2").show();
+
+                        $(".verifymobile").hide();
+                        $(".greenbutton").show();
+
+                        $("#userName").val(userName);
+                        $("#card").val(card);
+                        #if($!{need_pay}=='yes'&&$!{pay_result}=='success')
+                            $("#memberFee").val(memberFee);
+                        #end
+
+                    }
+                },
+                error: function (xhr, type) {
+                    //alert('Ajax error!')
+                    console.error(xhr);
+
+                }
+            });
+
+        });
+
+
+        //点击提交数据
+        $(".greenbutton").click(function () {
+            _czc.push(["_trackEvent", '补充资料', '提交', lurkDesc, '', '']);
+            var postData = $('form').serializeArray();
+            //这里错误提示的样式还没给出）
+            var afterCheckData = check(postData);
+            console.log(afterCheckData);
+            for (var key in afterCheckData) {
+                switch (afterCheckData[key]) {
+                    case "nothing":
+                        verifyWrong("信息未填写完整");
+                        return;
+                        break;
+                    case "lengthWrong-card":
+                        verifyWrong("身份证号位数不对，请核对重新输入");
+                        return;
+                        break;
+                    case "lengthWrong-mobile":
+                        verifyWrong("请输入正确的手机号码");
+                        return;
+                        break;
+                }
+            }
+            // postData是你需要提交的信息，
+            // ajax写在这里
+            //填写资料提交处理
+            Zepto.ajax({
+                type: 'GET',
+                url: '/concur/joinConcur.htm',
+                // data to be added to query string:
+                data: postData,
+                // type of data we are expecting in return:
+                dataType: 'json',
+                timeout: 3000,
+                context: $('body'),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code != "SUCCESS") {
+                        _czc.push(["_trackEvent", '补充资料', '加入失败', data.desc, '', '']);
+                        if(data.code=='USER_JOIN_CONCUR_DELAY_AGE_FAIL'||data.code=='USER_JOIN_CONCUR_AGE_FAIL'){
+                            verifyWrong("很抱歉，你的年龄，不能参加该计划，<br/>即将推出一个中老年计划，敬请期待。");
+                        }else{
+                            verifyWrong(data.desc);
+                        }
+                    } else {
+                        _czc.push(["_trackEvent", '补充资料', '加入成功', lurkDesc, '', '']);
+                        window.location.href = "$!requestTool.getActivityUrl('http://res.xiongdihuzhu.com/res/static/care.html?show=code',$request)";
+                    }
+                    flagCodeButton = !flagCodeButton;
+
+                },
+                error: function (xhr, type) {
+                    _czc.push(["_trackEvent", '补充资料', '加入失败', "出错", '', '']);
+                    //alert('Ajax error!')
+                    console.error(xhr);
+
+                }
+            });
+            console.log(postData);
+            //back();
+
+        });
+
+        $(".pact-btn").click(function(){
+            _czc.push(["_trackEvent",'补充资料','公约点击',lurkDesc,'','']);
+            $("#alreadyPay").val('true');
+            //alert($("#alreadyPay").val());
+            window.location.href = "http://res.xiongdihuzhu.com/res/static/pact.html";
+        });
+        $(".article-btn").click(function(){
+            _czc.push(["_trackEvent",'补充资料','条款点击',lurkDesc,'','']);
+            $("#alreadyPay").val('true');
+            //alert($("#alreadyPay").val());
+            window.location.href = "http://res.xiongdihuzhu.com/res/static/article.html";
+
+        });
+    });
+
+</script>
+</body>
+<style>
+    .mengchen {
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: 0.5;
+        position: fixed;
+        z-index: 1000;
+        display: none;
+    }
+</style>
+
+    #if(${need_pay}=='yes')
+        #if(${pay_result}=='success')
+        <script>
+            var memberFee=${pay_memberFee};
+            $(".mengchen").show();
+            function onBridgeReady() {
+                var alreadyPay=$("#alreadyPay").val();
+                //alert(alreadyPay);
+                if(alreadyPay=='false'){
+                    WeixinJSBridge.invoke(
+                            'getBrandWCPayRequest', {
+                                "appId": '${pay_appId}',
+                                "timeStamp": '${pay_timeStamp}',
+                                "nonceStr": '${pay_nonceStr}',
+                                "package": '${pay_package}',
+                                "signType": '${pay_signType}',
+                                "paySign": '${pay_sign}'
+                            },
+                            function (res) {
+                                //alert(res.err_msg + res.err_desc);
+                                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                    //alert("ok");
+                                    $(".mengchen").hide();
+                                } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                    history.go(-1);
+                                    //window.location.href = "$!urlTool.getAbsoluteUrl($request,'/concur/detail.htm')";
+                                } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+                                    history.go(-1);
+                                    //window.location.href = "$!urlTool.getAbsoluteUrl($request,'/concur/detail.htm')";
+                                }
+
+                            }
+                    );
+                }else{
+                    $(".mengchen").hide();
+                }
+            }
+
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                }
+            } else {
+                onBridgeReady();
+            }
+
+        </script>
+        #end
+    #end
+
+
+</html>

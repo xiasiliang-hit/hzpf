@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="PfWeixinAuth">
+
+    <typeAlias alias="pfWeixinAuth" type="com.line.bqxd.platform.client.dataobject.PfWeixinAuthDO"/>
+    <typeAlias alias="pfWeixinAuthQuery" type="com.line.bqxd.platform.client.dataobject.query.PfWeixinAuthQueryDO"/>
+
+    <resultMap id="pfWeixinAuthResultMap" class="pfWeixinAuth">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="nickName" column="nick_name"/>
+        <result property="headImg" column="head_img"/>
+        <result property="serviceTypeInfo" column="service_type_info"/>
+        <result property="verifyTypeInfo" column="verify_type_info"/>
+        <result property="userName" column="user_name"/>
+        <result property="alias" column="alias"/>
+        <result property="businessInfo" column="business_info"/>
+        <result property="qrcodeUrl" column="qrcode_url"/>
+        <result property="corpId" column="corp_id"/>
+        <result property="authorizerAppid" column="authorizer_appid"/>
+        <result property="authorizerAccessToken" column="authorizer_access_token"/>
+        <result property="expiresIn" column="expires_in"/>
+        <result property="authorizerRefreshToken" column="authorizer_refresh_token"/>
+        <result property="funcInfo" column="func_info"/>
+        <result property="jsTicket" column="js_ticket"/>
+        <result property="mchId" column="mch_id"/>
+        <result property="mchSecret" column="mch_secret"/>
+        <result property="attentionImgUrl" column="attention_img_url"/>
+
+    </resultMap>
+
+    <sql id="pfWeixinAuth_columns">
+        id,gmt_create,gmt_modified,
+        nick_name,head_img,service_type_info,verify_type_info,user_name,alias,business_info,qrcode_url,corp_id,authorizer_appid,authorizer_access_token,expires_in,authorizer_refresh_token,func_info,js_ticket,mch_id,mch_secret,attention_img_url
+    </sql>
+
+    <select id="selectById" parameterClass="long" resultMap="pfWeixinAuthResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfWeixinAuth_columns"/>
+        <![CDATA[
+			FROM pf_weixin_auth
+			WHERE id = #id#
+		]]>
+    </select>
+
+    <select id="selectByAppid" parameterClass="String" resultMap="pfWeixinAuthResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfWeixinAuth_columns"/>
+        <![CDATA[
+			FROM pf_weixin_auth
+			WHERE authorizer_appid = #authorizerAppid#
+		]]>
+    </select>
+
+    <insert id="insert" parameterClass="pfWeixinAuth">
+        <![CDATA[
+			INSERT INTO pf_weixin_auth(
+		gmt_create,gmt_modified,
+        nick_name,head_img,service_type_info,verify_type_info,user_name,alias,business_info,qrcode_url,corp_id,authorizer_appid,authorizer_access_token,expires_in,authorizer_refresh_token,func_info,js_ticket,mch_id,mch_secret,attention_img_url)
+			VALUES(NOW(),NOW(),#nickName#,#headImg#,#serviceTypeInfo#,#verifyTypeInfo#,#userName#,#alias#,#businessInfo#,#qrcodeUrl#,#corpId#,#authorizerAppid#,#authorizerAccessToken#,#expiresIn#,#authorizerRefreshToken#,#funcInfo#,#jsTicket#,#mchId#,#mchSecret#,#attentionImgUrl#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <delete id="delete" parameterClass="long">
+        delete from pf_weixin_auth where id=#id#
+    </delete>
+
+    <select id="selectAll"  resultMap="pfWeixinAuthResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfWeixinAuth_columns"/>
+        <![CDATA[
+			FROM pf_weixin_auth
+			order by gmt_create desc
+		]]>
+    </select>
+
+    <sql id="update_columns" >
+        <dynamic>
+            <isNotEmpty property="nickName" prepend=",">
+                <![CDATA[
+					nick_name = #nickName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="headImg" prepend=",">
+                <![CDATA[
+					head_img = #headImg#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="userName" prepend=",">
+                <![CDATA[
+					user_name = #userName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="alias" prepend=",">
+                <![CDATA[
+					alias = #alias#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="businessInfo" prepend=",">
+                <![CDATA[
+					business_info = #businessInfo#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="qrcodeUrl" prepend=",">
+                <![CDATA[
+					qrcode_url = #qrcodeUrl#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="funcInfo" prepend=",">
+                <![CDATA[
+					func_info = #funcInfo#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan prepend="," compareValue="-1" property="serviceTypeInfo">
+                <![CDATA[
+					service_type_info = #serviceTypeInfo#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan prepend="," compareValue="-2" property="verifyTypeInfo">
+                <![CDATA[
+					verify_type_info = #verifyTypeInfo#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan prepend="," compareValue="0" property="expiresIn">
+                <![CDATA[
+					expires_in = #expiresIn#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="authorizerAccessToken" prepend=",">
+                <![CDATA[
+					authorizer_access_token = #authorizerAccessToken#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="authorizerRefreshToken" prepend=",">
+                <![CDATA[
+					authorizer_refresh_token = #authorizerRefreshToken#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="jsTicket" prepend=",">
+                <![CDATA[
+					js_ticket = #jsTicket#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="mchSecret" prepend=",">
+                <![CDATA[
+					mch_secret = #mchSecret#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="attentionImgUrl" prepend=",">
+                <![CDATA[
+					attention_img_url = #attentionImgUrl#
+				]]>
+            </isNotEmpty>
+
+        </dynamic>
+    </sql>
+
+    <update id="update" parameterClass="pfWeixinAuth">
+        <![CDATA[
+			UPDATE pf_weixin_auth SET gmt_modified = NOW()
+		]]>
+        <include refid="update_columns"/>
+        <isNotEmpty property="authorizerAppid" prepend=",">
+            <![CDATA[
+					authorizer_appid = #authorizerAppid#
+				]]>
+        </isNotEmpty>
+        WHERE ID = #id#
+    </update>
+
+    <update id="updateByAppId" parameterClass="pfWeixinAuth">
+        <![CDATA[
+			UPDATE pf_weixin_auth SET gmt_modified = NOW()
+		]]>
+        <include refid="update_columns"/>
+        WHERE authorizer_appid = #authorizerAppid#
+    </update>
+
+
+    <select id="selectByQuery" parameterClass="pfWeixinAuthQuery" resultMap="pfWeixinAuthResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="pfWeixinAuth_columns"/>
+        <![CDATA[
+			FROM pf_weixin_auth
+			WHERE 1=1
+			]]>
+        <isNotEmpty prepend=" AND " property="authorizerAppid">
+            <![CDATA[
+					authorizer_appid = #authorizerAppid#
+				]]>
+        </isNotEmpty>
+        <isGreaterThan prepend=" AND " compareValue="0" property="corpId">
+            <![CDATA[
+					corp_id = #corpId#
+				]]>
+        </isGreaterThan>
+        <![CDATA[
+			order by gmt_create desc
+		]]>
+
+    </select>
+
+
+</sqlMap>

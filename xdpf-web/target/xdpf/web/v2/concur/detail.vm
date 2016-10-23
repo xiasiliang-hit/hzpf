@@ -1,0 +1,326 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurNmae=$!{concurPlan.name})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/index.css">
+
+<div class="mengchen"></div>
+<ul class="menu_box flex-item clearfix">
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/detail.htm'),$request)"
+           class="menu1-active">
+            <i class="icon-i1-active"></i>
+            互助计划
+        </a>
+    </li>
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/claim/list.htm'),$request)"
+           class="menu2">
+            <i class="icon-i2"></i>
+            互助公示
+        </a>
+    </li>
+    <li class="menu">
+        <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/my.htm'),$request)"
+           class="menu3">
+            <i class="icon-i3"></i>
+            我的互助
+        </a>
+    </li>
+</ul>
+
+<div class="banner_box">
+    <img src="$!{concurPlan.bannerUrl}" alt="">
+</div>
+<div class="Num_box flex-item clearfix">
+    <div class="fl">
+        <h1>$!{userQuantity}</h1>
+        <span>已加入(人)</span>
+    </div>
+    <div class="fl">
+        <h1>$!bizUtils.changeF2Y($!{balanceQuantity})</h1>
+        <span>互助基金池(元)</span>
+    </div>
+    <div class="fl no-border">
+        <h1>$!{eventQuantity}</h1>
+        <span>互助事件(起)</span>
+    </div>
+</div>
+
+<div class="tenet_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>互助宗旨</h6>
+    </div>
+    <div class="content_box">
+        <!--    	<hr color="6ec159">
+                <span>早产儿是一个风险非常高的群体，视网膜病变发生率高达10%，其中10%是需要进行手术治疗的。还有脑瘫的发生率高达1%，而这两种疾病是可以治愈的。		        </span>
+        -->
+        <img src="$!{concurPlan.tenetUrl}" alt="">
+    </div>
+    <!--
+    <div class="T_example flex-item clearfix">
+        <span>了解什么是互助</span>
+        <a href="">示例</a>
+    </div>
+    -->
+</div>
+<div class="donate_box">
+    <!--<h3>一人出险，全员捐助</h3>
+    <img src="images/donate.png" alt="">
+    <span>互助计划是一种全新的保障概念，成员之间用互帮互助的形式来抵御风险。</span>-->
+    <img src="$!{concurPlan.concurDescUrl}" alt="">
+</div>
+
+<div class="guarantee_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>保障权利</h6>
+    </div>
+    <div class="con_box">
+        <div class="G_content flex-item clearfix">
+            <span>$!{concurPlan.ensureName}</span>
+            <h2>$!{concurPlan.ensureMoneyDesc}</h2>
+        </div>
+        <div class="G_content flex-item clearfix">
+            <span>脑瘫</span>
+            <h2>10000元</h2>
+        </div>
+        <div class="G_content flex-item clearfix">
+            <span>保障时间</span>
+            <h2>$!{concurPlan.ensureTime}</h2>
+        </div>
+        <div class="G_content flex-item clearfix showDetail" data-id="guarantee">
+            <a>了解详情</a>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+        </div>
+
+    </div>
+    <div class="guarantee clearfix" style="z-index: 1000;">
+        <h1>保障权利</h1>
+        <p>一、高危脑瘫也指“神经功能运动障碍”，一旦指定医院确诊后，可申请互助金最高10000元。</p>
+        <p>二、会员一旦在指定医院确诊为视网膜病变，并进行手术治疗，根据医疗费用凭票申请互助金最高10000元。</p>
+        <p>三、互助金由全体会员互助筹集，平台不承诺一定完成筹款，根据实际筹集金额给付。</p>
+        <p>四、保障时间为参加日起至小孩出生365天。</p>
+        <hr color="979797">
+        <div class="Gbtn">
+            <!--<div class="Gbtn_L">
+                查看完整条款
+            </div>-->
+            <div class="Gbtn_R closeDetail" data-id="guarantee" >
+                我知道了
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="condition_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>参加条件</h6>
+    </div>
+    <div class="main">$!{concurPlan.ensureRequire}</div>
+</div>
+
+<div class="duty_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>互助义务</h6>
+    </div>
+    <div class="main_box">
+        <div class="G_content flex-item clearfix">
+            <span>预存金额</span>
+            <h1>$!{concurPlan.firstStoreMoneyDesc}
+                <h6>按实际发生案例扣费，多退少补</h6>
+            </h1>
+        </div>
+        <div class="G_content flex-item clearfix">
+            <span>单次捐助扣款</span>
+            <h1>$!{concurPlan.costMoneyDesc}
+                <h6>按参加人数及各自的分摊系数来捐助</h6>
+            </h1>
+        </div>
+        <div class="G_content flex-item clearfix">
+            <span>保障延续</span>
+            <h2>$!{concurPlan.ensureContinueDesc}</h2>
+        </div>
+        <div class="G_content flex-item clearfix showDetail2"  data-id="duty">
+            <a>了解详情</a>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+        </div>
+
+    </div>
+    <div class="duty clearfix" style="z-index: 1000;">
+        <h1>互助义务</h1>
+        <p>一、为了保证互助金的及时到达，每个加入的会员均收取一定的预存金。</p>
+        <p>二、等待期：为了防止有人带病参加，参加的会员设置一个等待期，在等待期结束后发生风险，可以申请互助，等待期内发生风险不予互助。</p>
+        <p>三、当会员申请理赔后，根据当前参与的会员数和会员分摊系数来分摊，计算公示如下：当次互助扣款金额= （自己互助系数/全体会员系数总和 ）X受助者当次互助目标金额。</p>
+        <p>四、 会员人数越多，单次互助每人分摊的就越少，参与互助单人单次上限最多捐50元。</p>
+        <hr color="979797">
+        <div class="Gbtn">
+            <!--<div class="Gbtn_L">
+                查看完整条款
+            </div>-->
+            <div class="Gbtn_R closeDetail2" data-id="duty">
+                我知道了
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="flow_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>互助流程</h6>
+    </div>
+    <div class="main_box">
+        <div class="F_box flex-item clearfix">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/flow1@2x.jpg" alt="" class="list">
+            <h1>发生风险</h1>
+            <p>会员在指定医院确诊后<br>在公众号中提交详细资料</p>
+        </div>
+        <div class="F_box flex-item clearfix">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/flow2@2x.jpg" alt="" class="list">
+            <h1>全体公示</h1>
+            <h6>案件所有材料在全平台公示</h6>
+        </div>
+        <div class="F_box flex-item clearfix">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/flow3@2x.jpg" alt="" class="list">
+            <h1>互助划款</h1>
+            <p>公示结束<br>将互助款划到受助者账号中</p>
+        </div>
+        <div class="F_box flex-item clearfix">
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/flow4@2x.jpg" alt="" class="list">
+            <h1>质疑处理</h1>
+            <p>会员对项目有质疑<br>平台可介入核实</p>
+        </div>
+        <!--
+        <div class="F_box flex-item clearfix">
+            <a href="">查看示例</a>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+        </div>
+        -->
+    </div>
+</div>
+
+<div class="server_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>服务保障</h6>
+    </div>
+    <div class="S_box">
+        <img src="$!{concurPlan.serviceUrl}" alt="">
+    </div>
+</div>
+
+
+<div class="faq_box">
+    <div class="T_title">
+        <img src="http://res.xiongdihuzhu.com/res/xdpf/images/title-b@2x.png" alt="">
+        <h6>常见问题</h6>
+    </div>
+    <div class="main_box">
+        <div class="faq flex-item clearfix showFaq" data-id="whyConcur">
+            <span>Q1  若遇不幸怎么申请互助？</span>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-D@2x.jpg" alt="">
+        </div>
+        <div class="faq-content " style="display:none" id="whyConcur">
+                <dl>
+                    <dt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互助会员在保障期间若发生了计划保障范围内的风险事故，则可以通过以下方式向平台发起互助申请。</dt>
+                    <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、点击“我的互助”下的“申请互助”进行申请</dd>
+                    <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、根据页面提示核对相关信息并选择申请互助的受助人</dd>
+                    <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、填写互助申请人相关信息，填写事件该要，上传凭证截图</dd>
+                    <dd>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4、我们工作人员进行初步审核后将予以公示，你可以在“公示详情”查看申请进度</dd>
+                </dl>
+        </div>
+        <div class="faq flex-item clearfix showFaq" data-id="whyJoin">
+            <span>Q2  有医保/商业保险为什么要加入？</span>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-D@2x.jpg" alt="">
+        </div>
+        <div class="faq-content" style="display:none" id="whyJoin">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;互联网互助保障是医保和商业保险的有效补充，是人们构建全面保障体系的有机组成部分，同时计划所保障的范围目前很少在商业保障和医保范围内，对于不幸的发生需要一份高性价比的风险防范措施。</div>
+        <div class="faq flex-item clearfix showFaq" data-id="whatToDo">
+            <span>Q3  预存金如果不够怎么办？</span>
+            <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-D@2x.jpg" alt="">
+        </div>
+        <div class="faq-content" style="display:none" id="whatToDo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;预存金管理是采用互助协议期内多退少补的原则，如在互助期间不足则需要继续充值，如有剩余则用户可以选择提现。</div>
+    </div>
+</div>
+
+
+<div class="clause_box">
+    <div class="title">我已阅读并同意以下条款：</div>
+    <div class="main_box">
+
+            <a href="http://res.xiongdihuzhu.com/res/static/item-p.html">
+                <div class="clause flex-item clearfix">
+                <span>《会员公约》</span>
+                <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+                </div>
+            </a>
+
+
+            <a href="http://res.xiongdihuzhu.com/res/static/item-b.html">
+                <div class="clause flex-item clearfix">
+                <span>《$!{concurPlan.name}互助条款》</span>
+                <img src="http://res.xiongdihuzhu.com/res/xdpf/images/arrow-R@2x.jpg" alt="">
+                </div>
+            </a>
+
+    </div>
+</div>
+<div class="empty"></div>
+<div class="footer">
+    #if($!{alreadyJoin}=='false')
+        立即加入
+    #else
+        已经加入
+    #end
+</div>
+
+<script>
+    Zepto(function ($) {
+
+        $(".footer").click(function () {
+            window.location.href = "$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,
+                '/v2/concur/addChild.htm'),$request)";
+            //$(".page-2").show();
+
+        });
+
+        $(".showDetail").click(function () {
+            var data=$(this).attr("data-id");
+            $(".mengchen").show();
+            $("."+data).show();
+
+        });
+
+        $(".showDetail2").click(function () {
+            var data=$(this).attr("data-id");
+            $(".mengchen").show();
+            $("."+data).show();
+
+        });
+
+        $(".closeDetail").click(function () {
+            var data=$(this).attr("data-id");
+            $(".mengchen").hide();
+            $("."+data).hide();
+
+        });
+        $(".closeDetail2").click(function () {
+            var data=$(this).attr("data-id");
+            $(".mengchen").hide();
+            $("."+data).hide();
+
+        });
+        $(".showFaq").click(function () {
+            var data=$(this).attr("data-id");
+            var show=$("#"+data).css('display');
+            if(show=='none'){
+                $("#"+data).show();
+            }else{
+                $("#"+data).hide();
+            }
+
+        });
+
+    });
+</script>

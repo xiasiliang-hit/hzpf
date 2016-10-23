@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="DunkBill">
+
+    <typeAlias alias="dunkBill" type="com.line.bqxd.platform.client.dataobject.DunkBillDO"/>
+    <typeAlias alias="dunkBillQuery" type="com.line.bqxd.platform.client.dataobject.query.DunkBillQueryDO"/>
+
+    <resultMap id="dunkBillResultMap" class="dunkBill">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="userId" column="user_id"/>
+        <result property="concurPlanId" column="concur_plan_id"/>
+        <result property="userConcurRelationId" column="user_concur_relation_id"/>
+        <result property="userClaimId" column="user_claim_id"/>
+        <result property="balance" column="balance"/>
+        <result property="explains" column="explains"/>
+
+    </resultMap>
+
+    <sql id="dunkBill_columns">
+        id,gmt_create,gmt_modified,
+        user_id,concur_plan_id,user_concur_relation_id,user_claim_id,balance,explains
+    </sql>
+
+    <sql id="dunkBill_query_conditon" >
+
+        <isGreaterThan property="concurPlanId" prepend=" AND " compareValue="0">
+            <![CDATA[
+					concur_plan_id = #concurPlanId#
+				]]>
+        </isGreaterThan>
+
+        <isGreaterThan property="userId" prepend=" AND " compareValue="0">
+            <![CDATA[
+					user_id = #userId#
+				]]>
+        </isGreaterThan>
+        <isGreaterThan compareValue="0" prepend=" AND " property="userClaimId">
+            <![CDATA[
+					user_claim_id = #userClaimId#
+				]]>
+        </isGreaterThan>
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="dunkBillResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="dunkBill_columns"/>
+        <![CDATA[
+			FROM pf_dunk_bill
+			WHERE id = #id#
+		]]>
+    </select>
+
+    <insert id="insert" parameterClass="dunkBill">
+
+        <![CDATA[
+			INSERT INTO pf_dunk_bill(
+		gmt_create,gmt_modified,
+		user_id,concur_plan_id,user_concur_relation_id,user_claim_id,balance,explains)
+			VALUES(NOW(),NOW(),#userId#,#concurPlanId#,#userConcurRelationId#,#userClaimId#,#balance#,#explains#)
+		]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterClass="long">
+        delete from pf_dunk_bill where id=#id#
+    </delete>
+
+    <select id="selectByQuery" parameterClass="dunkBillQuery" resultMap="dunkBillResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="dunkBill_columns"/>
+        <![CDATA[
+			FROM pf_dunk_bill
+			WHERE 1=1
+		]]>
+        <include refid="dunkBill_query_conditon"></include>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+    <select id="countByQuery" parameterClass="dunkBillQuery" resultClass="long">
+        <![CDATA[
+			SELECT count(1)
+			FROM pf_dunk_bill
+			WHERE 1=1
+		]]>
+        <include refid="dunkBill_query_conditon" />
+    </select>
+
+    <select id="selectStatistics" parameterClass="dunkBillQuery" resultClass="Long">
+        <![CDATA[
+			SELECT sum(balance)
+			FROM pf_dunk_bill
+			WHERE 1=1
+		]]>
+        <include refid="dunkBill_query_conditon" />
+    </select>
+
+</sqlMap>

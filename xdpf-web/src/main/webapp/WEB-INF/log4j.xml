@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="PROJECT"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${logging.root}/logs/xdpf.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<!--param name="threshold" value="info" / -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="TAOBAO-WARN"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${logging.root}/logs/xdpf-warn.log" />
+		<param name="append" value="false" />
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="PROJECT-DEBUG"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${logging.root}/logs/xdpf-debug.log" />
+		<param name="append" value="false" />
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="FILTER"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${logging.root}/logs/xdpf-warn.log" />
+		<param name="append" value="true" />
+		<param name="encoding" value="UTF-8" />
+		<param name="threshold" value="info" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="PROJECT-BIZ"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="${logging.root}/logs/xdpf-biz.log" />
+		<param name="append" value="false" />
+		<param name="encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{2} - %m%n" />
+		</layout>
+	</appender>
+	
+	<logger name="bizLogger" additivity="false">
+		<level value="${logging.Level}" />
+		<appender-ref ref="PROJECT-BIZ" />
+	</logger>
+
+		
+	<root>
+		<level value="${logging.Level}" />
+		<appender-ref ref="PROJECT" />
+	</root>
+</log4j:configuration>

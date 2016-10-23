@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ConcurPlanGroup">
+
+    <typeAlias alias="concurPlanGroup" type="com.line.bqxd.platform.client.dataobject.ConcurPlanGroupDO"/>
+    <typeAlias alias="concurPlanGroupQueryDO" type="com.line.bqxd.platform.client.dataobject.query.ConcurPlanGroupQueryDO"></typeAlias>
+
+
+    <resultMap id="concurPlanGroupResultMap" class="concurPlanGroup">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="concurPlanId" column="concur_plan_id"/>
+        <result property="headUserId" column="head_user_id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupDesc" column="group_desc"/>
+        <result property="groupBackUrl" column="group_back_url"/>
+    </resultMap>
+
+    <sql id="concurPlanGroup_columns">
+        id,gmt_create,gmt_modified,
+        concur_plan_id,head_user_id,group_name,group_desc,group_back_url
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="concurPlanGroupResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="concurPlanGroup_columns"/>
+        <![CDATA[
+			FROM concur_plan_group
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="concurPlanGroup">
+        <![CDATA[
+			INSERT INTO concur_plan_group(
+		gmt_create,gmt_modified,
+        concur_plan_id,head_user_id,group_name,group_desc,group_back_url)
+			VALUES(NOW(),NOW(),#concurPlanId#,#headUserId#,#groupName#,#groupDesc#,#groupBackUrl#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="concurPlanGroup">
+        <![CDATA[
+			UPDATE concur_plan_group SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isNotEmpty property="groupName" prepend=",">
+                <![CDATA[
+					group_name = #groupName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="groupDesc" prepend=",">
+                <![CDATA[
+					group_desc = #groupDesc#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="groupBackUrl" prepend=",">
+                <![CDATA[
+					group_back_url = #groupBackUrl#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from concur_plan_group where id=#id#
+    </delete>
+
+    <select id="selectByQuery" parameterClass="concurPlanGroupQueryDO" resultMap="concurPlanGroupResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="concurPlanGroup_columns"/>
+        <![CDATA[
+			FROM concur_plan_group
+			WHERE 1=1
+		]]>
+        <isNotEmpty property="groupName" prepend=" AND ">
+            <![CDATA[
+					group_name = #groupName#
+				]]>
+        </isNotEmpty>
+        <isGreaterThan property="concurPlanId" prepend=" AND " compareValue="0">
+            <![CDATA[
+					concur_plan_id = #concurPlanId#
+				]]>
+        </isGreaterThan>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+
+</sqlMap>

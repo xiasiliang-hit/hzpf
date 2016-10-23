@@ -1,0 +1,80 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="互助计划列表")
+
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/index.htm">首页</a></li>
+            <li><a href="/admin/concur/list.htm">互助列表</a></li>
+            <li class="active"><span>互助分组列表</span></li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="main-box no-header clearfix">
+    <div class="main-box-body clearfix">
+        <div class="clearfix">
+            <div class="pull-right top-page-ui">
+                <a href="/admin/concur/groupView.htm?concurId=$!concurId" class="btn btn-primary pull-right">
+                    <i class="fa fa-plus-circle fa-lg"></i> 增加分组
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table user-list table-hover">
+                <thead>
+                <tr class="info">
+                    <th>编号</th>
+                    <th>组长名</th>
+                    <th>小组名</th>
+                    <th>小组说明</th>
+                    <th>用户总数</th>
+                    <th>子用户数</th>
+                    <th>图片</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($concurPlanGroupDO in $list)
+                    <tr>
+                        <td width="6%">$!{concurPlanGroupDO.id}</td>
+                        <td width="8%">$!{concurPlanGroupDO.nickName}</td>
+                        <td width="15#">$!{concurPlanGroupDO.groupName}</td>
+                        <td width="37%">$!{concurPlanGroupDO.groupDesc}</td>
+                        <td width="8%">$!{concurPlanGroupDO.quantity}</td>
+                        <td width="8%">$!{concurPlanGroupDO.subUserQuantity}</td>
+                        <td width="13%">
+                            #if($!stringUtils.isNotBlank($!{concurPlanGroupDO.groupBackUrl}))
+                                <img src="$!{concurPlanGroupDO.groupBackUrl}" height="60px" width="60px"/>
+                            #end</td>
+
+
+                        <td style="width: 14%;">
+                            <a href="/admin/concur/groupUserList.htm?concurPlanGroupId=$!{concurPlanGroupDO.id}" class="table-link" alt="用户组">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            <a href="/admin/concur/groupView.htm?concurGroupId=$!{concurPlanGroupDO.id}&concurId=$!{concurPlanGroupDO.concurPlanId}" class="table-link" title="修改小组信息">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                            <a href="#" class="table-link danger">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            <div>
+                <div>
+                    <div>
+

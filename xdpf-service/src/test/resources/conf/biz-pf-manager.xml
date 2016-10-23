@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+
+    <bean id="pfApplication" class="com.line.bqxd.platform.v2.PfApplication" init-method="init" destroy-method="destory">
+        <property name="pfAppId" value="wxbca333b225839e32"></property>
+        <property name="pfAppsecret" value="8d75cc10ba6572778810b682ee5e9326"></property>
+        <property name="encodingAesKey" value="emhlnca4CY5zwQ2E2n6Mssih2HjSnVkm8nbKKZuM8uP"></property>
+        <property name="token" value="xdhz"></property>
+    </bean>
+
+    <bean id="pfCorpDAO" class="com.line.bqxd.platform.dao.impl.PfCorpDAOImpl"></bean>
+    <bean id="pfUserAdminDAO" class="com.line.bqxd.platform.dao.impl.PfUserAdminDAOImpl"></bean>
+    <bean id="pfWeixinAuthDAO" class="com.line.bqxd.platform.dao.impl.PfWeixinAuthDAOImpl"></bean>
+    <bean id="userAppOpenIdDAO" class="com.line.bqxd.platform.dao.impl.UserAppOpenIdDAOImpl"></bean>
+
+
+    <bean id="envManager" class="com.line.bqxd.platform.v2.env.EnvManager"></bean>
+
+    <bean id="pfWeixinAuthManager" class="com.line.bqxd.platform.v2.manager.impl.PfWeixinAuthManagerImpl" init-method="init" destroy-method="destory"></bean>
+    <bean id="pfCorpManager" class="com.line.bqxd.platform.v2.manager.impl.PfCorpManagerImpl" ></bean>
+    <bean id="pfUserAdminManager" class="com.line.bqxd.platform.v2.manager.impl.PfUserAdminManagerImpl" ></bean>
+
+
+
+
+</beans>

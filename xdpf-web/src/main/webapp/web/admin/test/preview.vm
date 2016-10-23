@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto-min.js"></script>
+<script src="http://res.xiongdihuzhu.com/res/main/js/article.js"></script>
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <title>$!{previewTitle}</title>
+
+
+</head>
+<body>
+<div style="display:none">
+    <script src="http://s95.cnzz.com/z_stat.php?id=1259101635&web_id=1259101635" language="JavaScript"></script>
+</div>
+    $!{previewContent}
+
+#if($!previewHaveAdvert=='true')
+
+<script>
+    !function() {
+        function a() {
+            document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+        }
+        var b = null;
+        window.addEventListener("resize", function() {
+            clearTimeout(b), b = setTimeout(a, 300)
+        }, !1), a()
+    }(window);
+</script>
+
+<style>
+    img{
+        max-width:100%;
+    }
+    *{
+        padding: 0;
+        margin:0;
+        border:0;
+    }
+    a {
+        text-decoration: none;
+    }
+    .bottom-fixed{
+        /*height: 6rem;*/
+
+        /*opacity: 0.5;*/
+        background-color:rgba(0,0,0,0.7);
+        position: fixed;
+        bottom:0;
+        padding: 0.5rem 0rem;
+        width:100%;
+    }
+    .bottom-img{
+        width:2rem;
+        height: 2rem;
+        overflow: hidden;
+        float:left;
+        margin-left:5%;
+    }
+    .bottom-btn{
+        background-color:#5AD143 ;
+        float:right;
+        color:#fff;
+        text-align: center;
+        font-size: 0.8rem;
+        margin-right:5%;
+        height: 1.8rem;
+        line-height:1.8rem;
+        padding:0.1rem 0.5rem;
+        border-radius:0.3rem;
+    }
+    .bottom-text{
+        padding-left: 0.5rem;
+        font-size: 0.8rem;
+        color: #fff;
+        width: 7rem;
+
+    }
+    .bottom-text h2{
+        font-size:0.8rem;
+        line-height: 1.5;
+        white-space:nowrap;
+        text-overflow:ellipsis; /* for internet explorer */
+        overflow:hidden;
+        width:100%;
+        display:block;
+        margin: 0;
+    }
+    .bottom-text span{
+        font-size:0.7rem;
+        white-space:nowrap;
+        text-overflow:ellipsis; /* for internet explorer */
+        overflow:hidden;
+        width:100%;
+        display:block;
+    }
+    .fl{
+        float:left;
+    }
+    .head{
+        padding: 1rem 5%;
+        line-height: 1.5;
+    }
+    .head h1{
+        font-weight: bold;
+        font-size:1.1rem;
+        padding-bottom: 0.3rem;
+        /*border-bottom: 1px solid #EAEAEA;*/
+    }
+    .head p{
+        padding-top: 0.3rem;
+        font-size: 0.7rem;
+        color:#7F7F7F;
+    }
+    .head a{
+        color:#6b88ac;
+    }
+
+</style>
+
+
+<div class="bottom-fixed clearfix">
+    <div class="bottom-img fl">
+        <img src="$!previewAdvertPic" width="100%" alt="">
+    </div>
+    <div class="bottom-text fl">
+        <h2>$!previewAdvertTitle1</h2>
+        <span>$!previewAdvertTitle2</span>
+    </div>
+    <div class="bottom-btn">$!previewAdvertButtonText</div>
+</div>
+
+<script>
+    $(".bottom-btn").click(function () {
+        _czc.push(["_trackEvent",'文章浏览','免费加入',lurkDesc,'','']);
+        #if($!previewAdvertUrl=='')
+            window.location.href = urlGenerator('/concur/detail.htm');
+        #else
+            window.location.href = urlGenerator('$!previewAdvertUrl');
+        #end
+    });
+</script>
+
+#end
+
+</body>
+
+</html>

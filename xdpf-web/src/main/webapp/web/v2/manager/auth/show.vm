@@ -1,0 +1,12 @@
+#set($layout="v2/manager/layout/layout.vm")
+#if($!isAuth)
+
+<div>
+    <a href="$!authUrl"><span class="label label-default label-large">修改公众号授权</span></a>
+</div>
+#else
+<div>
+    <a href="$!authUrl"><span class="label label-default label-large">点击公众号授权</span></a>
+</div>
+#end
+

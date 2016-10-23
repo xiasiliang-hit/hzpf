@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools>
+
+
+
+<toolbox scope="application">
+    <!-- <tool key="map" class="java.util.HashMap"/> -->
+    <tool key="bizUtils" class="com.line.bqxd.platform.client.utils.BizUtils"/>
+    <tool key="mathTool" class="org.apache.velocity.tools.generic.MathTool"/>
+    <tool key="dateTool" class="org.apache.velocity.tools.generic.DateTool"/>
+    <tool key="escapeTool" class="org.apache.velocity.tools.generic.EscapeTool"/>
+    <tool key="numberTool" class="org.apache.velocity.tools.generic.NumberTool"/>
+    <!--tool key="renderTool" class="org.apache.velocity.tools.generic.RenderTool"/-->
+    <!--tool key="sortTool" class="org.apache.velocity.tools.generic.SortTool"/-->
+    <!--tool key="linkTool" class="org.apache.velocity.tools.generic.LinkTool"/-->
+    <!--tool key="displayTool" class="org.apache.velocity.tools.generic.DisplayTool"/-->
+    <!--tool key="loopTool" class="org.apache.velocity.tools.generic.LoopTool"/-->
+    <tool key="stringUtils" class="org.apache.commons.lang.StringUtils"/>
+    <tool key="dateUtils" class="com.line.bqxd.platform.client.utils.DateUtils"></tool>
+    <tool key="collectionUtils" class="com.line.bqxd.platform.common.utils.CollectionUtils"></tool>
+
+
+</toolbox>
+    <toolbox scope="request">
+        <tool key="requestTool" class="com.line.bqxd.platform.common.utils.ParameterTool"></tool>
+        <tool key="urlTool" class="com.line.bqxd.platform.common.utils.UrlTool"></tool>
+    </toolbox>
+</tools>

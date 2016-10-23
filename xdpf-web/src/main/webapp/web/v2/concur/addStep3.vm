@@ -1,0 +1,19 @@
+#set($layout="v2/layout/layout.vm")
+#set($concurNmae=$!{concurPlan.name})
+<link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/attention.css">
+<div class="top_box">
+    <h2>还差一步</h2>
+    <h3>关注“早安宝贝”公众号</h3>
+</div>
+
+<div class="code_box">
+    <img src="$!{attentionImgUrl}" alt="">
+    <span>长按识别二维码</span>
+</div>
+
+<dl class="bottom_box">
+    <dt>关注后您可以</dt>
+    <dd>接收添加成功消息</dd>
+    <dd>申请互助、查看互助公示、管理账号等</dd>
+</dl>
+</body>

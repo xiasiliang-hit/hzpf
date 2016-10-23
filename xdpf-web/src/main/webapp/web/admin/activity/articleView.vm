@@ -1,0 +1,84 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="活动")
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/concur/list.htm">首页</a></li>
+            <li><a href="/admin/activity/articleList.htm">推广文章列表</a></li>
+            <li class="active">
+                <span>
+                    #if($!action=='add')
+                        推广文章增加
+                    #else
+                        推广文章修改
+                    #end
+            </span>
+            </li>
+
+        </ol>
+
+    </div>
+</div>
+</br>
+<div class="main-box  clearfix">
+    <div class="tabs-wrapper">
+        <div class="tab-content">
+
+            </br>
+            <div class="main-box-body clearfix">
+                <form class="form-horizontal" action="addArticle.htm" method="post">
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-lg-2 control-label">推广文章标题</label>
+                        <div class="col-lg-8">
+                            <input tpe="title" class="form-control" id="title" placeholder="推广文章标题" name="title"
+                                   value="$!articleDO.title">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-lg-2 control-label">推广文章描述</label>
+                        <div class="col-lg-8">
+                            <input type="descr" class="form-control" id="descr" placeholder="推广文章描述" name="descr"
+                                   value="$!articleDO.descr">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-lg-2 control-label">推广文章地址</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" id="url" placeholder="推广文章地址" name="url"
+                                   value="$!articleDO.url">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail1" class="col-lg-2 control-label">分享图片地址</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" id="imgUrl" placeholder="分享图片地址" name="imgUrl"
+                                   value="$!articleDO.imgUrl">
+                            #if($!stringUtils.isNotBlank($!articleDO.imgUrl))
+                                <img src="$!articleDO.imgUrl" width="50px" height="50px"//>
+                            #end
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <input type="hidden" id="id" name="id"
+                                   value="#if($!articleDO.id>0) $!articleDO.id #else 0 #end">
+                            <button type="submit" class="btn btn-success">提交分享文案</button>
+                            #if($!type=='shareText'&&$!error!='')
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-times-circle fa-fw fa-lg"></i>
+                                    <strong>$!error</strong>
+                                </div>
+                            #end
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+

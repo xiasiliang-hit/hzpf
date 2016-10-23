@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserClaimApply">
+
+    <typeAlias alias="userClaimApply" type="com.line.bqxd.platform.client.dataobject.ClaimApplyDO"/>
+    <typeAlias alias="userClaimApplyQuery" type="com.line.bqxd.platform.client.dataobject.query.UserClaimApplyQueryDO"/>
+
+    <resultMap id="userClaimApplyResultMap" class="userClaimApply">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="concurPlanId" column="concur_plan_id"/>
+        <result property="userConcurRelationId" column="user_concur_relation_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="verifyTime" column="verify_time"/>
+        <result property="verifyUser" column="verify_user"/>
+        <result property="verifyUserMsg" column="verify_user_msg"/>
+        <result property="verifyTel" column="verify_tel"/>
+        <result property="verifyHospital" column="verify_hospital"/>
+        <result property="verifyEventId" column="verify_event_id"/>
+        <result property="verifyEventId" column="verify_event_id"/>
+        <result property="verifyUserResult" column="verify_user_result"/>
+        <result property="verifyResult" column="verify_result"/>
+
+        <result property="picArray" column="pic_array"/>
+
+        <result property="descr" column="descr"/>
+        <result property="followUserName" column="follow_user_name"/>
+        <result property="followUserTel" column="follow_user_tel"/>
+        <result property="status" column="status"/>
+        <result property="result" column="result"/>
+        <result property="attach" column="attach"/>
+
+        <result property="preCollectMoney" column="pre_collect_money"/>
+        <result property="collectMoney" column="collect_money"/>
+        <result property="publishStartDay" column="publish_start_day"/>
+        <result property="bandyStartDay" column="bandy_start_day"/>
+        <result property="eventEndDay" column="event_end_day"/>
+        <result property="eventSubmitDay" column="event_submit_day"/>
+        <result property="monthIndex" column="month_index"/>
+        <result property="joinUserCount" column="join_user_count"/>
+    </resultMap>
+
+    <sql id="userClaimApply_columns">
+        id,gmt_create,gmt_modified,
+        concur_plan_id,user_concur_relation_id,user_id,user_name,verify_time,verify_user,verify_user_msg,verify_tel,verify_hospital,verify_event_id,verify_user_result,verify_result,pic_array,descr,follow_user_name,follow_user_tel,status,result,attach
+        ,pre_collect_money,collect_money,publish_start_day,bandy_start_day,event_end_day,event_submit_day,month_index,join_user_count
+    </sql>
+    <sql id="userClaimApply_query_conditon" >
+        <dynamic>
+            <isGreaterThan property="userConcurRelationId" compareValue="0" prepend=" AND ">
+                <![CDATA[
+					user_concur_relation_id = #userConcurRelationId#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="status" compareValue="0" prepend=" AND ">
+                <![CDATA[
+					status = #status#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="userId" compareValue="0" prepend=" AND ">
+                <![CDATA[
+					user_id = #userId#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="userName" prepend=" AND ">
+                <![CDATA[
+					user_name = #userName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="followUserName" prepend=" AND ">
+                <![CDATA[
+					follow_user_name = #followUserName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty prepend=" AND " property="statusList">
+                status in
+                <iterate prepend="" property="statusList" open="(" close=")"
+                         conjunction=",">
+                    <![CDATA[ #statusList[]# ]]>
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="startSubmitDay" prepend=" AND ">
+                <![CDATA[
+					event_submit_day >= #startSubmitDay#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="endSubmitDay" prepend=" AND ">
+                <![CDATA[
+					event_submit_day <= #endSubmitDay#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+    <select id="selectById" parameterClass="long" resultMap="userClaimApplyResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userClaimApply_columns"/>
+        <![CDATA[
+			FROM pf_user_claim_apply
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="userClaimApply">
+        <![CDATA[
+			INSERT INTO pf_user_claim_apply(
+		gmt_create,gmt_modified,
+		concur_plan_id,user_concur_relation_id,user_id,user_name,verify_time,verify_user,verify_user_msg,verify_tel,verify_user_result,verify_result,verify_hospital,verify_event_id,pic_array,descr,follow_user_name,follow_user_tel,status,result,attach
+		,pre_collect_money,collect_money,publish_start_day,bandy_start_day,event_end_day,event_submit_day,month_index,join_user_count
+		)
+			VALUES(NOW(),NOW(),#concurPlanId#,#userConcurRelationId#,#userId#,#userName#,#verifyTime#,#verifyUser#,#verifyUserMsg#,#verifyTel#,#verifyHospital#,#verifyEventId#,#verifyUserResult#,#verifyResult#,#picArray#,#descr#,#followUserName#,#followUserTel#,#status#,#result#,#attach#
+			,#preCollectMoney#,#collectMoney#,#publishStartDay#,#bandyStartDay#,#eventEndDay#,#eventSubmitDay#,#monthIndex#,#joinUserCount#
+			)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="userClaimApply">
+        <![CDATA[
+			UPDATE pf_user_claim_apply SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isGreaterThan property="status" compareValue="0" prepend=",">
+                <![CDATA[
+					status = #status#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="verifyTime" prepend=",">
+                <![CDATA[
+					verify_time = #verifyTime#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="verifyUser" prepend=",">
+                <![CDATA[
+					verify_user = #verifyUser#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="verifyUserMsg" prepend=",">
+                <![CDATA[
+					verify_user_msg = #verifyUserMsg#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="verifyTel" prepend=",">
+                <![CDATA[
+					verify_tel = #verifyTel#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="verifyHospital" prepend=",">
+                <![CDATA[
+					verify_hospital = #verifyHospital#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan property="verifyEventId" compareValue="0" prepend=",">
+                <![CDATA[
+					verify_event_id = #verifyEventId#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="verifyUserResult" compareValue="0" prepend=",">
+                <![CDATA[
+					verify_user_result = #verifyUserResult#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="verifyResult" compareValue="0" prepend=",">
+                <![CDATA[
+					verify_result = #verifyResult#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="descr" prepend=",">
+                <![CDATA[
+					descr = #descr#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="followUserName" prepend=",">
+                <![CDATA[
+					follow_user_name = #followUserName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="followUserTel" prepend=",">
+                <![CDATA[
+					follow_user_tel = #followUserTel#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="result" prepend=",">
+                <![CDATA[
+					result = #result#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="attach" prepend=",">
+                <![CDATA[
+					attach = #attach#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="picArray" prepend=",">
+                <![CDATA[
+					pic_array = #picArray#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="publishStartDay" prepend=",">
+                <![CDATA[
+					publish_start_day = #publishStartDay#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="bandyStartDay" prepend=",">
+                <![CDATA[
+					bandy_start_day = #bandyStartDay#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="eventEndDay" prepend=",">
+                <![CDATA[
+					event_end_day = #eventEndDay#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="eventSubmitDay" prepend=",">
+                <![CDATA[
+					event_submit_day = #eventSubmitDay#
+				]]>
+            </isNotEmpty>
+            <isGreaterThan property="preCollectMoney" compareValue="0" prepend=",">
+                <![CDATA[
+					pre_collect_money = #preCollectMoney#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="collectMoney" compareValue="0" prepend=",">
+                <![CDATA[
+					collect_money = #collectMoney#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="monthIndex" compareValue="0" prepend=",">
+                <![CDATA[
+					month_index = #monthIndex#
+				]]>
+            </isGreaterThan>
+
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from pf_user_claim_apply where id=#id#
+    </delete>
+
+
+    <select id="selectByQuery" parameterClass="userClaimApplyQuery" resultMap="userClaimApplyResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userClaimApply_columns"/>
+        <![CDATA[
+			FROM pf_user_claim_apply
+			WHERE 1=1
+		]]>
+        <include refid="userClaimApply_query_conditon"></include>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+    <select id="countByQuery" parameterClass="userClaimApplyQuery" resultClass="Integer">
+        <![CDATA[
+			SELECT count(1)
+			FROM pf_user_claim_apply
+			WHERE 1=1
+		]]>
+        <include refid="userClaimApply_query_conditon"></include>
+    </select>
+</sqlMap>

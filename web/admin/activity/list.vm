@@ -1,0 +1,213 @@
+#set($layout="admin/layout/layout.vm")
+#set($page_title="互助计划列表")
+<script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto.js"></script>
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/concur/list.htm">首页</a></li>
+            <li class="active"><span>活动管理</span></li>
+        </ol>
+
+    </div>
+</div>
+</br>
+
+<div class="main-box  clearfix">
+    <div class="tabs-wrapper">
+        <ul class="nav nav-tabs">
+            <li #if($!type=='shareText') class="active" #end><a href="#tab-shearTextList" data-toggle="tab">分享文案列表</a></li>
+            <li #if($!type=='channel') class="active" #end><a href="#tab-channelList" data-toggle="tab">渠道列表</a></li>
+            <li><a href="#tab-generator" data-toggle="tab">生产分享链接</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in #if($!type=='shareText') active #end" id="tab-shearTextList">
+                <div class="main-box-body clearfix">
+                    <div class="clearfix">
+
+
+                        <div class="pull-right top-page-ui">
+                            <a href="/admin/activity/index.htm?type=shareText" class="btn btn-primary pull-right">
+                                <i class="fa fa-plus-circle fa-lg"></i> 增加分享文案
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table user-list table-hover">
+                            <thead>
+                            <tr class="info">
+                                <th>编号</th>
+                                <th>分享标题</th>
+                                <th>分享描述</th>
+                                <th>分享链接</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                #foreach($shareText in $shareTextList)
+                                <tr>
+                                <tr>
+                                    <td>$!{shareText.id}</td>
+                                    <td>$!{shareText.title}</td>
+                                    <td>$!{shareText.descr}</td>
+                                    <td>$!{shareText.url}</td>
+
+                                    <td style="width: 20%;">
+
+                                        <a href="/admin/activity/view.htm?id=$!{shareText.id}&type=shareText"
+                                           class="table-link" title="详细">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+                                        </a>
+                                        <a href="#" class="table-link danger">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade #if($!type=='channel') active #end in" id="tab-channelList">
+                <div class="main-box-body clearfix">
+                    <div class="clearfix">
+
+
+                        <div class="pull-right top-page-ui">
+                            <a href="/admin/activity/index.htm?type=channel" class="btn btn-primary pull-right">
+                                <i class="fa fa-plus-circle fa-lg"></i> 增加渠道
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table user-list table-hover">
+                            <thead>
+                            <tr class="info">
+                                <th>编号</th>
+                                <th>渠道名称</th>
+                                <th>渠道描述</th>
+                                <th>渠道类型</th>
+                                <th>渠道外键</th>
+                                <th>渠道费用(每人分)</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                #foreach($channel in $channelList)
+                                <tr>
+                                <tr>
+                                    <td>$!{channel.id}</td>
+                                    <td>$!{channel.channelName}</td>
+                                    <td>$!{channel.descr}</td>
+                                    <td>$!{channel.channelType}</td>
+                                    <td>$!{channel.channelOutId}</td>
+                                    <td>$!{channel.fee}</td>
+                                    <td style="width: 20%;">
+
+                                        <a href="/admin/activity/view.htm?id=$!{channel.id}&type=channel"
+                                           class="table-link" title="详细">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+                                        </a>
+                                        <a href="#" class="table-link danger">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+																	</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-generator">
+
+
+
+                <div class="main-box-body clearfix">
+                    <form class="form-horizontal" action="addShareText.htm" id="generatorUrl" method="post">
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">分享文案</label>
+                            <div class="col-lg-8">
+                                <select class="form-control" id="shareTextId" name="shareTextId">
+                                    #foreach($shareText in $shareTextList)
+                                        <option value="$!{shareText.id}">$!{shareText.id}-$!{shareText.title}</option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 control-label">渠道名称</label>
+                            <div class="col-lg-8">
+                                <select class="form-control" id="channelId" name="channelId">
+                                    #foreach($channel in $channelList)
+                                        <option value="$!{channel.id}">$!{channel.id}-$!{channel.channelName}</option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="activityId" id="activityId" type="hidden" value="1">
+                                <button type="button" class="btn btn-primary generator">生成链接</button>
+                            </div>
+                        </div>
+                        <div class="resulturl"></div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".generator").click(function () {
+        var postData = $('#generatorUrl').serializeArray();
+        //这里错误提示的样式还没给出）
+        // ajax写在这里
+        //填写资料提交处理
+        Zepto.ajax({
+            type: 'GET',
+            url: '/admin/activity/generateActivityUrl.htm',
+            // data to be added to query string:
+            data: postData,
+            // type of data we are expecting in return:
+            dataType: 'json',
+            timeout: 3000,
+            context: $('body'),
+            success: function (data) {
+                console.log(data);
+                //if (data.code != "SUCCESS") {
+                // $(".resulturl").html("");
+                ///} else {
+                $(".resulturl").html(data);
+                //}
+            },
+            error: function (xhr, type) {
+                //alert('Ajax error!')
+                console.error(data);
+
+            }
+        });
+        console.log(postData);
+        //back();
+
+    });
+</script>
+

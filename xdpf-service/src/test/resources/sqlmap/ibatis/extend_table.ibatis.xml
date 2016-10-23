@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Extend">
+
+    <typeAlias alias="extend" type="com.line.bqxd.platform.client.dataobject.ExtendDO"/>
+
+    <resultMap id="extendResultMap" class="extend">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="type" column="type"/>
+        <result property="fee" column="fee"/>
+        <result property="corpName" column="corp_name"/>
+        <result property="mobile" column="mobile"/>
+        <result property="contactName" column="contact_name"/>
+        <result property="descr" column="descr"/>
+    </resultMap>
+
+    <sql id="extend_columns">
+        id,gmt_create,gmt_modified,
+        type,fee,corp_name,mobile,contact_name,descr
+    </sql>
+
+    <select id="selectById" parameterClass="long" resultMap="extendResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="extend_columns"/>
+        <![CDATA[
+			FROM extend
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="extend">
+        <![CDATA[
+			INSERT INTO extend(
+		gmt_create,gmt_modified,
+        type,fee,corp_name,mobile,contact_name,descr)
+			VALUES(NOW(),NOW(),#type#,#fee#,#corpName#,#mobile#,#contactName#,#descr#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <delete id="delete" parameterClass="long">
+        delete from extend where id=#id#
+    </delete>
+
+    <select id="selectAll"  resultMap="extendResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="extend_columns"/>
+        <![CDATA[
+			FROM extend
+			order by gmt_create desc
+		]]>
+    </select>
+
+    <update id="update" parameterClass="extend">
+        <![CDATA[
+			UPDATE extend SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isGreaterThan property="type" compareValue="0" prepend=",">
+                <![CDATA[
+					type = #type#
+				]]>
+            </isGreaterThan>
+            <isGreaterThan property="fee" compareValue="0" prepend=",">
+                <![CDATA[
+					fee = #fee#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="corpName" prepend=",">
+                <![CDATA[
+					corp_name = #corpName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="mobile" prepend=",">
+                <![CDATA[
+					mobile = #mobile#
+				]]>
+            </isNotEmpty>
+
+            <isNotEmpty property="contactName" prepend=",">
+                <![CDATA[
+					contact_name = #contactName#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="descr" prepend=",">
+                <![CDATA[
+					descr = #descr#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+
+
+    
+
+</sqlMap>

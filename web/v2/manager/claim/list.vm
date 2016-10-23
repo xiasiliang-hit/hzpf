@@ -1,0 +1,99 @@
+#set($layout="v2/manager/layout/layout.vm")
+#set($page_title="理赔用户列表")
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/v2/manager/index.htm">首页</a></li>
+            <li class="active"><span>理赔用户列表</span></li>
+        </ol>
+    </div>
+</div>
+<script>
+    function userDel(userId,nickName){
+        if(confirm("删除是不可恢复的，你确认要"+nickName+"删除吗？\n删除数据包括本用户和子账户")){
+            window.location.href = "/admin/user/deleteUser.htm?userId="+userId;
+        }
+    }
+</script>
+
+<div class="main-box no-header clearfix">
+    <div class="main-box-body clearfix">
+        <div class="table-responsive">
+            <table class="table user-list table-hover">
+                <thead>
+                <tr class="info">
+                    <th>理赔申请号</th>
+                    <th>申请人姓名</th>
+                    <th>理赔人姓名</th>
+                    <th>申请理赔额度</th>
+                    <th>申请理赔状态</th>
+                    <th>案件状态理赔结论</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    #foreach($claim in $page.modle)
+                    <tr>
+                        <td>
+                            $!{claim.id}
+
+                        </td>
+                        <td>
+                            $!{claim.userName}
+                        </td>
+                        <td>
+                            $!{claim.ensureName}
+                        </td>
+                        <td>
+                            $!bizUtils.changeF2Y($!{claim.applyClaimMoney}) 元
+                        </td>
+                        <td class="text-center">
+                            #if($!{claim.status}==1)
+                                <span class="label label-info">提交申请</span>
+                            #elseif($!{claim.status}==2)
+                                <span class="label label-info">平台受理</span>
+                            #elseif($!{claim.status}==3)
+                                <span class="label label-info">公估公司核查</span>
+                            #elseif($!{claim.status}==4)
+                                <span class="label label-success">接受理赔</span>
+                            #elseif($!{claim.status}==5)
+                                <span class="label label-danger">拒绝理赔</span>
+                            #elseif($!{claim.status}==6)
+                                <span class="label label-info">公示案件及筹款</span>
+                            #elseif($!{claim.status}==7)
+                                <span class="label label-info">筹款结束</span>
+                            #elseif($!{claim.status}==8)
+                                <span class="label label-info">打款中</span>
+                            #elseif($!{claim.status}==9)
+                                <span class="label label-success">案件结束</span>
+                            #elseif($!{claim.status}==10)
+                                <span class="label label-warning">案件质疑</span>
+                            #elseif($!{claim.status}==99)
+                                <span class="label label-info">关闭</span>
+                            #end
+
+                        </td>
+                        <td>
+                            $!{claim.result}
+                        </td>
+
+
+
+                        <td style="width: 20%;">
+                            <a href="/v2/manager/claim/view.htm?id=$!{claim.id}" class="table-link" alt="详情">
+																	<span class="fa-stack">
+																		<i class="fa fa-square fa-stack-2x"></i>
+																		<i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+																	</span>
+                            </a>
+
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+            #pageShow('/v2/manager/claim/list.htm')
+
+            <div>
+                <div>
+                    <div>

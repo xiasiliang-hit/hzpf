@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Sms">
+
+    <typeAlias alias="sms" type="com.line.bqxd.platform.client.dataobject.SmsDO"/>
+
+
+    <resultMap id="smsResultMap" class="sms">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="code" column="code"/>
+        <result property="recNum" column="rec_num"/>
+        <result property="status" column="status"/>
+        <result property="bizType" column="biz_type"/>
+        <result property="channel" column="channel"/>
+        <result property="templateId" column="template_id"/>
+        <result property="signName" column="sign_name"/>
+        <result property="data" column="data"/>
+        <result property="errCode" column="err_code"/>
+        <result property="msg" column="msg"/>
+    </resultMap>
+
+    <sql id="sms_columns">
+        id,gmt_create,gmt_modified,
+        code,rec_num,status,biz_type,channel,template_id,sign_name,data,err_code,msg
+    </sql>
+
+
+    <select id="selectById" parameterClass="long" resultMap="smsResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="sms_columns"/>
+        <![CDATA[
+			FROM sms
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="sms">
+        <![CDATA[
+			INSERT INTO sms(
+		gmt_create,gmt_modified,
+		code,rec_num,status,biz_type,channel,template_id,sign_name,data,err_code,msg
+		)
+			VALUES(NOW(),NOW(),#code#,#recNum#,#status#,#bizType#,#channel#,#templateId#,#signName#,#data#,#errCode#,#msg#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="sms">
+        <![CDATA[
+			UPDATE sms SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isGreaterThan property="status" compareValue="0" prepend=",">
+                <![CDATA[
+					status = #status#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="errCode" prepend=",">
+                <![CDATA[
+					err_code = #errCode#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="msg" prepend=",">
+                <![CDATA[
+					msg = #msg#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from sms where id=#id#
+    </delete>
+
+    <select id="getSmsByRecNumAndStatus" parameterClass="sms" resultMap="smsResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="sms_columns"/>
+        <![CDATA[
+			FROM sms
+			WHERE rec_num = #recNum# AND status=#status# order by gmt_create desc
+		]]>
+    </select>
+
+    <select id="getSmsByRecNum" parameterClass="String" resultMap="smsResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="sms_columns"/>
+        <![CDATA[
+			FROM sms
+			WHERE rec_num = #recNum# order by gmt_create desc
+		]]>
+    </select>
+</sqlMap>

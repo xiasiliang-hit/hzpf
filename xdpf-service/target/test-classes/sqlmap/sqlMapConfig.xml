@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="false" enhancementEnabled="true" lazyLoadingEnabled="false" errorTracingEnabled="true"
+              maxRequests="400" maxSessions="40"
+              maxTransactions="32" useStatementNamespaces="true"/>
+
+    <sqlMap resource="sqlmap/ibatis/user_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/concurplan_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/sms_table.ibatis.xml"/>
+
+    <sqlMap resource="sqlmap/ibatis/userconcurrelation_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/userclaim_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/userclaimapply_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/usertradebill_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/usertradepay_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/usertradecash_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/usertradefill_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/concurremind_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/comments_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/wxattention_table.ibatis.xml"/>
+
+    <sqlMap resource="sqlmap/ibatis/useradmin_table.ibatis.xml"/>
+    <sqlMap resource="sqlmap/ibatis/regMobileTemp_table.ibatis.xml" />
+
+    <sqlMap resource="sqlmap/ibatis/extend_table.ibatis.xml" />
+
+
+
+    <sqlMap resource="sqlmap/ibatis/pfcorp_table.ibatis.xml" />
+    <sqlMap resource="sqlmap/ibatis/pfuseradmin_table.ibatis.xml" />
+    <sqlMap resource="sqlmap/ibatis/pfweixinauth_table.ibatis.xml" />
+    <sqlMap resource="sqlmap/ibatis/userappopenid_table.ibatis.xml" />
+    <sqlMap resource="sqlmap/ibatis/dunkbill_table.ibatis.xml" />
+</sqlMapConfig>

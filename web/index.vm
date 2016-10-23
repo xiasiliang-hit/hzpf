@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content=“扁鹊兄弟互助,扁鹊兄弟,网络互助平台,兄弟互助,互助平台,网络互助,网络保障平台,网络保障” />
+    <meta name="description" content=“扁鹊兄弟互助平台,更低互助金,更高更公平的可信赖的保障” />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+    <meta name="baidu-site-verification" content="rl2LXkR5gu" />
+    <meta name="sogou_site_verification" content="IFMGfZflnQ"/>
+    <meta name="360-site-verification" content="fd4c3d7254909b7d6aedcfd5eea85ff7" />
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/main/styles/pc_moblie.css">
+    <title>扁鹊兄弟互助-官方网站</title>
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, width=device-width" />
+    <script>
+        !function () {
+            function a() {
+                if(document.documentElement.clientWidth<=750){
+                    document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + "px"
+                }
+
+            }
+
+            var b = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(b);
+                b = setTimeout(a, 300)
+            }, !1), a()
+        }(window);
+    </script>
+</head>
+
+<body>
+<div>
+    <div class="head">
+        <i class="icon-logo">
+            <img src="http://res.xiongdihuzhu.com/res/main/images/logo2.png"  width="100%"  alt="">
+        </i> 扁鹊兄弟互助
+    </div>
+    <div class="content">
+        <div class="poa1">
+            <img src="http://res.xiongdihuzhu.com/res/main/images/is09al9av.jpg" alt="">
+            <div class="rect">
+
+            </div>
+        </div>
+    </div>
+    <div class="warp">
+        <div class="page">
+            <p class="page-p">
+                <span class="p-t1">让每个会员</span>
+                <span class="p-t2">都有钱看病</span>
+            </p>
+            <div class="code">
+                <img src="http://res.xiongdihuzhu.com/res/main/images/icon.jpg" width="100%" alt="">
+            </div>
+            <p class="code-p">
+                关注“扁鹊兄弟互助”微信公众号免费加入，享30万元重疾保障
+            </p>
+        </div>
+    </div>
+    <div class="footer">©2016 线条科技 浙ICP备 16015100号-1</div>
+</div>
+</body>
+
+</html>

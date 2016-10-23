@@ -1,0 +1,64 @@
+
+#set($layout="admin/layout/layout.vm")
+#set($page_title="活动")
+#if($!update=='true')
+    #set($desc="修改留言")
+#else
+    #set($desc="新增留言")
+#end
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/admin/index.htm">首页</a></li>
+            <li><a href="/admin/concur/commentsList.htm">互助留言列表</a></li>
+            <li class="active"><span>$!desc</span>
+            </li>
+        </ol>
+    </div>
+</div>
+</br>
+<div class="main-box">
+
+    <div class="main-box-body clearfix">
+        <form class="form-horizontal" action="#if($!update=='true')updateComments.htm #else addComments.htm #end" method="post">
+            <div class="form-group">
+                <label for="inputEmail1" class="col-lg-2 control-label">昵称</label>
+                <div class="col-lg-8">
+                    <input tpe="nickName" class="form-control" id="nickName" placeholder="昵称" name="nickName" value="$!comments.nickName">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail1" class="col-lg-2 control-label">留言内容</label>
+                <div class="col-lg-8">
+                    <input type="content" class="form-control" id="content" placeholder="留言内容" name="content" value="$!comments.content">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail1" class="col-lg-2 control-label">头像链接</label>
+                <div class="col-lg-8">
+                    <input  class="form-control" id="headImgUrl" placeholder="头像链接" name="headImgUrl" value="$!comments.headImgUrl">
+                    #if($!update=='true')
+                        <br/>
+                        <img src="$!comments.headImgUrl" width="80px"  height="80px">
+                    #end
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10">
+                    #if($!update=='true')
+                        <input type="hidden" id="id" name="id" value="$!comments.id">
+                    #end
+                    <input type="hidden" id="status" name="status" value="1">
+                    <input type="hidden" id="bizType" name="bizType" value="concur">
+                    <input type="hidden" id="outBizId" name="outBizId" value="$!outBizId">
+                    <button type="submit" class="btn btn-success">$!desc</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,447 @@
+#set($layout="v2/manager/layout/layout.vm")
+#set($page_title="理赔用户列表")
+<script src="http://res.xiongdihuzhu.com/res/weixin/js/zepto.js"></script>
+<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="/v2/manager/index.htm">首页</a></li>
+            <li class="active"><span>理赔用户详情</span></li>
+        </ol>
+    </div>
+</div>
+
+<div class="main-box no-header clearfix">
+    <div class="main-box-body clearfix">
+        <form class="form-horizontal" action="" id="claimHandleForm" method="post">
+            <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                    <div class="alert alert-success text-center" style="margin-bottom:1px;background-color:#00BE00;color:#000000;">核对基本资料</div>
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td style="background-color:#E8E8E8;width:25%;" >
+                                姓名（投保人)
+                            </td>
+                            <td class="text-center" style="width:25%;">
+                                $!{user.userName}
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                身份证号
+                            </td>
+                            <td class="text-center" style="width:25%;">
+                                $!{user.card}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                互助名称
+                            </td>
+                            <td class="text-center">
+                                $!{concurPlan.name}
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                互助类型
+                            </td>
+                            <td class="text-center">
+                                疾病
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                申请疾病类型
+                            </td>
+                            <td class="text-center">
+                                #if($!{claimApply.verifyEventId}==1)
+                                    脑瘫
+                                #elseif($!{claimApply.verifyEventId}==2)
+                                    视网膜病变
+                                #end
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                申请理赔额度
+                            </td>
+                            <td class="text-center">
+                                $!bizUtils.changeF2Y($!{concurPlan.ensureMoney})元
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                时间确诊时间
+                            </td>
+                            <td class="text-center">
+                                $!{claimApply.verifyTime}
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                受保人姓名
+                            </td>
+                            <td class="text-center">
+                                $!{userConcurRelation.ensureName}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                体重
+                            </td>
+                            <td class="text-center">
+                                $!{userConcurRelation.weight}
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                申请时间
+                            </td>
+                            <td class="text-center">
+                                $!{claimApply.eventSubmitDay}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                确诊医生
+                            </td>
+                            <td class="text-center">
+                                $!{claimApply.verifyUser}
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                医生联系方式
+                            </td>
+                            <td class="text-center">
+                                $!{claimApply.verifyTel}
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="background-color: #E8E8E8;width:25%;">
+                                预筹款
+                            </td>
+                            <td class="text-center">
+                                #if($!{claimApply.status}==2||$!{claimApply.status}==3)
+                                    <input type="text" id="preCollectMoney" name="preCollectMoney" value="$!bizUtils.changeF2Y($!{claimApply.preCollectMoney})"> 元
+                                #else
+                                    $!bizUtils.changeF2Y($!{claimApply.preCollectMoney})元
+                                #end
+                            </td>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                筹款
+                            </td>
+                            <td class="text-center">
+                                $!bizUtils.changeF2Y($!{claimApply.collectMoney})元
+                            </td>
+                        </tr>
+                            #if($!{claimApply.status}==9||$!{claimApply.status}==8)
+                            <tr>
+                                <td style="background-color: #E8E8E8;width:25%;" >
+                                    银行打款凭证
+                                </td>
+                                <td colspan="3">
+                                    #if($!{claimApply.status}==8)
+                                        <input type="text" id="bankProofPic" size="100" name="bankProofPic" value="$!{claimApply.bankProofPic}">图片地址
+                                    #elseif($!{claimApply.status}==9)
+                                        <img src="$!{claimApply.bankProofPic}" width="120px" height="60px">
+                                    #end
+                                </td>
+                            </tr>
+                            #end
+                        <tr>
+                            <td style="background-color: #E8E8E8;width:25%;" >
+                                时间简单描述
+                            </td>
+                            <td colspan="3">
+                                $!{claimApply.descr}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-success text-center" style="margin-bottom:1px;background-color:#00BE00;color:#000000;">核对图片资料</div>
+
+                    <div style="width:100%">
+                        #foreach($pic in $claimApply.picUrl)
+                            <img src="$!{pic}" alt="" style="width:20%;padding:2%;height:200px;">
+                        #end
+                    </div>
+
+                    #if($!{claimApply.status}==2||$!{claimApply.status}==3)
+                        <div class="alert alert-success text-center" style="margin-bottom:1px;background-color:#00BE00;color:#000000;">核对医生诊断信息</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr style="background-color: #E8E8E8;">
+                                <td style="background-color: #E8E8E8;width:25%;" class="text-right">
+                                    <input type="radio" name="verifyUserResult" id="verifyUserResult" value="1">
+                                </td>
+                                <td class="text-left">
+                                    描述于医生不符，存在异议
+                                </td>
+                                <td style=" #E8E8E8;width:25%;" class="text-right">
+                                    <input type="radio" name="verifyUserResult" id="verifyUserResult" value="2">
+                                </td>
+                                <td class="text-left">
+                                    信息无误，医生确诊
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="alert alert-success text-center" style="margin-bottom:1px;background-color:#00BE00;color:#000000;">提交审核意见</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr style="background-color: #E8E8E8;">
+                                <td style="background-color: #E8E8E8;width:25%;" class="text-right">
+                                    <input type="radio" name="verifyResult" id="verifyResult" value="1">
+                                </td>
+                                <td class="text-left">
+                                    资料有误，退回修改
+                                </td>
+                                <td style="background-color: #E8E8E8;width:25%;" class="text-right">
+                                    <input type="radio" name="verifyResult" id="verifyResult" value="2">
+                                </td>
+                                <td class="text-left">
+                                    信息无误，符合理赔
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #E8E8E8;width:25%;" >
+                                    审核缘由
+                                </td>
+
+                                <td colspan="3">
+                                    <textarea name="result" id="result" cols="90" rows="8" placeholder="建议详细结果"></textarea>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    #end
+
+                    #if($!{claimApply.status}>=4)
+                        <div class="alert alert-success text-center" style="margin-bottom:1px;background-color:#00BE00;color:#000000;">核对医生诊断信息</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr style="background-color: #E8E8E8;">
+                                <td style="background-color: #E8E8E8;width:25%;" class="text-center">
+                                    #if($!{claimApply.verifyUserResult}==1)
+                                        描述于医生不符，存在异议
+                                    #elseif($!{claimApply.verifyUserResult}==2)
+                                        信息无误，医生确诊
+                                    #end
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="alert alert-success text-center" style="margin-bottom:1px;background-color:#00BE00;color:#000000;">提交审核意见</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr style="background-color: #E8E8E8;">
+                                <td style="background-color: #E8E8E8;width:25%;" class="text-center" colspan="3">
+                                    #if($!{claimApply.verifyResult}==1)
+                                        资料有误，退回修改
+                                    #elseif($!{claimApply.verifyResult}==2)
+                                        信息无误，符合理赔
+                                    #end
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #E8E8E8;width:25%;" >
+                                    审核缘由
+                                </td>
+
+                                <td colspan="3">
+                                    $!{claimApply.result}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    #end
+
+                    <input name="id" id="id" type="hidden" value="$!{claimApply.id}">
+                    #if($!{claimApply.status}==1)
+                        <div  style="background-color: #E8E8E8;">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="status" id="status" type="hidden" value="2">
+                                <button type="button" class="btn btn-primary claimHandle">平台受理</button>
+
+                                <button type="button" class="btn btn-primary closeClaimHandle">关闭理赔</button>
+                            </div>
+                        </div>
+                    #end
+                    #if($!{claimApply.status}==2)
+                        <div  style="background-color: #E8E8E8;">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="status" id="status" type="hidden" value="4">
+                                <button type="button" class="btn btn-primary claimHandle">理赔受理</button>
+
+                                <button type="button" class="btn btn-primary refushClaimHandle">理赔拒绝</button>
+
+                                <button type="button" class="btn btn-primary closeClaimHandle">关闭理赔</button>
+                            </div>
+                        </div>
+                    #end
+                    #if($!{claimApply.status}==4)
+                        <div  style="background-color: #E8E8E8;">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="status" id="status" type="hidden" value="6">
+                                <button type="button" class="btn btn-primary claimHandle">公示案件</button>
+                                <button type="button" class="btn btn-primary closeClaimHandle">关闭理赔</button>
+                            </div>
+                        </div>
+                    #end
+                    #if($!{claimApply.status}==6)
+                        <div  style="background-color: #E8E8E8;">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="status" id="status" type="hidden" value="7">
+                                <button type="button" class="btn btn-primary claimHandle">公示结束筹款</button>
+                                <button type="button" class="btn btn-primary closeClaimHandle">关闭理赔</button>
+                            </div>
+                        </div>
+                    #end
+                    #if($!{claimApply.status}==7)
+                        <div  style="background-color: #E8E8E8;">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="status" id="status" type="hidden" value="8">
+                                <button type="button" class="btn btn-primary claimHandle">筹款结束打款中</button>
+                                <button type="button" class="btn btn-primary closeClaimHandle">关闭理赔</button>
+                            </div>
+                        </div>
+                    #end
+                    #if($!{claimApply.status}==8)
+                        <div  style="background-color: #E8E8E8;">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input name="status" id="status" type="hidden" value="9">
+                                <button type="button" class="btn btn-primary claimHandle">用户打款完成案件结束</button>
+                                <button type="button" class="btn btn-primary closeClaimHandle">关闭理赔</button>
+                            </div>
+                        </div>
+                    #end
+
+                    <div class="resultMsg"></div>
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script>
+    $(".claimHandle").click(function () {
+        if (!confirm("是否执行，不可回退")) {
+            return;
+        }
+        var postData = $('#claimHandleForm').serializeArray();
+        //这里错误提示的样式还没给出）
+        // ajax写在这里
+        //填写资料提交处理
+        Zepto.ajax({
+            type: 'GET',
+            url: '/v2/manager/claim/handle.htm',
+            // data to be added to query string:
+            data: postData,
+            // type of data we are expecting in return:
+            dataType: 'json',
+            timeout: 3000,
+            context: $('body'),
+            success: function (data) {
+                console.log(data);
+                if (data.code == "SUCCESS") {
+                    $(".resultMsg").html(data.data);
+                    setTimeout(function(){
+                        location.reload();
+                    },5000);
+                }else{
+                    $(".resultMsg").html(data.data);
+                }
+            },
+            error: function (xhr, type) {
+                //alert('Ajax error!')
+                console.error(data);
+
+            }
+        });
+        console.log(postData);
+        //back();
+
+    });
+
+    $(".refushClaimHandle").click(function () {
+        if (!confirm("是否执行，不可回退")) {
+            return;
+        }
+        $("#status").val(5);
+        var postData = $('#claimHandleForm').serializeArray();
+        //这里错误提示的样式还没给出）
+        // ajax写在这里
+        //填写资料提交处理
+        Zepto.ajax({
+            type: 'GET',
+            url: '/v2/manager/claim/handle.htm',
+            // data to be added to query string:
+            data: postData,
+            // type of data we are expecting in return:
+            dataType: 'json',
+            timeout: 3000,
+            context: $('body'),
+            success: function (data) {
+                console.log(data);
+                if (data.code == "SUCCESS") {
+                    $(".resultMsg").html(data.data);
+                    setTimeout(function(){
+                        location.reload();
+                    },5000);
+                }else{
+                    $(".resultMsg").html(data.data);
+                }
+            },
+            error: function (xhr, type) {
+                //alert('Ajax error!')
+                console.error(data);
+
+            }
+        });
+        console.log(postData);
+        //back();
+
+    });
+
+    $(".closeClaimHandle").click(function () {
+        if (!confirm("是否执行，不可回退")) {
+            return;
+        }
+        $("#status").val(99);
+        var postData = $('#claimHandleForm').serializeArray();
+        //这里错误提示的样式还没给出）
+        // ajax写在这里
+        //填写资料提交处理
+        Zepto.ajax({
+            type: 'GET',
+            url: '/v2/manager/claim/handle.htm',
+            // data to be added to query string:
+            data: postData,
+            // type of data we are expecting in return:
+            dataType: 'json',
+            timeout: 3000,
+            context: $('body'),
+            success: function (data) {
+                console.log(data);
+                if (data.code == "SUCCESS") {
+                    $(".resultMsg").html(data.data);
+                    setTimeout(function(){
+                        location.reload();
+                    },5000);
+                }else{
+                    $(".resultMsg").html(data.data);
+                }
+            },
+            error: function (xhr, type) {
+                //alert('Ajax error!')
+                console.error(data);
+
+            }
+        });
+        console.log(postData);
+        //back();
+
+    });
+</script>
