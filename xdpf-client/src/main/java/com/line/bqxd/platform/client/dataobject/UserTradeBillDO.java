@@ -1,11 +1,9 @@
 package com.line.bqxd.platform.client.dataobject;
 
 import com.line.bqxd.platform.client.common.DBBaseDO;
-import com.line.bqxd.platform.client.dataobject.UserTradeBillDO;
-
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
 
 /**
  * Created by huangjianfei on 16/5/2.
@@ -35,6 +33,17 @@ public class UserTradeBillDO extends DBBaseDO implements Serializable {
     private String attach;
 
     private String explains;
+
+    private Date gmtCreated;
+    private Date gmtModitied;
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public Date getGmtModitied() {
+        return gmtModitied;
+    }
 
     public String getListType() {
         return listType;
@@ -85,9 +94,6 @@ public class UserTradeBillDO extends DBBaseDO implements Serializable {
         this.explains = explains;
     }
 
-    public List<UserTradeBillDO> getAllTransactions(long concurId)
-    {
-	List<UserTradeBillDO> resultList = new ArrayList<UserTradeBillDO>();
-	return resultList;
-    }
+
+
 }

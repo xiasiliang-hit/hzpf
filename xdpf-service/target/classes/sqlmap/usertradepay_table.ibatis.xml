@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="UserTradePay">
+
+    <typeAlias alias="userTradePay" type="com.line.bqxd.platform.client.dataobject.UserTradePayDO"/>
+    <typeAlias alias="userTradePayQuery" type="com.line.bqxd.platform.client.dataobject.query.UserTradePayQueryDO"/>
+
+    <resultMap id="userTradePayResultMap" class="userTradePay">
+        <result property="id" column="id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+
+        <result property="userId" column="user_id"/>
+        <result property="tradeId" column="trade_id"/>
+        <result property="fee" column="fee"/>
+        <result property="attach" column="attach"/>
+        <result property="outBizId" column="out_biz_id"/>
+        <result property="bizType" column="biz_type"/>
+        <result property="subUserId" column="sub_user_id"/>
+        <result property="subUserName" column="sub_user_name"/>
+    </resultMap>
+
+    <sql id="userTradePay_columns">
+        id,gmt_create,gmt_modified,
+        user_id,trade_id,fee,attach,explains,out_biz_id,biz_type,sub_user_id,sub_user_name
+    </sql>
+    <sql id="userTradePay_query_conditon" >
+        <dynamic>
+            <isGreaterThan property="userId" compareValue="0" prepend=" AND ">
+                <![CDATA[
+					user_id = #userId#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="tradeId" prepend=" AND ">
+                <![CDATA[
+					trade_id = #tradeId#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="subUserName" prepend=" AND ">
+                <![CDATA[
+					sub_user_name = #subUserName#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+    <select id="selectById" parameterClass="long" resultMap="userTradePayResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userTradePay_columns"/>
+        <![CDATA[
+			FROM user_trade_pay
+			WHERE id = #id#
+		]]>
+    </select>
+
+
+    <insert id="insert" parameterClass="userTradePay">
+        <![CDATA[
+			INSERT INTO user_trade_pay(
+		gmt_create,gmt_modified,
+		user_id,trade_id,fee,attach,explains,out_biz_id,biz_type,sub_user_id,sub_user_name)
+			VALUES(NOW(),NOW(),#userId#,#tradeId#,#fee#,#attach#,#explains#,#outBizId#,#bizType#,#subUserId#,#subUserName#)
+		]]>
+        <selectKey keyProperty="id" resultClass="Long">
+            <![CDATA[
+			SELECT LAST_INSERT_ID() AS value
+		]]>
+        </selectKey>
+    </insert>
+
+
+    <update id="update" parameterClass="userTradePay">
+        <![CDATA[
+			UPDATE user_trade_pay SET gmt_modified = NOW()
+		]]>
+        <dynamic>
+            <isGreaterThan property="fee" compareValue="0" prepend=",">
+                <![CDATA[
+					fee = #fee#
+				]]>
+            </isGreaterThan>
+            <isNotEmpty property="attach" prepend=",">
+                <![CDATA[
+					attach = #attach#
+				]]>
+            </isNotEmpty>
+            <isNotEmpty property="explains" prepend=",">
+                <![CDATA[
+					explains = #explains#
+				]]>
+            </isNotEmpty>
+        </dynamic>
+        WHERE ID = #id#
+    </update>
+
+    <delete id="delete" parameterClass="long">
+        delete from user_trade_pay where id=#id#
+    </delete>
+
+
+    <select id="selectByQuery" parameterClass="userTradePayQuery" resultMap="userTradePayResultMap">
+        <![CDATA[
+			SELECT
+		]]>
+        <include refid="userTradePay_columns"/>
+        <![CDATA[
+			FROM user_trade_pay
+			WHERE 1=1
+		]]>
+        <include refid="userTradePay_query_conditon"></include>
+        <![CDATA[
+			order by gmt_create desc
+		    LIMIT #startNum#,#pageSize#
+		]]>
+
+    </select>
+
+    <select id="countByQuery" parameterClass="userTradePayQuery" resultClass="Integer">
+        <![CDATA[
+			SELECT count(1)
+			FROM user_trade_pay
+			WHERE 1=1
+		]]>
+        <include refid="userTradePay_query_conditon"></include>
+    </select>
+
+
+    <select id="sumFeeByUserId" parameterClass="long" resultClass="long">
+        <![CDATA[
+			SELECT SUM(fee)
+			FROM user_trade_pay
+			WHERE user_id=#userId#
+		]]>
+    </select>
+</sqlMap>

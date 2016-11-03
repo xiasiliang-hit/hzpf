@@ -8,6 +8,5 @@ import com.line.bqxd.platform.client.dataobject.UserTradeCashDO;
  */
 public interface UserTradeCashDAO<T> extends BaseDAO {
 
-     long insert(UserTradeCashDO userTradeCashDO);
-
+	public long insert(UserTradeCashDO userTradeCashDO);
 }

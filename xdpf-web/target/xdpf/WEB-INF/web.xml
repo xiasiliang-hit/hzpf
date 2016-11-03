@@ -17,7 +17,7 @@
 		<param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
 
-	<!-- 字符过滤,防止添加到数据库的数据为乱码 -->
+	<!-- ????????????,?????????????????????????????????????????? -->
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -60,7 +60,7 @@
 		<filter-name>pfAdminLoginFilter</filter-name>
 		<url-pattern>*.htm</url-pattern>
 	</filter-mapping>
-	<!-- web权限配置 -->
+	<!-- web???????????? -->
 	<!--filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -70,7 +70,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping -->
 
-	<!-- 配置监听器,用于初始化 -->
+	<!-- ???????????????,??????????????? -->
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
@@ -78,7 +78,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- Servlet初始化参数,配置springmvc模块 -->
+	<!-- Servlet???????????????,??????springmvc?????? -->
 	<servlet>
 		<servlet-name>spring</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -99,12 +99,12 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	<!-- 默认起始页面 -->
+	<!-- ?????????????????? -->
 	<welcome-file-list>
 		<welcome-file>index</welcome-file>
 	</welcome-file-list>
 
-	<!-- 异常跳转页面 -->
+	<!-- ?????????????????? -->
 	<!--error-page>
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/WEB-INF/jsp/exception.jsp</location>

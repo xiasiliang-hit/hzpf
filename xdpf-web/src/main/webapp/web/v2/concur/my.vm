@@ -3,6 +3,30 @@
 #set($user=$!{myConcur.userDO})
 #set($userList=$!{myConcur.userList})
 <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/mutually.css">
+
+<!--
+<head>
+    <script type="text/javascript">
+
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null) return  unescape(r[2]); return null;
+    }
+
+    window.onload=function() {
+        if (GetQueryString("debug") == "true") {
+            var di = document.getElementById("account_bar");
+            di.style.visibility = "visible";
+        }
+
+    };
+    </script>
+</head>
+-->
+
+
 <body>
 <ul class="menu_box flex-item clearfix">
     <li class="menu">
@@ -29,6 +53,7 @@
 </ul>
 
 <div class="banner_box">
+    $!{msg}
     <img src="http://res.xiongdihuzhu.com/res/xdpf/images/Z-banner2@2x.jpg" alt="">
 
 </div>
@@ -79,14 +104,15 @@
     </dd>
 </dl>
 
-<div class="account_box flex-item clearfix">
-    <a href="top-up.html">
+<!--
+<div id="account_bar" style="visibility: hidden" class="account_box flex-item clearfix">
+    <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/topup.htm'),$request)">
         <div class="account">
             <img src="http://res.xiongdihuzhu.com/res/xdpf/images/cz@2x.jpg" alt="">
             <h4>充值</h4>
         </div>
     </a>
-    <a href="take-cash.html">
+    <a href="$!requestTool.getFullUrl($!urlTool.getAbsoluteUrl($request,'/v2/concur/withdraw.htm'),$request)">
         <div class="account">
             <img src="http://res.xiongdihuzhu.com/res/xdpf/images/tx@2x.jpg" alt="">
             <h4>提现</h4>
@@ -99,6 +125,7 @@
         </div>
     </a>
 </div>
+-->
 
     #foreach($userVO in $userList)
     <div class="insurant_box">

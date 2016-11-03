@@ -12,76 +12,89 @@ import java.io.Serializable;
 
     public class UserTradeCashDO extends DBBaseDO implements Serializable {
 
-    @Setter
-    @Getter
-    private String bankNo;
+		/*
+        public UserTradeCashDO(String bankNo, String bankName, long userId, String userName
+                               , String explains, long totalFee, String tradeId, String account)
+        {
+            this.bankNo = bankNo;
+            this.bankName = bankName;
+            this.userId = userId;
+            this.userName = userName;
 
-    @Setter
-    @Getter
-    private String bankName;
-
-    @Setter
-    @Getter
-    private  long userId;
-
-    @Setter
-    @Getter
-    private String userName;
-
-
-    @Setter
-    @Getter
-    private String explains;
-
-    @Setter
-    @Getter
-    private long totalFee;
-
-    @Setter
-    @Getter
-    private String tradeId;
-
-
-    @Setter
-    @Getter
-    private String account;
-
-
-
-
-    @Setter
-    @Getter
-    private String channel;
-
-
-    @Setter
-    @Getter
-    private int status;
-
-    @Setter
-    @Getter
-    private int feeToType;
-
-    @Setter
-    @Getter
-    private String openId;
-
-
-    @Setter
-    @Getter
-    private int procedureFee;
-
-
-    @Setter
-    @Getter
-    private String refushMsg;
-
-
-    @Setter
-    @Getter
-    private String refushCode;
-
-    @Setter
-    @Getter
-    private int userFee;
+            this.explains = explains;
+            this.totalFee = totalFee;
+            this.tradeId = tradeId;
+            this.account = account;
+        }
+		*/
+		
+    public UserTradeCashDO() {
     }
+		
+		@Setter
+		@Getter
+		private long userId;
+
+		@Setter
+		@Getter
+		private String openId;
+
+		@Setter
+	    @Getter
+		private String tradeId;
+
+		@Setter
+		@Getter
+		private int feeToType;
+
+		@Setter
+		@Getter
+		private String account;
+
+		@Setter
+		@Getter
+		private String channel;
+
+		@Setter
+	    @Getter
+		private long userFee;
+
+		@Setter
+		@Getter
+		private long procedureFee;
+
+		@Setter
+	    @Getter
+		private long totalFee;
+
+		@Setter
+		@Getter
+		private int status;
+
+		@Setter
+		@Getter
+		private String explains;
+
+
+		@Setter
+		@Getter
+		private String refuseCode;
+
+		@Setter
+		@Getter
+		private String refuseMsg;
+
+		@Setter
+		@Getter
+		private String bankName;
+
+		@Setter
+		@Getter
+		private String bankNo;
+
+		@Setter
+		@Getter
+		private long withdrawAmount;
+	   
+    }
+

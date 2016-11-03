@@ -34,6 +34,8 @@ public class PayVO extends Base {
         this.sign = sign;
     }
 
+
+
     public String getAppId() {
         return appId;
     }

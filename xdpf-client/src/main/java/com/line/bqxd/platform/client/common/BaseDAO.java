@@ -1,7 +1,5 @@
 package com.line.bqxd.platform.client.common;
 
-import com.line.bqxd.platform.client.dataobject.ConcurPlanDO;
-
 import java.util.List;
 
 /**
@@ -48,4 +46,6 @@ public interface BaseDAO<T> {
      * @return
      */
     public List<T> selectByQuery(DBBaseQueryDO queryDO);
+
+    public T selectByUserId(long user_id);
 }

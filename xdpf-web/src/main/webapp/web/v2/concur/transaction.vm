@@ -1,15 +1,15 @@
 #set($concurPlan=$!{myConcur.concurPlanDO})
 #set($user=$!{myConcur.userDO})
-#set($userList=$!{myConcur.userList})
-
 <!doctype html>
 <html>
 <head>
-    <script>
-        //声明_czc对象:
-        var _czc = _czc || [];
-        //绑定siteid，请用您的siteid替换下方"XXXXXXXX"部分
-        _czc.push(["_setAccount", "1259101635"]);
+    <script text/javascript>
+
+	  window.onload = function()
+	  {
+//	  var gmtTime = document.getElementById("h4").textContect;
+//	  dateFormat(gmtTime, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+};	  
     </script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -49,30 +49,55 @@
 
 <body>
 
-<!--
 <div>
     <a>$msg</a>
-    </div>
-    -->
+    <a>$balance</a>
+</div>
+
 
 <div class="head clearfix">
     <div class="pic">
-        <img src="$!{claimApplyVO.userPicUrl}" alt="">
+        <img src="$!{user_pic}" alt="">
     </div>
     <h2>$!{user.userName}</h2>
-    <h6>余额：52.1元</h6>
+
+    <!--
+    <h6>余额：52.8元</h6>
+-->
+    <h6>余额：$!{myConcur.userBalanceQuantity}元</h6>
 </div>
 
 <div class="details_box">
     <span>余额明细</span>
 
-    #foreach($trans in $userTransactions)
+    #foreach($userFill in $userFillTrans)
+        <div class="content clearfix">
+            <h2>充值成功</h2>
+            <h3>${userFill.totalFee}元</h3>
+            <h4>${userFill.timeStart}</h4> 
+        </div>
+    #end
+		
+<!--
+    #foreach($userPay in $userPayTrans)
     <div class="content clearfix">
-        <h2>充值成功</h2>
-        <h3>$!{trans.totalFee}元</h3>
-        <h4>$!{trans.timeStrat}</h4>
+        <h2>支付互助计划</h2>
+        <h3>$!{userPay.fee}元</h3>
+        <h4>$!{userPay.gmtCreated}</h4>
     </div>
     #end
+-->
+
+<!--
+    #foreach($bill in $userTransactions)
+        <div class="content clearfix">
+            <h2>充值</h2>
+            <h3>$!{bill.totalFee}元</h3>
+            <h4>$!{bill.timeStart}</h4>
+        </div>
+    #end
+-->
+		
 <!--
     <div class="content clearfix">
         <h2>充值成功</h2>
@@ -84,7 +109,8 @@
         <h3>8元</h3>
         <h4>7月2日 13：20</h4>
     </div>
-    -->
+-->
+
 </div>
 </body>
 </html>

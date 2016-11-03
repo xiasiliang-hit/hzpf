@@ -25,8 +25,8 @@ public class UserTradeCashDAOImpl extends SimpleDAOImpl implements UserTradeCash
         return 0;
     }
     */
-
-    @Override
+			
+	@Override
     public long insert(UserTradeCashDO userTradeCashDO) {
         if (userTradeCashDO == null) {
             throw new NullPointerException("DAO insert object null");
@@ -39,5 +39,5 @@ public class UserTradeCashDAOImpl extends SimpleDAOImpl implements UserTradeCash
         }
         return 0;
     }
-
+		
 }

@@ -1,3 +1,7 @@
+#set($concurPlan=$!{myConcur.concurPlanDO})
+#set($user=$!{myConcur.userDO})
+#set($userList=$!{myConcur.userList})
+
 <!doctype html>
 <html>
 <head>
@@ -19,8 +23,8 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <title>提现</title>
-    <link rel="stylesheet" href="css/top-up.css">
-    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/top-up.css">
+    <link rel="stylesheet" href="http://res.xiongdihuzhu.com/res/xdpf/css/common.css">
     <script>
         !function () {
             function a() {
@@ -37,9 +41,23 @@
             }, !1), a()
         }(window);
     </script>
+
+
+    <script type="text/javascript">
+
+
+
+
+    </script>
+
+
 </head>
 
 <body>
+<div>
+    $!{msg}
+    </div>
+
 <div class="read_box">
     <h1>提现提醒</h1>
     <p>一、只有会员退出互助保障计划或者已经享受到互助理赔的用户，才能向平台申请提取该计划的互助保障金。</p>
@@ -55,31 +73,40 @@
 
 <div class="head clearfix">
     <div class="pic">
-        <img src="images/0.jpeg" alt="">
+        <img src="$!{user_pic}" alt="">
     </div>
-    <h2>黄某某</h2>
+    <h2>$!{user.UserName}</h2>
     <h6>余额：52.1元</h6>
 </div>
 
-<div class="main_box">
-    <h6>提现姓名需与银行卡姓名一致</h6>
-    <input type="number" id="bankNo" name="bankNo" placeholder="到账银行卡号">
-    <input type="text" id="bankName" name="bankName"  placeholder="到账银行名称和支行名称">
-    <!--<span>提现金额</span>-->
-    <div class="sum clearfix">
-        <h2>¥</h2>
-        <input type="number" placeholder="提现金额">
+<form id="bankform" method="post" action="on_withdraw.htm">
+    <div class="main_box">
+        <h6>提现姓名需与银行卡姓名一致</h6>
+
+        <input type="number" id="bankNo" name="bankNo" placeholder="到账银行卡号">
+        <input type="text" id="bankName" name="bankName" placeholder="到账银行名称和支行名称">
+
+            <!--<span>提现金额</span>-->
+        <div class="sum clearfix">
+            <h2>¥</h2>
+            <input type="number" name="amount" placeholder="提现金额">
+        </div>
     </div>
-</div>
 
-<div class="tips">
-    <p>五个工作日内到账</p>
-    <p>请注意，提现需扣除5%的费用作为平台的技术服务费</p>
-</div>
+    <div class="tips">
+        <p>五个工作日内到账</p>
+        <p>请注意，提现需扣除5%的费用作为平台的技术服务费</p>
+    </div>
 
-<div class="bank">
-    提现到银行卡
-</div>
+    <div class="bank" >
+        <button type="submit" >
+        提现到银行卡
+        </button>
+    </div>
+<form>
+<!--
+
+-->
 
 </body>
 </html>

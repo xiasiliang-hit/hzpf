@@ -359,6 +359,7 @@ public class ConcurController extends BaseController {
         String ids = request.getParameter("ids");
         String sumMoney = request.getParameter("sumMoney");
         PayVO payVO = concurFeePay(request, Long.parseLong(sumMoney), concurPlanId, ids);
+
         mav.addObject("payVO", payVO);
         mav.setViewName("v2/concur/addStep2");
         if (payVO != null && payVO.isResult()) {
@@ -366,7 +367,6 @@ public class ConcurController extends BaseController {
         } else {
             return Result.of(ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getCode(), ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getDesc());
         }
-
     }
 
     private PayVO concurFeePay(HttpServletRequest request, long concurFee, long concurId, String ids) {

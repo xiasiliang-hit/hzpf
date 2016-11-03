@@ -50,8 +50,6 @@ public class TradeController {
     @Autowired
     private UserManager userManager;
 
-
-
     @Autowired
     private WXPayManager wxPayManager;
 

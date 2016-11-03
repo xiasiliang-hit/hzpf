@@ -100,4 +100,16 @@ public class SimpleDAOImpl<T> extends BaseDAOImpl implements BaseDAO<T> {
     public void setSqlMapNameSpacePrefix(String sqlMapNameSpacePrefix) {
         this.sqlMapNameSpacePrefix = sqlMapNameSpacePrefix;
     }
+
+    @Override
+    public T selectByUserId(long user_id) {
+        if (user_id <= 0) {
+            throw new IllegalArgumentException("selectById id less than zero id=" + user_id);
+        }
+        List<T> list = getSqlMapClientTemplate().queryForList(sqlMapNameSpacePrefix + ".selectByUserId", user_id);
+        if (!CollectionUtils.isEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
+    }
 }

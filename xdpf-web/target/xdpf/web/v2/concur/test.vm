@@ -33,6 +33,7 @@
 <body>
 <div>
    授权
+    $!{msg}
 </div>
 </body>
 

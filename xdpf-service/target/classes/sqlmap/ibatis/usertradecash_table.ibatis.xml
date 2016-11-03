@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="GBK"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
-<sqlMap namespace="UserTradeFill">
+<sqlMap namespace="UserTradeCash">
 
 	<typeAlias alias="userTradeCash" type="com.line.bqxd.platform.client.dataobject.UserTradeCashDO"/>
 	<!--
 	<typeAlias alias="userTradeFillQuery" type="com.line.bqxd.platform.client.dataobject.query.UserTradeFillQueryDO"/>
 -->
-	<resultMap id="userTradeCashMap" class="userTradeCash">
+	<resultMap id="userTradeCashResultMap" class="userTradeCash">
 		<result property="id" column="id"/>
-		<result property="usrId" column="user_id"/>
 		<result property="userId" column="user_id"/>
 		<result property="openId" column="open_id"/>
 		<result property="tradeId" column="trade_id"/>
@@ -20,9 +19,13 @@
 		<result property="totalFee" column="total_fee"/>
 		<result property="status" column="status"/>
 		<result property="explains" column="explains"/>
-		<result property="refushCode" column="refush_code"/>
+		<result property="refuseCode" column="refuse_code"/>
+		<result property="refuseMsg" column="refusens_msg"/> 
 		<result property="gmtCreate" column="gmt_create"/>
 		<result property="gmtModified" column="gmt_modified"/>
+		<result property="bankName" column="bank_name"/>
+		<result property="bankNo" column="bank_no"/>
+		<result property="withdrawAmount" column="withdraw_amount"/>  		
 	</resultMap>
 
 	<sql id="userTradeCash_columns">
@@ -107,26 +110,35 @@
 			WHERE transaction_id = #transactionId#
 		]]>
 	</select>
--->
+	-->
+	
 
 	<!--
 	id, user_id, open_id, trade_id, fee_to_type, account, channel, user_fee, procdure_fee, total_fee, status, explains, refush_code, refush_msg,
 	-->
-	<insert id="insert" parameterClass="userTradeFill">
+	<insert id="insert" parameterClass="userTradeCash">
 		<![CDATA[
-			INSERT INTO pf_user_trade_cash(
-			gmt_modifiedm, gmt_create)
-
-			VALUES(NOW(), NOW())
+				 INSERT INTO pf_user_trade_cash(
+				 user_id, open_id, trade_id,
+				 fee_to_type, account, channel, user_fee,
+				 procedure_fee, total_fee, status, explains,
+				 refuse_code, refuse_msg, gmt_modified,
+				 gmt_create, bank_name, bank_no				 
+				 )
+				 
+			VALUES(#userId#, #openId#, #tradeId#,
+			#feeToType#, #account#, #channel#, #userFee#,
+			#procedureFee#, #totalFee#, #status#,
+			#explains#, #refuseCode#, #refuseMsg#,
+			NOW(), NOW(), #bankName#, #bankNo#)
 		]]>
+		
 		<selectKey keyProperty="id" resultClass="Long">
 			<![CDATA[
 			SELECT LAST_INSERT_ID() AS value
 		]]>
 		</selectKey>
 	</insert>
-
-
 
 	<!--
 	<sql id="updateUserTradeFill" >
@@ -196,7 +208,7 @@
 	-->
 
 	<!--
-	<update id="update" parameterClass="userTradeFill">
+	<update id="update" parameterClass="userTradeCash">
 		<![CDATA[
 			UPDATE pf_user_trade_fill SET gmt_modified = NOW()
 		]]>
@@ -204,7 +216,7 @@
 		WHERE ID = #id#
 	</update>
 
-	<update id="updateByTransactionId" parameterClass="userTradeFill">
+	<update id="updateByTransactionId" parameterClass="userTradeCash">
 		<![CDATA[
 			UPDATE pf_user_trade_fill SET gmt_modified = NOW()
 		]]>
@@ -219,16 +231,16 @@
 	</delete>
 
 
-	<select id="selectByQuery" parameterClass="userTradeFillQuery" resultMap="userTradeFillResultMap">
+	<select id="selectByQuery" parameterClass="userTradeCashQuery" resultMap="userTradeCashResultMap">
 		<![CDATA[
 			SELECT
 		]]>
-		<include refid="userTradeFill_columns"/>
+		<include refid="userTradeCash_columns"/>
 		<![CDATA[
 			FROM pf_user_trade_fill
 			WHERE 1=1
 		]]>
-		<include refid="userTradeFill_query_conditon"></include>
+		<include refid="userTradeCash_query_conditon"></include>
 		<![CDATA[
 			order by gmt_create desc
 		    LIMIT #startNum#,#pageSize#
@@ -236,13 +248,13 @@
 
 	</select>
 
-	<select id="countByQuery" parameterClass="userTradeFillQuery" resultClass="Long">
+	<select id="countByQuery" parameterClass="userTradeCashQuery" resultClass="Long">
 		<![CDATA[
 			SELECT count(1)
 			FROM pf_user_trade_fill
 			WHERE 1=1
 		]]>
-		<include refid="userTradeFill_query_conditon"></include>
+		<include refid="userTradeCash_query_conditon"></include>
 	</select>
 -->
 
