@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+    <bean id="globalObject" class="com.line.bqxd.platform.dataobject.GlobalObject">
+        <property name="debugLevel" value="${weixin.js.debug.level}"></property>
+    </bean>
+    <bean id="application" class="com.line.bqxd.platform.manager.Application" init-method="init" destroy-method="destory">
+        <property name="appId" value="${weixin.appid}"></property>
+        <property name="appSecret" value="${weinxin.appsecret}"></property>
+        <property name="appToken" value="${weinxin.apptoken}"></property>
+    </bean>
+
+    <!-- httpclient线程池 begin -->
+    <bean id="bqxdConnectionManagerParams" class="org.apache.commons.httpclient.params.HttpConnectionManagerParams">
+        <property name="connectionTimeout" value="2000"/>
+        <property name="soTimeout" value="2000"/>
+        <property name="maxTotalConnections" value="60"/>
+        <property name="defaultMaxConnectionsPerHost" value="60"/>
+        <property name="staleCheckingEnabled" value="false"/>
+    </bean>
+
+    <bean id="bqxdConnectionManager" class="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager">
+        <property name="params" ref="bqxdConnectionManagerParams"/>
+    </bean>
+    <bean id="bqxdHttpClient" class="org.apache.commons.httpclient.HttpClient">
+        <constructor-arg>
+            <ref bean="bqxdConnectionManager"/>
+        </constructor-arg>
+    </bean>
+    <bean id="lbsHttpMethodRetryHandle" class="com.line.bqxd.platform.common.HttpRetryHandle"></bean>
+
+    <!-- httpclient线程池 end -->
+
+    <!--DAO begin-->
+
+    <bean id="userDAO" class="com.line.bqxd.platform.dao.impl.UserDAOImpl"></bean>
+    <bean id="userBalanceDAO" class="com.line.bqxd.platform.dao.impl.UserBalanceDAOImpl"></bean>
+    <bean id="concurPlanDAO" class="com.line.bqxd.platform.dao.impl.ConcurPlanDAOImpl"></bean>
+    <bean id="smsDAO" class="com.line.bqxd.platform.dao.impl.SmsDAOImpl"></bean>
+    <bean id="userConcurRelationDAO" class="com.line.bqxd.platform.dao.impl.UserConcurRelationDAOImpl"></bean>
+    <bean id="userClaimDAO" class="com.line.bqxd.platform.dao.impl.UserClaimDAOImpl"></bean>
+    <bean id="dunkBillDAO" class="com.line.bqxd.platform.dao.impl.DunkBillDAOImpl"></bean>
+    <bean id="userClaimApplyDAO" class="com.line.bqxd.platform.dao.impl.UserClaimApplyDAOImpl"></bean>
+    <bean id="userTradeBillDAO" class="com.line.bqxd.platform.dao.impl.UserTradeBillDAOImpl"></bean>
+    <bean id="userTradePayDAO" class="com.line.bqxd.platform.dao.impl.UserTradePayDAOImpl"></bean>
+    <bean id="userTradeCashDAO" class="com.line.bqxd.platform.dao.impl.UserTradeCashDAOImpl"></bean>
+    <bean id="userTradeFillDAO" class="com.line.bqxd.platform.dao.impl.UserTradeFillDAOImpl"></bean>
+    <bean id="concurRemindDAO" class="com.line.bqxd.platform.dao.impl.ConcurRemindDAOImpl"></bean>
+    <bean id="commentsDAO" class="com.line.bqxd.platform.dao.impl.CommentsDAOImpl"></bean>
+
+    <bean id="wxAttentionDAO" class="com.line.bqxd.platform.dao.impl.WXAttentionDAOImpl"></bean>
+
+    <bean id="userAdminDAO" class="com.line.bqxd.platform.dao.impl.UserAdminDAOImpl"></bean>
+
+    <bean id="regMobileTempDAO" class="com.line.bqxd.platform.dao.impl.RegMobileTempDAOImpl"></bean>
+
+
+    <bean id="cleanExtendFeeDAO" class="com.line.bqxd.platform.dao.impl.CleanExtendFeeDAOImpl"></bean>
+    <bean id="extendDAO" class="com.line.bqxd.platform.dao.impl.ExtendDAOImpl"></bean>
+
+
+
+    <!--DAO end-->
+
+
+    <!--manager begin-->
+
+    <bean id="concurManager" class="com.line.bqxd.platform.manager.concur.impl.ConcurManagerImpl" init-method="init">
+
+
+    </bean>
+    <bean id="userManager" class="com.line.bqxd.platform.manager.user.impl.UserManagerImpl"></bean>
+    <bean id="userPayManager" class="com.line.bqxd.platform.manager.user.impl.UserPayManagerImpl"></bean>
+    <bean id="wxUserManager" class="com.line.bqxd.platform.manager.user.impl.WXUserManagerImpl"></bean>
+    <bean id="wxmenuManager" class="com.line.bqxd.platform.manager.wxmenu.impl.WXMenuManagerImpl" ></bean>
+    <bean id="smsManager" class="com.line.bqxd.platform.manager.sms.impl.SmsManagerImpl" >
+        <property name="appSecret" value="ac71010c07d06cbdec397a28be4de11f"></property>
+        <property name="appKey" value="23365755"></property>
+    </bean>
+
+    <bean id="messageManager" class="com.line.bqxd.platform.manager.message.MessageManagerImpl"></bean>
+
+
+    <bean id="commentsManager" class="com.line.bqxd.platform.manager.comments.impl.CommentsManagerImpl" init-method="init"></bean>
+
+
+    <bean id="tradeManager" class="com.line.bqxd.platform.manager.wxpay.impl.TradeManagerImpl"></bean>
+    <bean id="wxManager" class="com.line.bqxd.platform.manager.wx.impl.WXManagerImpl"></bean>
+
+    <bean id="wxPayManager" class="com.line.bqxd.platform.manager.wxpay.impl.WXPayManagerImpl" init-method="init">
+        <property name="payCallbackUrl" value="${weixin.pay.callback.url}"></property>
+        <property name="configInitDelay" value="${weixin.pay.collate.init.delay}"></property>
+    </bean>
+
+    <bean id="cycleLifeManager" class="com.line.bqxd.platform.manager.CycleLifeManagerImpl" init-method="init"></bean>
+
+    <bean id="authCodeCache" class="com.line.bqxd.platform.manager.cache.AuthCodeCache">
+        <property name="preMinuteCount" value="3"></property>
+    </bean>
+
+
+
+
+    <bean id="extendManager" class="com.line.bqxd.platform.manager.extend.impl.ExtendManagerImpl"></bean>
+
+
+
+
+    <!--manager END-->
+
+    <bean id="runEnv" class="com.line.bqxd.platform.manager.RunEnv" init-method="init">
+        <property name="env" value="${runtime.env}"></property>
+    </bean>
+
+    <bean id="payTestMapping" class="com.line.bqxd.platform.manager.PayTestMapping" >
+        <property name="openIdMap">
+            <map>
+                <entry key="ot3tXs0AZNShis5r4mG6muF-5hEc" value="o8GVywuhVYiIjQEF9h9pJrJZS4IM"></entry>
+                <entry key="ot3tXs7sb2_t7HsiDG498SN1kSjw" value="o8GVywgUJwGv3HPqO3cqHwsi_1_o"></entry>
+                <entry key="ot3tXsyUb2ueGFbJPPWocWOBAkFg" value="o8GVywvd9OCYurEntURrCQI7x34o"></entry>
+                <entry key="ot3tXs8Owk1IP3L4ik6On80qOgDk" value="o8GVywoOQ-qiQovRM4Hw4k_g6CcM"></entry>
+                <entry key="ot3tXs_5UlLLMqcmk9Bx_BkMbto8" value="o8GVywrX9KmSxO_2Phg4_FLbOmTc"></entry>
+
+
+            </map>
+        </property>
+        <property name="openIdMapReverse">
+            <map>
+                <entry key="o8GVywuhVYiIjQEF9h9pJrJZS4IM" value="ot3tXs0AZNShis5r4mG6muF-5hEc"></entry>
+                <entry key="o8GVywgUJwGv3HPqO3cqHwsi_1_o" value="ot3tXs7sb2_t7HsiDG498SN1kSjw"></entry>
+                <entry key="o8GVywoOQ-qiQovRM4Hw4k_g6CcM" value="ot3tXs8Owk1IP3L4ik6On80qOgDk"></entry>
+                <entry key="o8GVywvd9OCYurEntURrCQI7x34o" value="ot3tXsyUb2ueGFbJPPWocWOBAkFg"></entry>
+                <entry key="o8GVywrX9KmSxO_2Phg4_FLbOmTc" value="ot3tXs_5UlLLMqcmk9Bx_BkMbto8"></entry>
+            </map>
+        </property>
+
+        <property name="payTestAppId" value="${weixin.pay.test.appId}"></property>
+    </bean>
+
+    <bean id="templateMsgManager" class="com.line.bqxd.platform.manager.wx.impl.TemplateMsgManagerImpl">
+        <property name="dunkBalanceMsgId" value="${weixin.dunk.balance.templat.id}"></property>
+        <property name="joinSuccessMsgId" value="${weixin.join.success.template.id}"></property>
+    </bean>
+
+    <bean id="claimApplyManager" class="com.line.bqxd.platform.manager.claim.impl.ClaimApplyManagerImpl">
+        <property name="uploadPicPath" value="${upload.pic.path}"></property>
+        <property name="downloadPicPrefix" value="${download.pic.prefix}"></property>
+    </bean>
+    <bean id="dunkBillManager" class="com.line.bqxd.platform.manager.dunk.DunkBillManagerImpl"></bean>
+</beans>

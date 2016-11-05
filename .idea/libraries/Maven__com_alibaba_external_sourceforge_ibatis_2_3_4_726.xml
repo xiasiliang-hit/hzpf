@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.alibaba.external:sourceforge.ibatis:2.3.4.726">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/external/sourceforge.ibatis/2.3.4.726/sourceforge.ibatis-2.3.4.726.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/external/sourceforge.ibatis/2.3.4.726/sourceforge.ibatis-2.3.4.726-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/external/sourceforge.ibatis/2.3.4.726/sourceforge.ibatis-2.3.4.726-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,56 @@
+package com.line.bqxd.platform.client.dataobject;
+
+import com.line.bqxd.platform.client.common.DBBaseDO;
+import com.line.bqxd.platform.client.utils.DateUtils;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+
+/**
+ * Created by huangjianfei on 16/5/2.
+ *
+ */
+public class UserTradeCashDO extends DBBaseDO implements Serializable{
+    @Setter
+    @Getter
+    private long userId;
+    @Setter
+    @Getter
+    private String openId;
+    @Setter
+    @Getter
+    private String tradeId;
+    @Setter
+    @Getter
+    private int feeToType;
+    @Setter
+    @Getter
+    private String account;
+    @Setter
+    @Getter
+    private String channel;
+    @Setter
+    @Getter
+    private long userFee;
+    @Setter
+    @Getter
+    private long procedureFee;
+    @Setter
+    @Getter
+    private long totalFee;
+    @Setter
+    @Getter
+    private int status;
+    @Setter
+    @Getter
+    private String explains;
+    @Setter
+    @Getter
+    private String refushCode;
+    @Setter
+    @Getter
+    private String refushMsg;
+
+
+}

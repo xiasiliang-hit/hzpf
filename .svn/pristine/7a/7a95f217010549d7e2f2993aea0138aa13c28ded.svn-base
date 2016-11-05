@@ -1,0 +1,427 @@
+package com.line.bqxd.platform.v2.login;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.line.bqxd.platform.client.constant.Constant;
+import com.line.bqxd.platform.client.constant.ResultEnum;
+import com.line.bqxd.platform.client.dataobject.PfWeixinAuthDO;
+import com.line.bqxd.platform.client.dataobject.UserDO;
+import com.line.bqxd.platform.client.dto.Result;
+import com.line.bqxd.platform.common.HttpUtil;
+import com.line.bqxd.platform.common.utils.CharacterUtils;
+import com.line.bqxd.platform.common.utils.LinkTool;
+import com.line.bqxd.platform.common.utils.NginxTool;
+import com.line.bqxd.platform.common.utils.ParameterTool;
+import com.line.bqxd.platform.login.SessionConstants;
+import com.line.bqxd.platform.login.SessionUserInfo;
+import com.line.bqxd.platform.manager.user.UserManager;
+import com.line.bqxd.platform.manager.user.WXUserManager;
+import com.line.bqxd.platform.v2.PfApplication;
+import com.line.bqxd.platform.v2.manager.PfWeixinAuthManager;
+import com.line.bqxd.platform.v2.utils.GlobalConstant;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * Created by huangjianfei on 16/4/26.
+ */
+public class WXPfLoginFilter implements Filter, GlobalConstant {
+    private static Logger logger = LoggerFactory.getLogger(WXPfLoginFilter.class);
+
+    private static final String AUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?";
+    //https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE&component_appid=component_appid#wechat_redirect
+    private static final String AUTH_USER_INFO_URL = "&response_type=code&scope=snsapi_userinfo&state=xdhz&component_appid=";
+
+    private static final String AUTH_SILENCE_URL = "&response_type=code&scope=snsapi_base&state=xdhz&component_appid=";
+
+    //private static final String AUTH_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code";
+    private static final String AUTH_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=";
+    //https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=APPID&code=CODE&grant_type=authorization_code&component_appid=COMPONENT_APPID&component_access_token=COMPONENT_ACCESS_TOKEN
+
+    private static final String WX_LOGIN_CODE_NAME = "code";
+
+    private static final String WX_LOGIN_STATE_NAME = "state";
+
+    private String notPermitUrls[] = null;
+    private String loginUrl = null;
+    private ServletContext servletContext = null;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        String notPermitUrls = filterConfig.getInitParameter("notPermitUrls");
+        loginUrl = filterConfig.getInitParameter("gotoUrl");
+
+
+        if (StringUtils.isNotBlank(notPermitUrls)) {
+            this.notPermitUrls = notPermitUrls.split(",");
+        }
+        servletContext = filterConfig.getServletContext();
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        String allUrl = HttpUtil.getFullPath(req);
+        logger.warn("full url={}", allUrl);
+
+        if (!isPermit(req)) {
+            WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(servletContext, "org.springframework.web.servlet.FrameworkServlet.CONTEXT.spring");
+            PfApplication pfApplication = (PfApplication) getBean("pfApplication", ctx);
+            UserManager userManager = (UserManager) getBean("userManager", ctx);
+            PfWeixinAuthManager pfWeixinAuthManager = (PfWeixinAuthManager) getBean("pfWeixinAuthManager", ctx);
+            WXUserManager wxUserManager = (WXUserManager) getBean("wxUserManager", ctx);
+
+            HttpSession session = req.getSession(true);
+            long pfAppid = getPfAppid(req);
+            Object wxSession = session.getAttribute(SessionConstants.WX_LOGIN_SESSIOIN_ATTRIBUTE_NAME);
+            //用户已经进行授权或者登陆
+            if (isLogin(wxSession, pfAppid)) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug(wxSession + "user into system");
+                }
+                if(checkRepeatSubmitAndSet(req)){
+                    if(isAjax(req)){
+                        ajaxRepeatSubmitHandle(req,resp);
+                        return;
+                    }else {
+                        repeatSubmitHandle(req, resp);
+                    }
+                }
+                chain.doFilter(request, response);
+                return;
+            } else {
+                boolean userAuthWay = isUserAuthWay(allUrl);
+                String code = req.getParameter(WX_LOGIN_CODE_NAME);
+                String state = req.getParameter(WX_LOGIN_STATE_NAME);
+                PfWeixinAuthDO pfWeixinAuthDO=pfWeixinAuthManager.selectByid(pfAppid);
+                //授权成功,执行用户数据库查询,是否需要修改用户数据
+                if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(state) && pfAppid>0) {
+                    try {
+
+                        JSONObject jsonObject = pfApplication.getObject(getAuthAccessTokenUrl(req, pfApplication, pfWeixinAuthDO.getAuthorizerAppid(), code));
+                        if (jsonObject != null) {
+                            String errCode = jsonObject.getString("errcode");
+                            //获取TOKEN有异常,需要重新授权
+                            if (StringUtils.isNotBlank(errCode)) {
+                                //用户未授权,需要进行微信登录授权
+                                resp.sendRedirect(getAuthUserInfoUrl(req, pfApplication, pfWeixinAuthDO.getAuthorizerAppid(), userAuthWay, true));
+                                return;
+                            }
+                            String accessToken = jsonObject.getString("access_token");
+                            String openid = jsonObject.getString("openid");
+                            if (StringUtils.isNotBlank(accessToken) && StringUtils.isNotBlank(openid)) {
+                                UserDO userDO = userManager.selectByOpenId(openid, pfAppid);
+                                UserDO newUserDO = wxUserManager.getSynUserInfo(accessToken, openid, true);
+                                newUserDO.setLastLoginDate(new Date());
+                                newUserDO.setLastLoginIp(NginxTool.getIpByNginx(req));
+                                boolean synDate = false;
+                                long userId = 0;
+                                if (userDO == null) {
+
+
+                                    userId = userManager.insert(newUserDO, pfAppid);
+                                    synDate = true;
+                                } else {
+                                    userId = userDO.getUserId();
+                                    if (!userDO.compareToWXData(newUserDO)) {
+                                        newUserDO.setUserId(userDO.getUserId());
+                                        newUserDO.setUnionid(userDO.getUnionid());
+
+
+                                        userManager.updateWXByUnionId(newUserDO);
+                                        synDate = true;
+                                    } else {
+                                        UserDO newUserDO2 = new UserDO();
+                                        newUserDO2.setUserId(userDO.getUserId());
+                                        newUserDO2.setUnionid(userDO.getUnionid());
+                                        newUserDO2.setLastLoginDate(newUserDO.getLastLoginDate());
+                                        newUserDO2.setLastLoginIp(newUserDO.getLastLoginIp());
+
+
+                                        userManager.updateWXByUnionId(newUserDO2);
+                                    }
+                                }
+                                SessionUserInfo sessionUserInfo = new SessionUserInfo();
+                                sessionUserInfo.setAppid(pfWeixinAuthDO.getAuthorizerAppid());
+                                sessionUserInfo.setPfAppid(pfAppid);
+                                if (synDate) {
+                                    BeanUtils.copyProperties(newUserDO, sessionUserInfo);
+                                    sessionUserInfo.setUserId(userId);
+                                } else {
+                                    BeanUtils.copyProperties(userDO, sessionUserInfo);
+
+                                }
+                                //sessionUserInfo.setExtData(activityDomain);
+                                session.setAttribute(SessionConstants.WX_LOGIN_SESSIOIN_ATTRIBUTE_NAME, sessionUserInfo);
+
+                            } else {
+                                logger.warn("get accessToken error");
+                            }
+                        }
+                    } catch (Exception e) {
+                        logger.error("syn user info error,", e);
+                    }
+                    chain.doFilter(request, response);
+                    return;
+                } else {
+                    //用户未授权,需要进行微信登录授权
+                    resp.sendRedirect(getAuthUserInfoUrl(req, pfApplication, pfWeixinAuthDO.getAuthorizerAppid(), userAuthWay, false));
+                    return;
+                }
+            }
+        } else {
+            chain.doFilter(request, response);
+            return;
+        }
+
+
+    }
+
+
+    @Override
+    public void destroy() {
+
+    }
+
+    private boolean isPermit(HttpServletRequest req) {
+        String path = req.getContextPath();
+        String servletPath = req.getServletPath();
+        if (notPermitUrls == null || notPermitUrls.length == 0) {
+            return true;
+        }
+        for (String notPermitUrl : notPermitUrls) {
+            if (servletPath.startsWith(notPermitUrl)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private Object getBean(String beanName, ApplicationContext ctx) {
+        return ctx.getBean(beanName);
+    }
+
+    private String getAuthUserInfoUrl(HttpServletRequest request, PfApplication pfApplication, String appid, boolean userInfo, boolean removeParam) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(AUTH_URL);
+        sb.append("appid=");
+        sb.append(appid);
+        sb.append("&");
+        sb.append("redirect_uri=");
+        try {
+            if (!removeParam) {
+                sb.append(URLEncoder.encode(HttpUtil.getFullPath(request), "UTF-8"));
+            } else {
+                sb.append(URLEncoder.encode(getFullPathRemoveWx(request), "UTF-8"));
+            }
+        } catch (UnsupportedEncodingException e) {
+        }
+        if (userInfo) {
+            sb.append(AUTH_USER_INFO_URL);
+        } else {
+            sb.append(AUTH_SILENCE_URL);
+        }
+        sb.append(pfApplication.getPfAppId());
+        sb.append("#wechat_redirect");
+        return sb.toString();
+    }
+
+    private String getFullPathRemoveWx(HttpServletRequest request) {
+        String url = HttpUtil.getPath(request);
+        Map<String, String> map = request.getParameterMap();
+        Set<Map.Entry<String, String>> set = map.entrySet();
+        StringBuilder sb = new StringBuilder();
+        if (!CollectionUtils.isEmpty(set)) {
+
+            int index = 0;
+            for (Map.Entry entry : set) {
+                String key = (String) entry.getKey();
+                String value = request.getParameter(key);
+                if (WX_LOGIN_CODE_NAME.equals(key) || WX_LOGIN_STATE_NAME.equals(key)) {
+                    continue;
+                }
+                if (index > 0) {
+                    sb.append("&");
+                }
+
+                sb.append(key);
+                sb.append("=");
+                sb.append(value);
+                index++;
+            }
+        }
+        String queryString = sb.toString();
+        if (StringUtils.isNotBlank(queryString)) {
+            return url + '?' + queryString;
+        } else {
+            return url;
+        }
+    }
+
+    private String getAuthAccessTokenUrl(HttpServletRequest request, PfApplication application, String appid, String code) {
+        //https://api.weixin.qq.com/sns/oauth2/component/access_token?appid=APPID&code=CODE&grant_type=authorization_code&component_appid=COMPONENT_APPID&component_access_token=COMPONENT_ACCESS_TOKEN
+
+        StringBuilder sb = new StringBuilder(AUTH_ACCESS_TOKEN_URL);
+        sb.append(appid);
+        sb.append("&");
+        sb.append("code=");
+        sb.append(code);
+        sb.append("&grant_type=authorization_code&component_appid=");
+        sb.append(application.getPfAppId());
+        sb.append("&");
+        sb.append("component_access_token=");
+        sb.append(application.getComponentAccessToken());
+        return sb.toString();
+
+    }
+
+
+    private boolean isUserAuthWay(String allUrl) {
+        LinkTool linkTool = new LinkTool(allUrl);
+        Map<String, Object> queryMap = linkTool.getQuery();
+        if (CollectionUtils.isEmpty(queryMap)) {
+            return true;
+        }
+        String value = (String) queryMap.get(Constant.AUTH_SNSAPI_BASE_KEY);
+        if ("true".equalsIgnoreCase(value)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isLogin(Object wxSession, long pfAppid) {
+        if(wxSession==null){
+            return false;
+        }
+        if (wxSession != null && StringUtils.isBlank(((SessionUserInfo) wxSession).getOpenid())) {
+            return false;
+        }
+        SessionUserInfo userInfo = (SessionUserInfo) wxSession;
+        long loginAppid = userInfo.getPfAppid();
+
+        if (loginAppid==pfAppid) {
+            return true;
+        }
+        return false;
+    }
+
+    private long getPfAppid(HttpServletRequest req) {
+
+        String pfAppid=req.getParameter(PARAMETER_APPID_NAME);
+        if(StringUtils.isNotBlank(pfAppid)){
+            return Long.parseLong(pfAppid);
+        }else{
+            SessionUserInfo sessionUserInfo=getSessionUserInfo(req);
+            if(sessionUserInfo!=null){
+                return sessionUserInfo.getPfAppid();
+            }else {
+                return 0;
+            }
+        }
+
+
+    }
+    protected SessionUserInfo getSessionUserInfo(HttpServletRequest request){
+        HttpSession session= getHttpSession(request);
+
+
+        if(session!=null){
+            Object object=session.getAttribute(SessionConstants.WX_LOGIN_SESSIOIN_ATTRIBUTE_NAME);
+            if(object instanceof  SessionUserInfo){
+                return (SessionUserInfo)object;
+            }else if(object==null){
+                return null;
+            }else{
+                throw  new ClassCastException("user session cast error,objec="+object.getClass());
+            }
+        }else{
+            return null;
+        }
+
+    }
+
+    private boolean checkRepeatSubmitAndSet(HttpServletRequest request){
+        SessionUserInfo userInfo=getSessionUserInfo(request);
+        if(userInfo==null){
+            return false;
+        }
+        boolean result=false;
+        String token=userInfo.getToken();
+        String submitToken=request.getParameter("_token_");
+        if(StringUtils.isNotBlank(submitToken)){
+            if(submitToken.equals(token)){
+                result= false;
+            }else{
+                result=true;
+            }
+        }else{
+            result= false;
+        }
+        if(!isAjax(request)) {
+            String nextToken = CharacterUtils.getRandomString(16);
+            userInfo.setToken(nextToken);
+            request.setAttribute("_token_", nextToken);
+        }
+        return result;
+    }
+    private boolean isAjax(HttpServletRequest request){
+        String ajax=request.getParameter("ajax");
+        if(StringUtils.isNotBlank(ajax)&&ajax.equals("true")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private void ajaxRepeatSubmitHandle(HttpServletRequest request, HttpServletResponse response){
+        Result result=Result.of(ResultEnum.REPEAT_SUBMIT.getCode(), ResultEnum.REPEAT_SUBMIT.getDesc());
+        try {
+            response.getWriter().write(JSON.toJSONString(result));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void repeatSubmitHandle(HttpServletRequest request, HttpServletResponse response){
+        StringBuilder sb = new StringBuilder("http://");
+        sb.append(request.getServerName());
+        if (request.getServerPort() != 80) {
+            sb.append(":");
+            sb.append(request.getServerPort());
+        }
+        sb.append("/error/common.htm?errorMsg=" + URLEncoder.encode("请不要重复提交"));
+
+        try {
+            String url = ParameterTool.getFullUrl(sb.toString(), request);
+            url = url.replaceAll("%25", "%");
+            response.sendRedirect(url);
+        } catch (IOException e) {
+
+        }
+    }
+
+
+
+    protected HttpSession getHttpSession(HttpServletRequest request){
+        return request.getSession();
+    }
+
+}

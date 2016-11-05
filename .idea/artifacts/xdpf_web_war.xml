@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xdpf-web:war">
+    <output-path>$PROJECT_DIR$/xdpf-web/target</output-path>
+    <root id="archive" name="xdpf.war">
+      <element id="artifact" artifact-name="xdpf-web:war exploded" />
+    </root>
+  </artifact>
+</component>
