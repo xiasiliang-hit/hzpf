@@ -3,9 +3,7 @@
 <sqlMap namespace="UserTradeCash">
 
 	<typeAlias alias="userTradeCash" type="com.line.bqxd.platform.client.dataobject.UserTradeCashDO"/>
-	<!--
-	<typeAlias alias="userTradeFillQuery" type="com.line.bqxd.platform.client.dataobject.query.UserTradeFillQueryDO"/>
--->
+
 	<resultMap id="userTradeCashResultMap" class="userTradeCash">
 		<result property="id" column="id"/>
 		<result property="userId" column="user_id"/>
@@ -20,7 +18,7 @@
 		<result property="status" column="status"/>
 		<result property="explains" column="explains"/>
 		<result property="refuseCode" column="refuse_code"/>
-		<result property="refuseMsg" column="refusens_msg"/> 
+		<result property="refuseMsg" column="refuse_msg"/> 
 		<result property="gmtCreate" column="gmt_create"/>
 		<result property="gmtModified" column="gmt_modified"/>
 		<result property="bankName" column="bank_name"/>
@@ -29,7 +27,11 @@
 	</resultMap>
 
 	<sql id="userTradeCash_columns">
-		id, user_id, open_id, trade_id, fee_to_type, account, channel, user_fee, procedure_fee, total_fee, status, explains, refush_code, refush_msg, gmt_modified, gmt_create
+		id, user_id, open_id, trade_id, fee_to_type,
+		account, channel, user_fee, procedure_fee,
+		total_fee, status, explains, refuse_code,
+		refuse_msg, gmt_modified, gmt_create, bank_name,
+		bank_no, withdraw_amount
 	</sql>
 
 	<!--
@@ -114,7 +116,7 @@
 	
 
 	<!--
-	id, user_id, open_id, trade_id, fee_to_type, account, channel, user_fee, procdure_fee, total_fee, status, explains, refush_code, refush_msg,
+	id, user_id, open_id, trade_id, fee_to_type, account, channel, user_fee, procdure_fee, total_fee, status, explains, refuse_code, refuse_msg,
 	-->
 	<insert id="insert" parameterClass="userTradeCash">
 		<![CDATA[
@@ -123,14 +125,14 @@
 				 fee_to_type, account, channel, user_fee,
 				 procedure_fee, total_fee, status, explains,
 				 refuse_code, refuse_msg, gmt_modified,
-				 gmt_create, bank_name, bank_no				 
+				 gmt_create, bank_name, bank_no, withdraw_amount
 				 )
 				 
-			VALUES(#userId#, #openId#, #tradeId#,
-			#feeToType#, #account#, #channel#, #userFee#,
-			#procedureFee#, #totalFee#, #status#,
-			#explains#, #refuseCode#, #refuseMsg#,
-			NOW(), NOW(), #bankName#, #bankNo#)
+				 VALUES (#userId#, #openId#, #tradeId#,
+				 #feeToType#, #account#, #channel#, #userFee#,
+				 #procedureFee#, #totalFee#, #status#,
+				 #explains#, #refuseCode#, #refuseMsg#,
+				 NOW(), NOW(), #bankName#, #bankNo#, #withdrawAmount#)
 		]]>
 		
 		<selectKey keyProperty="id" resultClass="Long">

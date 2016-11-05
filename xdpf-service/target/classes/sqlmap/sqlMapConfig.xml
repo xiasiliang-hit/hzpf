@@ -17,8 +17,9 @@
 	<sqlMap
 	resource="sqlmap/ibatis/usertradepay_table.ibatis.xml"/>
 	-->
-	<sqlMap	resource="sqlmap/ibatis/usertradecash_table.ibatis.xml"/>
-	
+
+    <sqlMap	resource="sqlmap/ibatis/usertradecash_table.ibatis.xml"/>
+
     <sqlMap resource="sqlmap/ibatis/useradmin_table.ibatis.xml"/>
     <sqlMap resource="sqlmap/ibatis/regMobileTemp_table.ibatis.xml" />
 
@@ -28,7 +29,8 @@
     <sqlMap resource="sqlmap/ibatis/userappopenid_table.ibatis.xml" />
     <sqlMap resource="sqlmap/ibatis/pfuserbalance_table.ibatis.xml" />
     <sqlMap resource="sqlmap/ibatis/dunkbill_table.ibatis.xml" />
-    <!--
+
+	<!--
     <sqlMap resource="sqlmap/ibatis/userbalance_table.ibatis.xml" />
 -->
 </sqlMapConfig>

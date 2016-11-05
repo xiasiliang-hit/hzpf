@@ -76,7 +76,7 @@
         <img src="$!{user_pic}" alt="">
     </div>
     <h2>$!{user.UserName}</h2>
-    <h6>余额：52.1元</h6>
+    <h6>$!{balance}元</h6>
 </div>
 
 <form id="bankform" method="post" action="on_withdraw.htm">

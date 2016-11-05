@@ -3,7 +3,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 	<appender name="PROJECT"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/Users/huangjianfei/IdeaProjects/logs/xdpf.log" />
+		<param name="file" value="/home/admin/xdpf//logs/xdpf.log" />
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<!--param name="threshold" value="info" / -->
@@ -15,18 +15,18 @@
 
 	<appender name="TAOBAO-WARN"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/Users/huangjianfei/IdeaProjects/logs/xdpf-warn.log" />
+		<param name="file" value="/home/admin/xdpf//logs/xdpf-warn.log" />
 		<param name="append" value="false" />
 		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
+				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithBQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
 		</layout>
 	</appender>
 
 	<appender name="PROJECT-DEBUG"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/Users/huangjianfei/IdeaProjects/logs/xdpf-debug.log" />
+		<param name="file" value="/home/admin/xdpf//logs/xdpf-debug.log" />
 		<param name="append" value="false" />
 		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -37,7 +37,7 @@
 
 	<appender name="FILTER"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/Users/huangjianfei/IdeaProjects/logs/xdpf-warn.log" />
+		<param name="file" value="/home/admin/xdpf//logs/xdpf-warn.log" />
 		<param name="append" value="true" />
 		<param name="encoding" value="UTF-8" />
 		<param name="threshold" value="info" />
@@ -49,7 +49,7 @@
 	
 	<appender name="PROJECT-BIZ"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="/Users/huangjianfei/IdeaProjects/logs/xdpf-biz.log" />
+		<param name="file" value="/home/admin/xdpf//logs/xdpf-biz.log" />
 		<param name="append" value="false" />
 		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">

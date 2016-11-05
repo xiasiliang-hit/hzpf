@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class WXPayManagerImpl implements WXPayManager {
     private static Logger logger = LoggerFactory.getLogger(WXPayManagerImpl.class);
-
+	private static Logger bizLogger = LoggerFactory.getLogger("bizLogger");
 
     private String payCallbackUrl;
 
@@ -78,11 +78,15 @@ public class WXPayManagerImpl implements WXPayManager {
 
     @Override
     public WXPayResult wxPay(WXPayRequest wxPayRequest,long pfAppId) {
-        RequestHandler requestHandler = createRequestHandle(wxPayRequest);
+
+		RequestHandler requestHandler = createRequestHandle(wxPayRequest);
         String urlPostData = null;
-        try {
+		bizLogger.debug("DANNYDEBUG in wxPay 1 " + Long.toString(pfAppId));     
+		try {
+			bizLogger.debug("DANNYDEBUG in wxPay 2 ");     
             urlPostData = requestHandler.getRequestURL(getWxPaySecret(pfAppId), "UTF-8");
         } catch (UnsupportedEncodingException e) {
+			bizLogger.debug("DANNYDEBUG in wxPay 01 ", e);     
             logger.error("encode error", e);
         }
         if (StringUtils.isBlank(urlPostData)) {
@@ -95,6 +99,7 @@ public class WXPayManagerImpl implements WXPayManager {
         }
         //urlPostData="<xml><appid>wx6fae0b7142e97ce8</appid><attach>test</attach><body>兄弟互助测试版</body><detail>详细的兄弟互助测试版</detail><device_info>WEB</device_info><fee_type>CNY</fee_type><mch_id>1260519601</mch_id><nonce_str>1095cb950d0042e6b8ce2352c4c0abfa</nonce_str><notify_url>http://139.129.58.215/wxpay/callback/notifyMessage.htm</notify_url><openid>ot3tXs0AZNShis5r4mG6muF-5hEc</openid><out_trade_no>1461854485</out_trade_no><product_id>1</product_id><spbill_create_ip>139.129.58.215</spbill_create_ip><total_fee>1</total_fee><trade_type>JSAPI</trade_type><sign>CF9470CD29EC4DDD67433CFEA1A2EB38</sign></xml>";
         try {
+			
             HttpResult httpResult = HttpUtil.sendOriginally(WEIXIN_PAY_URL, urlPostData, "UTF-8");
             if (httpResult != null && httpResult.isSuccess()) {
                 XStream xs = SerializeXmlUtil.createXstream();
@@ -102,13 +107,17 @@ public class WXPayManagerImpl implements WXPayManager {
                 // 将指定节点下的xml节点数据映射为对象
                 xs.alias("xml", WXPayResult.class);
                 WXPayResult wxPayResult = (WXPayResult) xs.fromXML(httpResult.getContent());
+			bizLogger.debug("DANNYDEBUG in wxPay 3 ");				
                 return wxPayResult;
             } else {
+				bizLogger.debug("DANNYDEBUG in wxPay 031 ");     
                 logger.error("weixin pay error,code={},content={}", httpResult.getStatusCode(), httpResult.getContent());
             }
         } catch (Exception e) {
             logger.error("weixin pay error", e);
+			bizLogger.debug("DANNYDEBUG in wxPay 032 ", e.toString());     
         }
+		bizLogger.debug("DANNYDEBUG in wxPay 2 ");     
         return null;
     }
 

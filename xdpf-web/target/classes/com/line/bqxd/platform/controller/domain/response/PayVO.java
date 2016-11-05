@@ -22,6 +22,18 @@ public class PayVO extends Base {
 
     private boolean result;
 
+	private String msg;
+
+	public void addMsg(String s)
+	{
+		msg+= s;
+	}
+
+	public String getMsg()
+	{
+		return msg;
+	}
+	
     public PayVO(boolean result) {
         this.result = result;
     }
@@ -33,8 +45,6 @@ public class PayVO extends Base {
         this.timeStamp = timeStamp;
         this.sign = sign;
     }
-
-
 
     public String getAppId() {
         return appId;

@@ -52,8 +52,11 @@
     </li>
 </ul>
 
+<div>
+<a>$!{msg}</a>
+</div>  
+
 <div class="banner_box">
-    $!{msg}
     <img src="http://res.xiongdihuzhu.com/res/xdpf/images/Z-banner2@2x.jpg" alt="">
 
 </div>

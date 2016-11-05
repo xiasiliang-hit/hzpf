@@ -33,7 +33,9 @@ import java.util.Map;
  */
 public class TradeManagerImpl implements TradeManager {
     private static Logger logger = LoggerFactory.getLogger(TradeManagerImpl.class);
-    @Autowired
+	private static Logger bizLogger = LoggerFactory.getLogger("bizLogger");
+
+	@Autowired
     private WXPayManager wxPayManager;
 
     @Autowired
@@ -82,18 +84,22 @@ public class TradeManagerImpl implements TradeManager {
                 logger.warn("weixin pay error result=null");
             } else {
                 logger.warn("weixin pay result {},{},{}", tradeDO, payObject, wxPayResult);
-            }
+				bizLogger.debug("DANNYDEBUG in fillCash 1 ", tradeDO, payObject, wxPayResult);     				
+			}
             if (WXPayResult.WX_SUCCESS_CODE.equals(wxPayResult.getReturnCode())) {
                 if (WXPayResult.WX_SUCCESS_CODE.equals(wxPayResult.getResultCode())) {
                     userPayManager.userTradeFillSuccess(tradeDO, wxPayResult);
                     return new BizResult(wxPayResult, true);
                 } else {
-                    //支付异常需要提示到页面
+					bizLogger.debug("DANNYDEBUG in fillCash 3 " +  tradeDO.toString() +  payObject.toString() +  wxPayResult.getReturnCode().toString());
+
+					//支付异常需要提示到页面
                     userPayManager.userTradeFillFail(tradeDO, wxPayResult);
                     logger.error("weixin pay error {}", wxPayResult);
                     return new BizResult(false, ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getCode(), ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getDesc(), wxPayResult);
                 }
             } else {
+				bizLogger.debug("DANNYDEBUG: in fillCash: 3 "+ wxPayResult.toString());
                 //通讯异常
                 userPayManager.userTradeFillFail(tradeDO, wxPayResult);
                 logger.error("weixin comm error {}", wxPayResult);
@@ -102,6 +108,7 @@ public class TradeManagerImpl implements TradeManager {
         } catch (Exception e) {
             userPayManager.userTradeFillFail(tradeDO, new WXPayResult(ResultEnums.SYSERROR));
             logger.error("weixin pay error", e);
+			bizLogger.debug("DANNYDEBUG: in fillCash: 0 ");
         }
         return new BizResult(ResultEnum.SYSERROR);
     }

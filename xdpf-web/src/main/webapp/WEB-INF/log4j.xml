@@ -20,7 +20,7 @@
 		<param name="encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
+				value="%n%d [%X{loginUserNick}@%X{remoteAddr} - %X{method} %X{requestURIWithBQueryString}] %nUserAgent: %X{userAgent}%nReferrer: %X{referrer}%n%-5p %c{2} - %m%n" />
 		</layout>
 	</appender>
 

@@ -60,7 +60,7 @@ import java.util.List;
 @RequestMapping("/v2/concur")
 public class ConcurMyController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(ConcurMyController.class);
-
+	private static Logger bizLogger = LoggerFactory.getLogger("bizLogger");
     /*
     @Resource  //自动注入,默认按名称
     private UserTradeBillDAO<UserTradeBillDO> userTradeBillDAO;
@@ -221,7 +221,25 @@ public class ConcurMyController extends BaseController {
 				msg += e.toString();
 			}
 			*/
-									
+
+			
+		List<UserTradeCashDO> userTradeCashDOList= userTradeCashDAO.selectAll();
+		/*
+		List<UserTradeCashDO> displayUserTradeCashDO = new ArrayList<UserTradeCashDO>();
+		for (UserTradeCashDO cashDO : userTradeCashDOList)
+		{
+			if (cashDO.getUserId() == userDO.getUserId())
+				{
+					displayUserTradeCashDO.add(cashDO);
+					
+				}
+
+			
+		}
+			
+		mav.addObject("userCashTrans", displayUserTradeCashDO);
+			*/
+		
             balance = myResponse.getUserBalanceQuantity();
             //balance = userBalanceDO.getBalance();
             mav.addObject("balance", balance);
@@ -232,7 +250,12 @@ public class ConcurMyController extends BaseController {
         } catch (Exception e) {
             msg +=  "in /transaction" + e.toString();
         }
+		
+		
 
+		
+					
+			
         /*
         UserTradeBillQueryDO userTradeBillQueryDO = new UserTradeBillQueryDO();
         userTradeBillQueryDO.setUserId(userDO.getUserId());
@@ -359,7 +382,7 @@ public class ConcurMyController extends BaseController {
     @RequestMapping(value = "/on_withdraw", method= RequestMethod.POST)
     public ModelAndView onWithdraw( @RequestParam(value = "concurPlanId", required = false, defaultValue = "0") long concurPlanId,
                                    @RequestParam(value = "bankNo") String bankNo, @RequestParam(value = "bankName") String bankName,
-                                    @RequestParam(value = "amount") long amount,
+                                    @RequestParam(value = "amount") String amount,
                                    HttpServletRequest request) throws Exception
 	{
         String msg = "";
@@ -385,7 +408,7 @@ public class ConcurMyController extends BaseController {
 			userTradeCashDO.setOpenId(userDO.getOpenid());
 			userTradeCashDO.setBankNo(bankNo);
 			userTradeCashDO.setBankName(bankName);
-			userTradeCashDO.setWithdrawAmount(amount);
+			userTradeCashDO.setWithdrawAmount(Long.parseLong(amount));
 			userTradeCashDO.setStatus(3);
 			
 			long result  = userTradeCashDAO.insert(userTradeCashDO);
@@ -464,7 +487,8 @@ public class ConcurMyController extends BaseController {
                 //return new BizResult(ResultEnum.ARGUMENT_VERIFY_FAIL);
             }
             */
-
+		long userBalance = userManager.getBalance(sessionUserInfo.getUserId(), concurPlanId); 
+		mav.addObject("balance",userBalance) ;
 		mav.addObject("msg", msg);
         mav.setViewName("/v2/concur/my");
         return mav;
@@ -508,14 +532,16 @@ public class ConcurMyController extends BaseController {
 
     }
 
-        @RequestMapping(value = "/topup")
+        @RequestMapping("/topup")
     public ModelAndView topup(@RequestParam(value = "concurPlanId", required = false, defaultValue = "0") long concurPlanId,
                                  HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
 //        SessionUserInfo userInfo = getSessionUserInfo(request)
         String msg = "";
         ModelAndView mav = new ModelAndView();
-/*
+
+		bizLogger.debug("DANNYin topup");
+		/*
 
         UserDO userDO = userManager.selectByUserId(userInfo.getUserId());
         MyResponse myResponse = new MyResponse();
@@ -549,28 +575,33 @@ public class ConcurMyController extends BaseController {
     }
 
 
-    @RequestMapping(value="/on_topup", method= RequestMethod.POST)
-    @ResponseBody
-    public Result onTopup(@RequestParam(value = "concurPlanId", required = false, defaultValue = "0") long concurPlanId,
-
+    @RequestMapping(value="/pay_process")
+	@ResponseBody
+    public Result  payProcess(@RequestParam(value = "concurPlanId", required = false, defaultValue = "0") long concurPlanId,
                           //@RequestParam(value = "amount") long amount,
                           HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
         SessionUserInfo userInfo = getSessionUserInfo(request);
-        String msg = "in on_top";
+        String msg = "in pay_process";
         ModelAndView mav = new ModelAndView();
 
-        ConcurPlanDO concurPlanDO = concurManager.getConcurPlanById(concurPlanId);
+		bizLogger.debug("DANNYDEBUG1: in pay_proces");  
+
+		ConcurPlanDO concurPlanDO = concurManager.getConcurPlanById(concurPlanId);
         //String ids = request.getParameter("ids");
 
         PayVO payVO = null;
         try {
             //Long amount = Long.parseLong(request.getParameter("amount"));
-            Long amount = (long) 0.001;
-            String ids = "123";
-            payVO = concurFeePay(request, amount, concurPlanId, ids);
+            Long amount = (long)0.001;
+            String ids = "123";			
+			msg += "amount" + Long.toString(amount);
+			msg += "concurPlanId" + concurPlanId;
+			msg += "ids" + ids;
 
-            /*
+			payVO = concurFeePay(request, amount, concurPlanId, ids);			
+						
+			/*
             UserTradeFillDO userTradeFillDO = new UserTradeFillDO();
             userTradeFillDO.setUserId(userInfo.getUserId());
             userTradeFillDO.setOpenId(userInfo.getOpenid());
@@ -584,15 +615,14 @@ public class ConcurMyController extends BaseController {
             userTradeFillDO.setWxTradeType("JSAPI");
             userTradeFillDO.setErrCode(null);
             userTradeFillDO.setErrCodeDes(null);
-
             userTradePayDAO.insert(userTradeFillDO);
             */
         }
         catch (Exception e)
         {
-
-            msg  = msg + e.toString();
-        }
+			msg += payVO.getMsg();
+		    msg += e.toString();
+		}
 /*
         //mav.addObject("payVO", payVO);
 
@@ -606,21 +636,30 @@ public class ConcurMyController extends BaseController {
             return Result.of(ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getCode(), ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getDesc());
         }
 */
-        msg += payVO.isResult();
         mav.addObject("msg", msg);
         mav.addObject("payVO", payVO);
-
-        mav.setViewName("/v2/concur/on_withdraw");
-
+        mav.setViewName("/v2/concur/my");
+		//return mav;
+		
         if (payVO != null && payVO.isResult()) {
             return Result.of(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getDesc(), payVO);
         } else {
-            return Result.of(ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getCode(), ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getDesc());
-        }
-
+            return Result.of(ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getCode(), ResultEnum.PAY_FILL_CASH_WX_PAY_FAIL.getDesc(), payVO.getMsg());
+        }		
     }
+	
+	/*
+	@RequestMapping(value="/on_topup", method= RequestMethod.POST)
+	public ModelAndView onTopup(@RequestParam(value = "concurPlanId", required = false, defaultValue = "0") long concurPlanId,
+								HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 
-
+		ModelAndView mv = new ModelAndView();
+		
+		
+		mv.setViewName("v2/concur/my");
+		return mv;
+	}	
+	*/
     private boolean isApplyConcur(List<UserConcurRelationVO> list) {
         boolean isApplyConcur = false;
         if (!CollectionUtils.isEmpty(list)) {
@@ -658,7 +697,7 @@ public class ConcurMyController extends BaseController {
     private List<UserConcurRelationVO> conver(List<UserConcurRelationDO> list) throws Exception {
         List<UserConcurRelationVO> voList = new ArrayList<UserConcurRelationVO>();
         for (UserConcurRelationDO relationDO : list) {
-            UserConcurRelationVO vo = new UserConcurRelationVO();
+			UserConcurRelationVO vo = new UserConcurRelationVO();
             BeanUtils.copyProperties(relationDO, vo);
             getDesc(vo);
             voList.add(vo);
@@ -698,6 +737,8 @@ public class ConcurMyController extends BaseController {
     private PayVO concurFeePay(HttpServletRequest request, long concurFee, long concurId, String ids) {
         SessionUserInfo sessionUserInfo = getSessionUserInfo(request);
         PayVO payVO = null;
+
+		bizLogger.debug("DANNYDEBUG1: in concurFee");  		
         try {
             BizResult<WXPayResult> result = tradeManager.fillCash(sessionUserInfo.getUserId(), concurId, concurFee, sessionUserInfo.getOpenid(), NginxTool.getIpByNginx(request), BizFeeType.CONCURFEE.getValue(), ids);
             if (result.getModel() != null) {
@@ -715,25 +756,41 @@ public class ConcurMyController extends BaseController {
                     requestHandler.setParameter("package", packageStr);
                     requestHandler.setParameter("timeStamp", timeStamp);
 
+					
                     String sign = PayUtil.createWXPaySign("UTF-8", requestHandler.getParameters(), wxPayManager.getWxPaySecret(sessionUserInfo.getPfAppid()));
                     payVO = PayVO.ofSuccess();
                     payVO.setAppId(appid);
-                    payVO.setConcurFee(concurFee);
+                    payVO.setConcurFee(concurFee);	
                     payVO.setPaySecret(nonce_str, signType, packageStr, timeStamp, sign);
-                    if (logger.isDebugEnabled()) {
+
+					bizLogger.debug("DANNYDEBUG1: in PayVO");
+					bizLogger.debug(Long.toString(concurId), "" ,concurFee);
+					bizLogger.debug(appid, nonce_str, signType, packageStr, timeStamp);
+					bizLogger.debug(sign);
+					
+					
+					if (logger.isDebugEnabled()) {
                         logger.debug("member fee pay success,userId={},concurFee={}", sessionUserInfo.getUserId(), concurFee);
+						bizLogger.debug("DANNYDEBUG2: ");  
                     }
                 } else {
                     payVO = PayVO.ofFail();
                     logger.error("member fee pay fail,userId={},concurFee={},{}", sessionUserInfo.getUserId(), concurFee, wxPayResult);
+					payVO.addMsg("member fee pay fail,userId={},concurFee={},{}" +  Long.toString(sessionUserInfo.getUserId()) + concurFee + wxPayResult);
+					bizLogger.debug("DANNYDEBUG3 ");  
                 }
             } else {
                 payVO = PayVO.ofFail();
-                logger.error("member fee pay fail,userId={},concurFee={}", sessionUserInfo.getUserId(), concurFee);
+                logger.error("charge fail,userId={},concurFee={}", sessionUserInfo.getUserId(), concurFee);
+				payVO.addMsg("charge fail,userId={},concurFee={}" + sessionUserInfo.getUserId() + concurFee);
+				bizLogger.debug("DANNYDEBUG4");  
             }
         } catch (Exception e) {
-            logger.error("member fee pay is error", e);
+            logger.error("charge is error", e);
+			
             payVO = PayVO.ofFail();
+			payVO.addMsg("charge is error" + e.toString());
+			bizLogger.debug("DANNYDEBUG5");  
         }
 
         return payVO;
